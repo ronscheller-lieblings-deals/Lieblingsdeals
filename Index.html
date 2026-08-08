@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LieblingsDeals</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+    color:#222;
+}
+body{
+    padding-bottom:80px;
+}
+header{
+    background:#ff6a00;
+    color:#fff;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.subtitle{
+    font-size:14px;
+    margin-top:5px;
+}
+
+.search{
+    margin:20px;
+}
+
+.search input{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+}
+
+section{
+    padding:20px;
+}
+
+h2{
+    margin-bottom:15px;
+}
+
+.categories{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.categories div{
+    background:white;
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+    font-weight:bold;
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    padding:16px;
+    margin-top:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.badge{
+    display:inline-block;
+    background:#ff6a00;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.discount{
+    display:inline-block;
+    background:red;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    margin-left:8px;
+    font-size:12px;
+}
+
+.card img{
+    width:100%;
+    border-radius:12px;
+    margin:15px 0;
+}
+
+.old-price{
+    text-decoration:line-through;
+    color:#888;
+}
+
+.price{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff6a00;
+}
+
+.saving{
+    color:green;
+    font-weight:bold;
+    margin:8px 0;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#ff6a00;
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    cursor:pointer;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 -3px 10px rgba(0,0,0,.15);
+    font-size: 13px;
+}
+
+.bottom-nav div {
+    color:#333;
+}
+.rating {
+    margin: 10px 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+.offer-button {
+    display:block;
+    text-align:center;
+    background:#ff6a00;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">⭐ LieblingsDeals</div>
+
+<div class="subtitle">
+Die besten Angebote jeden Tag
+</div>
+
+</header>
+
+<div class="search">
+<input type="text" placeholder="🔍 Produkte suchen...">
+</div>
+
+<section>
+
+<h2>📂 Kategorien</h2>
+
+<div class="categories">
+
+<div>🍼 Baby</div>
+<div>🏠 Haushalt</div>
+<div>🍳 Küche</div>
+<div>📱 Technik</div>
+<div>💄 Beauty</div>
+<div>🐾 Haustiere</div>
+
+</div>
+
+</section>
+<section>
+
+<h2>⭐ Top Deal des Tages</h2>
+
+<div class="card">
+
+<div>
+
+<span class="badge">TOP DEAL</span>
+<span class="discount">-40 %</span>
+
+</div>
+
+<img src="https://m.media-amazon.com/images/I/71g2ednj0JL._AC_SL1500_.jpg" alt="Kabellose Kopfhörer">
+
+<h3>Kabellose Bluetooth-Kopfhörer</h3>
+<div class="rating">
+⭐⭐⭐⭐⭐ (245 Bewertungen)
+</div>
+<p>
+Kristallklarer Sound, 40 Stunden Akkulaufzeit und perfekte Geräuschunterdrückung.
+</p>
+
+<div class="old-price">
+49,99 €
+</div>
+
+<div class="price">
+29,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 20,00 €
+</div>
+
+<a href="#" class="offer-button">
+🛒 Zum Angebot
+</a>
+
+</div>
+
+</section>
+<section>
+
+<h2>🔥 Neue Angebote</h2>
+
+<div class="card">
+
+<span class="badge">NEU</span>
+
+<img src="https://picsum.photos/500/300" alt="Produkt">
+
+<h3>Smart Home Steckdose</h3>
+
+<p>
+Steuere deine Geräte bequem per App und spare Energie.
+</p>
+
+<div class="old-price">
+24,99 €
+</div>
+
+<div class="price">
+14,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 10,00 €
+</div>
+
+<button>
+🛒 Zum Angebot
+</button>
+
+</div>
+
+
+<div class="card">
+
+<span class="badge">ANGEBOT</span>
+
+<img src="https://picsum.photos/500/301" alt="Produkt">
+
+<h3>Küchenhelfer Set</h3>
+
+<p>
+Praktisches Zubehör für deine Küche.
+</p>
+
+<div class="old-price">
+39,99 €
+</div>
+
+<div class="price">
+19,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 20,00 €
+</div>
+
+<button>
+🛒 Zum Angebot
+</button>
+
+</div>
+
+</section>
+<section>
+
+<h2>❤️ Beliebteste Produkte</h2>
+
+<div class="card">
+
+<span class="badge">
+BELIEBT
+</span>
+
+<span class="discount">
+-25 %
+</span>
+
+<img src="https://picsum.photos/500/302" alt="Produkt">
+
+<h3>LED Schreibtischlampe</h3>
+
+<p>
+Modernes Design, energiesparend und perfekt fürs Homeoffice.
+</p>
+
+<div class="old-price">
+39,99 €
+</div>
+
+<div class="price">
+29,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 10,00 €
+</div>
+
+<button>
+🛒 Zum Angebot
+</button>
+
+</div>
+
+
+<div class="card">
+
+<span class="badge">
+TOP BEWERTET
+</span>
+
+<img src="https://picsum.photos/500/303" alt="Produkt">
+
+<h3>Fitness Tracker</h3>
+
+<p>
+Schritte zählen, Schlaf überwachen und Aktivität messen.
+</p>
+
+<div class="old-price">
+49,99 €
+</div>
+
+<div class="price">
+34,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 15,00 €
+</div>
+
+<button>
+🛒 Zum Angebot
+</button>
+
+</div>
+
+</section>
+<nav class="bottom-nav">
+
+<div>
+🏠
+<br>
+Start
+</div>
+
+<div>
+📂
+<br>
+Kategorien
+</div>
+
+<div>
+❤️
+<br>
+Favoriten
+</div>
+
+<div>
+🔍
+<br>
+Suche
+</div>
+
+</nav>
+<section>
+
+<h2>💰 Angebote unter 20 €</h2>
+
+<div class="card">
+
+<span class="badge">
+SCHNÄPPCHEN
+</span>
+
+<img src="https://picsum.photos/500/304" alt="Produkt">
+
+<h3>USB-C Schnellladegerät</h3>
+
+<div class="rating">
+⭐⭐⭐⭐⭐ (89 Bewertungen)
+</div>
+
+<p>
+Kompaktes Ladegerät für Smartphone und Tablet.
+</p>
+
+<div class="old-price">
+29,99 €
+</div>
+
+<div class="price">
+17,99 €
+</div>
+
+<div class="saving">
+✅ Du sparst 12,00 €
+</div>
+
+<a href="#" class="offer-button">
+🛒 Zum Angebot
+</a>
+
+</div>
+
+</section>
+<section>
+
+<h2>🍼 Babywelt</h2>
+
+<div class="card">
+
+<span class="badge">
+BABY-DEAL
+</span>
+
+<img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=800&q=80" alt="Babyprodukte">
+
+<h3>Pampers Baby-Dry Höschenwindeln</h3>
+
+<div class="rating">
+⭐⭐⭐⭐⭐
+</div>
+
+<p>
+Pampers Baby-Dry Höschenwindeln – zuverlässiger Schutz und hoher Tragekomfort für dein Baby.
+</p>
+
+<div class="price">
+Zum aktuellen Preis bei Amazon
+</div>
+
+<a href="https://www.amazon.de/Pampers-Baby-Dry-T%C3%A4schchen-MONATSBOX-H%C3%B6schenwindeln/dp/B0BLW5ZXTP?th=1&linkCode=ll2&tag=ronsystem-21&linkId=b6b3923f42348186448d22d6b93b031b&ref_=as_li_ss_tl"
+class="offer-button"
+target="_blank">
+🛒 Bei Amazon ansehen
+</a>
+
+</div>
+
+</section>
+<footer>
+
+LieblingsDeals © 2026
+
+</footer>
+
+</body>
+</html>
