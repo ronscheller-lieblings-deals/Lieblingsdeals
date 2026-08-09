@@ -502,6 +502,32 @@ target="_blank">
 LieblingsDeals © 2026
 
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+async function ladeDeals() {
+    const { data, error } = await supabase
+        .from("deals")
+        .select("*")
+        .order("erstellt_am", { ascending: false });
+
+    if (error) {
+        console.error("Fehler beim Laden der Deals:", error);
+        return;
+    }
+
+    console.log("Deals aus Supabase:", data);
+}
+
+ladeDeals();
+</script>
 </body>
 </html>
