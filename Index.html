@@ -512,7 +512,23 @@ const supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
+async function ladeDeals() {
+    const { data, error } = await supabase
+        .from("deals")
+        .select("*")
+        .order("erstellt_am", { ascending: false });
 
+    if (error) {
+        alert("Supabase Fehler: " + error.message);
+        return;
+    }
+
+    if (data.length > 0) {
+        alert("Supabase funktioniert! Gefunden: " + data[0].titel);
+    } else {
+        alert("Supabase funktioniert, aber es sind keine Deals vorhanden.");
+    }
+}
 async function ladeDeals() {
     const { data, error } = await supabase
         .from("deals")
