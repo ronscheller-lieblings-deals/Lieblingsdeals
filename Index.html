@@ -529,22 +529,11 @@ async function ladeDeals() {
         alert("Supabase funktioniert, aber es sind keine Deals vorhanden.");
     }
 }
-async function ladeDeals() {
-    const { data, error } = await supabase
-        .from("deals")
-        .select("*")
-        .order("erstellt_am", { ascending: false });
-
-    if (error) {
-        console.error("Fehler beim Laden der Deals:", error);
-        return;
-    }
 
     console.log("Deals aus Supabase:", data);
 }
 
-ladeDeals();
-console.log("Supabase-Test: Verbindung hergestellt");    
+ladeDeals();   
 </script>
 </body>
 </html>
