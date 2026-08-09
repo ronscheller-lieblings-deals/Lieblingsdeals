@@ -512,6 +512,7 @@ const supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
+
 async function ladeDeals() {
     const { data, error } = await supabase
         .from("deals")
@@ -530,10 +531,9 @@ async function ladeDeals() {
     }
 }
 
-    console.log("Deals aus Supabase:", data);
-}
-
-ladeDeals();   
+ladeDeals();
 </script>
 </body>
 </html>
+
+
