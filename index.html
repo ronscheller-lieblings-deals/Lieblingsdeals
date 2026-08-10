@@ -536,11 +536,43 @@ target="_blank">
 LieblingsDeals © 2026
 
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-document.body.insertAdjacentHTML(
-  "beforeend",
-  "<div style='position:fixed;top:20px;left:20px;right:20px;background:red;color:white;padding:20px;z-index:99999;font-size:20px;'>TEST 123 – DIESE DATEI WIRD AUSGEFÜHRT</div>"
+const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
 );
+
+async function testSupabase() {
+    const { data, error } = await supabase
+        .from("deals")
+        .select("titel");
+
+    let text;
+
+    if (error) {
+        text = "SUPABASE FEHLER:<br>" + error.message;
+    } else {
+        text = "SUPABASE ANTWORT:<br>Gefundene Deals: " + data.length;
+
+        if (data.length > 0) {
+            text += "<br>Erster Deal: " + data[0].titel;
+        }
+    }
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+        "<div style='position:fixed;top:20px;left:20px;right:20px;background:white;color:black;padding:20px;border:3px solid black;z-index:99999;font-size:18px;'>" +
+        text +
+        "</div>"
+    );
+}
+
+testSupabase();
 </script>
 
 </body>
