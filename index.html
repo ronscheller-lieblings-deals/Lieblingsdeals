@@ -538,15 +538,13 @@ LieblingsDeals © 2026
 </footer>
 
 <script>
-alert("SCHRITT 1: JAVASCRIPT LÄUFT");
+alert("TEST A");
 </script>
 
-<script>
-alert("SUPABASE DATEI WIRD GELADEN");
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-alert("SCHRITT 2: SUPABASE-SCRIPT GELADEN");
+alert("TEST B");
 
 const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
@@ -556,29 +554,8 @@ const supabase = window.supabase.createClient(
     SUPABASE_PUBLISHABLE_KEY
 );
 
-async function testSupabase() {
-    alert("SCHRITT 3: SUPABASE-ABFRAGE STARTET");
-
-    const { data, error } = await supabase
-        .from("deals")
-        .select("titel");
-
-    if (error) {
-        alert("SUPABASE FEHLER: " + error.message);
-        return;
-    }
-
-    if (data.length > 0) {
-        alert("ERFOLG! Gefunden: " + data.length + " Deal(s). Erster: " + data[0].titel);
-    } else {
-        alert("SUPABASE ERREICHBAR – aber 0 Deals");
-    }
-}
-
-testSupabase();
+alert("TEST C");
 </script>
 
 </body>
 </html>
-
-
