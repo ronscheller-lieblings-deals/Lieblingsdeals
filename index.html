@@ -537,7 +537,10 @@ LieblingsDeals © 2026
 
 </footer>
 <script>
-document.body.innerHTML += "<h1>TEST FUNKTIONIERT</h1>";
+document.body.insertAdjacentHTML(
+  "beforeend",
+  "<div style='position:fixed;top:20px;left:20px;right:20px;background:red;color:white;padding:20px;z-index:99999;font-size:20px;'>TEST 123 – DIESE DATEI WIRD AUSGEFÜHRT</div>"
+);
 </script>
 
 </body>
