@@ -197,9 +197,10 @@ async function ladeDeals() {
         .order("erstellt_am", { ascending: false });
 
     if (error) {
-        alert("Supabase Fehler: " + error.message);
-        return;
-    }
+    alert("SUPABASE FEHLER: " + JSON.stringify(error));
+    console.error("Supabase Fehler:", error);
+    return;
+}
 
     if (data.length > 0) {
         alert("Supabase funktioniert! Gefunden: " + data[0].titel);
