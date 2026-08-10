@@ -536,9 +536,16 @@ target="_blank">
 LieblingsDeals © 2026
 
 </footer>
+
+<script>
+alert("SCHRITT 1: JAVASCRIPT LÄUFT");
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+alert("SCHRITT 2: SUPABASE-SCRIPT GELADEN");
+
 const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
@@ -548,28 +555,22 @@ const supabase = window.supabase.createClient(
 );
 
 async function testSupabase() {
+    alert("SCHRITT 3: SUPABASE-ABFRAGE STARTET");
+
     const { data, error } = await supabase
         .from("deals")
         .select("titel");
 
-    let text;
-
     if (error) {
-        text = "SUPABASE FEHLER:<br>" + error.message;
-    } else {
-        text = "SUPABASE ANTWORT:<br>Gefundene Deals: " + data.length;
-
-        if (data.length > 0) {
-            text += "<br>Erster Deal: " + data[0].titel;
-        }
+        alert("SUPABASE FEHLER: " + error.message);
+        return;
     }
 
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        "<div style='position:fixed;top:20px;left:20px;right:20px;background:white;color:black;padding:20px;border:3px solid black;z-index:99999;font-size:18px;'>" +
-        text +
-        "</div>"
-    );
+    if (data.length > 0) {
+        alert("ERFOLG! Gefunden: " + data.length + " Deal(s). Erster: " + data[0].titel);
+    } else {
+        alert("SUPABASE ERREICHBAR – aber 0 Deals");
+    }
 }
 
 testSupabase();
