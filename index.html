@@ -564,7 +564,7 @@ fetch(
     const bereich = document.querySelector("section");
 
     if (!bereich) {
-        console.error("Keine section auf der Seite gefunden.");
+        console.error("Keine Deal-Section gefunden.");
         return;
     }
 
@@ -573,26 +573,25 @@ fetch(
     deals.forEach(deal => {
 
         const karte = document.createElement("div");
-
         karte.className = "deal-card";
 
         karte.innerHTML = `
-            <h2>${deal.titel || ""}</h2>
-
             ${deal.bild ? `
                 <img
                     src="${deal.bild}"
                     alt="${deal.titel || "Deal"}"
-                    style="max-width:100%;border-radius:10px;"
+                    style="width:100%;max-width:500px;border-radius:12px;"
                 >
             ` : ""}
+
+            <h2>${deal.titel || ""}</h2>
 
             <p>
                 ${deal.Beschreibung || ""}
             </p>
 
             <div class="price">
-                ${deal.preis || "Zum aktuellen Preis bei Amazon"}
+                ${deal.preis || ""}
             </div>
 
             ${deal.link ? `
@@ -600,7 +599,7 @@ fetch(
                     href="${deal.link}"
                     class="offer-button"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                 >
                     🛒 Bei Amazon ansehen
                 </a>
