@@ -556,35 +556,59 @@ fetch(
     return response.json();
 })
 .then(deals => {
-    console.log("Deals aus Supabase:", deals);
 
     if (deals.length === 0) {
         return;
     }
 
-    const deal = deals[0];
+    const bereich = document.querySelector("section");
 
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div style="
-            position:fixed;
-            bottom:20px;
-            left:20px;
-            right:20px;
-            background:white;
-            color:#111;
-            padding:20px;
-            border:2px solid #111;
-            border-radius:12px;
-            box-shadow:0 4px 20px rgba(0,0,0,.25);
-            z-index:99999;
-        ">
-            <strong>Deal aus Supabase</strong><br><br>
-            ${deal.titel}
-        </div>
-        `
-    );
+    if (!bereich) {
+        console.error("Keine section auf der Seite gefunden.");
+        return;
+    }
+
+    bereich.innerHTML = "";
+
+    deals.forEach(deal => {
+
+        const karte = document.createElement("div");
+
+        karte.className = "deal-card";
+
+        karte.innerHTML = `
+            <h2>${deal.titel || ""}</h2>
+
+            ${deal.bild ? `
+                <img
+                    src="${deal.bild}"
+                    alt="${deal.titel || "Deal"}"
+                    style="max-width:100%;border-radius:10px;"
+                >
+            ` : ""}
+
+            <p>
+                ${deal.Beschreibung || ""}
+            </p>
+
+            <div class="price">
+                ${deal.preis || "Zum aktuellen Preis bei Amazon"}
+            </div>
+
+            ${deal.link ? `
+                <a
+                    href="${deal.link}"
+                    class="offer-button"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    🛒 Bei Amazon ansehen
+                </a>
+            ` : ""}
+        `;
+
+        bereich.appendChild(karte);
+    });
 })
 .catch(error => {
     console.error("Supabase Fehler:", error);
