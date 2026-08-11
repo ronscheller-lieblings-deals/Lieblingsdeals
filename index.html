@@ -528,57 +528,51 @@ fetch(
 })
 .then(deals => {
 
-    if (deals.length === 0) {
+    const karte = document.querySelector("section .card");
+
+    if (!karte || deals.length === 0) {
         return;
     }
 
-    const bereich = document.querySelector("section");
+    const deal = deals[0];
 
-    if (!bereich) {
-        console.error("Keine Deal-Section gefunden.");
-        return;
-    }
+    karte.innerHTML = `
+        <span class="badge">
+            BABY-DEAL
+        </span>
 
-    bereich.innerHTML = "";
+        ${deal.bild ? `
+            <img
+                src="${deal.bild}"
+                alt="${deal.titel || "Deal"}"
+            >
+        ` : ""}
 
-    deals.forEach(deal => {
+        <h3>${deal.titel || ""}</h3>
 
-        const karte = document.createElement("div");
-        karte.className = "deal-card";
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
 
-        karte.innerHTML = `
-            ${deal.bild ? `
-                <img
-                    src="${deal.bild}"
-                    alt="${deal.titel || "Deal"}"
-                    style="width:100%;max-width:500px;border-radius:12px;"
-                >
-            ` : ""}
+        <p>
+            ${deal.Beschreibung || ""}
+        </p>
 
-            <h2>${deal.titel || ""}</h2>
+        <div class="price">
+            ${deal.preis || ""}
+        </div>
 
-            <p>
-                ${deal.Beschreibung || ""}
-            </p>
-
-            <div class="price">
-                ${deal.preis || ""}
-            </div>
-
-            ${deal.link ? `
-                <a
-                    href="${deal.link}"
-                    class="offer-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    🛒 Bei Amazon ansehen
-                </a>
-            ` : ""}
-        `;
-
-        bereich.appendChild(karte);
-    });
+        ${deal.link ? `
+            <a
+                href="${deal.link}"
+                class="offer-button"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                🛒 Bei Amazon ansehen
+            </a>
+        ` : ""}
+    `;
 })
 .catch(error => {
     console.error("Supabase Fehler:", error);
