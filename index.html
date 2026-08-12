@@ -490,37 +490,9 @@ Kompaktes Ladegerät für Smartphone und Tablet.
 </section>
 <section>
 
-<h2>🍼 Babywelt</h2>
+<h2>🛍️ Unsere Angebote</h2>
 
-<div class="card">
-
-<span class="badge">
-BABY-DEAL
-</span>
-
-<img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=800&q=80" alt="Babyprodukte">
-
-<h3>Pampers Baby-Dry Höschenwindeln</h3>
-
-<div class="rating">
-⭐⭐⭐⭐⭐
-</div>
-
-<p>
-Pampers Baby-Dry Höschenwindeln – zuverlässiger Schutz und hoher Tragekomfort für dein Baby.
-</p>
-
-<div class="price">
-Zum aktuellen Preis bei Amazon
-</div>
-
-<a href="https://www.amazon.de/Pampers-Baby-Dry-T%C3%A4schchen-MONATSBOX-H%C3%B6schenwindeln/dp/B0BLW5ZXTP?th=1&linkCode=ll2&tag=ronsystem-21&linkId=b6b3923f42348186448d22d6b93b031b&ref_=as_li_ss_tl"
-class="offer-button"
-target="_blank">
-🛒 Bei Amazon ansehen
-</a>
-
-</div>
+<div id="supabase-deals"></div>
 
 </section>
 <footer>
@@ -590,53 +562,55 @@ fetch(
 })
 .then(deals => {
 
-    const karte = document.querySelector("section .card");
+    const container = document.getElementById("supabase-deals");
 
-    if (!karte || deals.length === 0) {
+    if (!container || deals.length === 0) {
         return;
     }
 
-    const deal = deals[0];
+    container.innerHTML = deals.map(deal => `
+        <div class="card">
 
-    karte.innerHTML = `
-        <span class="badge">
-            BABY-DEAL
-        </span>
+            <span class="badge">
+                ANGEBOT
+            </span>
 
-        ${deal.bild ? `
-            <img
-                src="${deal.bild}"
-                alt="${deal.titel || "Deal"}"
-            >
-        ` : ""}
+            ${deal.bild ? `
+                <img
+                    src="${deal.bild}"
+                    alt="${deal.titel || "Deal"}"
+                >
+            ` : ""}
 
-        <h3>${deal.titel || ""}</h3>
+            <h3>${deal.titel || ""}</h3>
 
-        <div class="rating">
-            ⭐⭐⭐⭐⭐
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+            </div>
+
+            <p>
+                ${deal.beschreibung || ""}
+            </p>
+
+            ${deal.preis_anzeigen ? `
+                <div class="price">
+                    ${deal.preis || ""}
+                </div>
+            ` : ""}
+
+            ${deal.link ? `
+                <a
+                    href="${deal.link}"
+                    class="offer-button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    🛒 Bei Amazon ansehen
+                </a>
+            ` : ""}
+
         </div>
-
-        <p>
-            ${deal.Beschreibung || ""}
-        </p>
-
-    ${deal.preis_anzeigen ? `
-    <div class="price">
-        ${deal.preis || ""}
-    </div>
-` : ""}
-
-        ${deal.link ? `
-            <a
-                href="${deal.link}"
-                class="offer-button"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                🛒 Bei Amazon ansehen
-            </a>
-        ` : ""}
-    `;
+    `).join("");
 })
 .catch(error => {
     console.error("Supabase Fehler:", error);
