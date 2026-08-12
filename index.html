@@ -517,7 +517,48 @@ target="_blank">
 LieblingsDeals © 2026
 
 </footer>
+<script>
+const SETTINGS_URL = "https://cklnfznlzyushvlybzad.supabase.co";
+const SETTINGS_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
+fetch(
+    SETTINGS_URL + "/rest/v1/site_settings?select=amazon_link,amazon_button_text,amazon_button_aktiv&limit=1",
+    {
+        headers: {
+            "apikey": SETTINGS_KEY
+        }
+    }
+)
+.then(response => {
+    if (!response.ok) {
+        throw new Error("Supabase Settings HTTP " + response.status);
+    }
+    return response.json();
+})
+.then(settings => {
+
+    if (!settings.length) {
+        return;
+    }
+
+    const setting = settings[0];
+    const button = document.getElementById("amazon-top-button");
+
+    if (!button) {
+        return;
+    }
+
+    if (setting.amazon_button_aktiv && setting.amazon_link) {
+        button.href = setting.amazon_link;
+        button.textContent = setting.amazon_button_text || "🛒 Alle Amazon-Angebote ansehen";
+    } else {
+        button.style.display = "none";
+    }
+})
+.catch(error => {
+    console.error("Supabase Settings Fehler:", error);
+});
+</script>
 <script>
 const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
