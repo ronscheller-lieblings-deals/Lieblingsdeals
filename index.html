@@ -547,7 +547,7 @@ const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
 const SUPABASE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
 fetch(
-    SUPABASE_URL + "/rest/v1/deals?select=*&order=erstellt_am.desc",
+    SUPABASE_URL + "/rest/v1/deals?select=*&order=id.asc",
     {
         headers: {
             "apikey": SUPABASE_KEY
@@ -564,13 +564,18 @@ fetch(
 
     const container = document.getElementById("supabase-deals");
 
-    if (!container || deals.length === 0) {
+    if (!container) {
         return;
     }
 
-    container.innerHTML = deals.map(deal => `
-        <div class="card">
+    container.innerHTML = "";
 
+    deals.forEach(deal => {
+
+        const karte = document.createElement("div");
+        karte.className = "card";
+
+        karte.innerHTML = `
             <span class="badge">
                 ANGEBOT
             </span>
@@ -608,9 +613,10 @@ fetch(
                     🛒 Bei Amazon ansehen
                 </a>
             ` : ""}
+        `;
 
-        </div>
-    `).join("");
+        container.appendChild(karte);
+    });
 })
 .catch(error => {
     console.error("Supabase Fehler:", error);
