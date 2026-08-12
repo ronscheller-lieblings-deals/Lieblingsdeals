@@ -558,9 +558,11 @@ fetch(
             ${deal.Beschreibung || ""}
         </p>
 
+    ${deal.preis_anzeigen ? `
     <div class="price">
-    ${deal.preis || ""}
-</div>
+        ${deal.preis || ""}
+    </div>
+` : ""}
 
         ${deal.link ? `
             <a
