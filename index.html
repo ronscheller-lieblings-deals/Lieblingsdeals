@@ -1,429 +1,454 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LieblingsDeals</title>
 
-<title>LieblingsDeals</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-<style>
+    body {
+      background: #f4f4f4;
+      color: #222;
+      padding-bottom: 80px;
+    }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+    header {
+      background: #ff6a00;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+    }
 
-body{
-    background:#f4f4f4;
-    color:#222;
-}
-body{
-    padding-bottom:80px;
-}
-header{
-    background:#ff6a00;
-    color:#fff;
-    padding:20px;
-    text-align:center;
-    position:sticky;
-    top:0;
-}
+    .logo {
+      font-size: 30px;
+      font-weight: 700;
+    }
 
-.logo{
-    font-size:30px;
-    font-weight:bold;
-}
+    .subtitle {
+      font-size: 14px;
+      margin-top: 5px;
+    }
 
-.subtitle{
-    font-size:14px;
-    margin-top:5px;
-}
+    .search {
+      margin: 20px;
+    }
 
-.search{
-    margin:20px;
-}
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      font-size: 16px;
+    }
 
-.search input{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    font-size:16px;
-}
+    section {
+      padding: 20px;
+    }
 
-section{
-    padding:20px;
-}
+    h2 {
+      margin-bottom: 15px;
+    }
 
-h2{
-    margin-bottom:15px;
-}
+    .categories {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-.categories{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
+    .categories div {
+      background: #fff;
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 700;
+      box-shadow: 0 4px 10px #0001;
+      cursor: pointer;
+    }
 
-.categories div{
-    background:white;
-    padding:18px;
-    border-radius:14px;
-    text-align:center;
-    font-weight:bold;
-    box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px #0001;
+    }
 
-.card{
-    background:white;
-    border-radius:16px;
-    padding:16px;
-    margin-top:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
+    .badge {
+      display: inline-block;
+      background: #ff6a00;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-.badge{
-    display:inline-block;
-    background:#ff6a00;
-    color:white;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-}
+    .price {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ff6a00;
+    }
 
-.discount{
-    display:inline-block;
-    background:red;
-    color:white;
-    padding:6px 12px;
-    border-radius:20px;
-    margin-left:8px;
-    font-size:12px;
-}
+    .offer-button {
+      display: block;
+      text-align: center;
+      background: #ff6a00;
+      color: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 700;
+      margin-top: 15px;
+    }
 
-.card img{
-    width:100%;
-    border-radius:12px;
-    margin:15px 0;
-}
+    .amazon-top-button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 20px;
+      background: #fff;
+      color: #ff6a00;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+    }
 
-.old-price{
-    text-decoration:line-through;
-    color:#888;
-}
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 10px 0;
+      text-align: center;
+      box-shadow: 0 -3px 10px #0002;
+      font-size: 13px;
+    }
 
-.price{
-    font-size:28px;
-    font-weight:bold;
-    color:#ff6a00;
-}
+    .card img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 15px 0;
+    }
 
-.saving{
-    color:green;
-    font-weight:bold;
-    margin:8px 0;
-}
+    .rating {
+      margin: 10px 0;
+      font-weight: 700;
+    }
 
-button{
-    width:100%;
-    padding:15px;
-    background:#ff6a00;
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-size:17px;
-    cursor:pointer;
-}
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+    }
 
-footer{
-    text-align:center;
-    padding:30px;
-    color:#777;
-}
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    padding: 10px 0;
-    text-align: center;
-    box-shadow: 0 -3px 10px rgba(0,0,0,.15);
-    font-size: 13px;
-}
+    .error {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      color: #b00020;
+    }
+  </style>
 
-.bottom-nav div {
-    color:#333;
-}
-.rating {
-    margin: 10px 0;
-    font-size: 15px;
-    font-weight: bold;
-}
-.offer-button {
-    display:block;
-    text-align:center;
-    background:#ff6a00;
-    color:white;
-    padding:15px;
-    border-radius:12px;
-    text-decoration:none;
-    font-size:17px;
-    font-weight:bold;
-    margin-top:15px;
-}
-    .amazon-top-button{
-    display:inline-block;
-    margin-top:15px;
-    padding:12px 20px;
-    background:white;
-    color:#ff6a00;
-    border-radius:12px;
-    text-decoration:none;
-    font-size:16px;
-    font-weight:bold;
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-<header>
+  <header>
+    <div class="logo">⭐ LieblingsDeals</div>
+    <div class="subtitle">Die besten Angebote jeden Tag</div>
 
-<div class="logo">⭐ LieblingsDeals</div>
+    <a
+      id="amazon-top-button"
+      class="amazon-top-button"
+      href="#"
+      target="_blank"
+      rel="noopener"
+    >
+      🛒 Alle Amazon-Angebote ansehen
+    </a>
+  </header>
 
-<div class="subtitle">
-Die besten Angebote jeden Tag
-</div>
+  <div style="font-size:11px;text-align:center;padding:8px;background:#fff8f0;color:#777">
+    Werbung: Affiliate-Links, keine Mehrkosten. Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.
+  </div>
 
-<a
-    id="amazon-top-button"
-    class="amazon-top-button"
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
->
-    🛒 Alle Amazon-Angebote ansehen
-</a>
+  <div class="search">
+    <input placeholder="🔍 Produkte suchen...">
+  </div>
 
-</header>
-<div class="affiliate-notice">
-    Werbung: Einige Links auf dieser Website sind Affiliate-Links.
-    Wenn du über einen solchen Link einkaufst, kann ich eine Provision erhalten.
-    Für dich entstehen dadurch keine zusätzlichen Kosten.
-</div>
-<div class="amazon-notice">
-    Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.
-</div>
-<div class="search">
-<input type="text" placeholder="🔍 Produkte suchen...">
-</div>
+  <section>
+    <h2>📂 Kategorien</h2>
 
-<section>
+    <!-- Kategorien werden jetzt aus Supabase geladen -->
+    <div class="categories" id="categories">
+      <div class="loading">Kategorien werden geladen...</div>
+    </div>
+  </section>
 
-<h2>📂 Kategorien</h2>
+  <section>
+    <h2>🛍️ Unsere Angebote</h2>
+    <div id="supabase-deals">
+      <div class="loading">Angebote werden geladen...</div>
+    </div>
+  </section>
 
-<div class="categories">
+  <nav class="bottom-nav">
+    <div>🏠<br>Start</div>
+    <div>📂<br>Kategorien</div>
+    <div>❤️<br>Favoriten</div>
+    <div>🔍<br>Suche</div>
+  </nav>
 
-<div>🍼 Baby</div>
-<div>🏠 Haushalt</div>
-<div>🍳 Küche</div>
-<div>📱 Technik</div>
-<div>💄 Beauty</div>
-<div>🐾 Haustiere</div>
-
-</div>
-
-</section>
-
-
-
-<section>
-
-
-
-</div>
-
-</section>
-
-<nav class="bottom-nav">
-
-<div>
-🏠
-<br>
-Start
-</div>
-
-<div>
-📂
-<br>
-Kategorien
-</div>
-
-<div>
-❤️
-<br>
-Favoriten
-</div>
-
-<div>
-🔍
-<br>
-Suche
-</div>
-
-</nav>
-
-<section>
-
-<h2>🛍️ Unsere Angebote</h2>
-
-<div id="supabase-deals"></div>
-
-</section>
-<footer>
-
-    <p>LieblingsDeals © 2026</p>
-
+  <footer style="text-align:center;padding:30px;color:#777">
     <p>
-        <a href="impressum.html">Impressum</a>
-        |
-        <a href="datenschutz.html">Datenschutz</a>
+      LieblingsDeals © 2026 |
+      <a href="impressum.html">Impressum</a> |
+      <a href="datenschutz.html">Datenschutz</a>
     </p>
+  </footer>
 
-</footer>
-<script>
-const SETTINGS_URL = "https://cklnfznlzyushvlybzad.supabase.co";
-const SETTINGS_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
-fetch(
-    SETTINGS_URL + "/rest/v1/site_settings?select=amazon_link,amazon_button_text,amazon_button_aktiv&limit=1",
-    {
+  <script>
+
+    /* =========================================================
+       SUPABASE
+       ========================================================= */
+
+    const U = "https://cklnfznlzyushvlybzad.supabase.co";
+    const K = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+
+
+    /* =========================================================
+       AMAZON BUTTON
+       ========================================================= */
+
+    fetch(
+      U + "/rest/v1/site_settings?select=amazon_link,amazon_button_text,amazon_button_aktiv&limit=1",
+      {
         headers: {
-            "apikey": SETTINGS_KEY
+          apikey: K
         }
-    }
-)
-.then(response => {
-    if (!response.ok) {
-        throw new Error("Supabase Settings HTTP " + response.status);
-    }
-    return response.json();
-})
-.then(settings => {
+      }
+    )
+      .then(response => response.json())
+      .then(settings => {
 
-    if (!settings.length) {
-        return;
-    }
+        if (!settings.length) {
+          return;
+        }
 
-    const setting = settings[0];
-    const button = document.getElementById("amazon-top-button");
+        const button = document.getElementById("amazon-top-button");
+        const setting = settings[0];
 
-    if (!button) {
-        return;
-    }
+        if (
+          setting.amazon_button_aktiv &&
+          setting.amazon_link
+        ) {
 
-    if (setting.amazon_button_aktiv && setting.amazon_link) {
-        button.href = setting.amazon_link;
-        button.textContent = setting.amazon_button_text || "🛒 Alle Amazon-Angebote ansehen";
-    } else {
-        button.style.display = "none";
-    }
-})
-.catch(error => {
-    console.error("Supabase Settings Fehler:", error);
-});
-</script>
-<script>
-const SUPABASE_URL = "https://cklnfznlzyushvlybzad.supabase.co";
-const SUPABASE_KEY = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+          button.href = setting.amazon_link;
 
-fetch(
-    SUPABASE_URL + "/rest/v1/deals?select=*&order=id.asc",
-    {
+          button.textContent =
+            setting.amazon_button_text ||
+            "🛒 Alle Amazon-Angebote ansehen";
+
+        } else {
+
+          button.style.display = "none";
+
+        }
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Fehler beim Laden der Amazon-Einstellungen:",
+          error
+        );
+
+      });
+
+
+    /* =========================================================
+       KATEGORIEN AUS SUPABASE
+       ========================================================= */
+
+    fetch(
+      U + "/rest/v1/categories?select=id,name,slug,icon,sort_order&active=eq.true&order=sort_order.asc",
+      {
         headers: {
-            "apikey": SUPABASE_KEY
+          apikey: K
         }
-    }
-)
-.then(response => {
-    if (!response.ok) {
-        throw new Error("Supabase HTTP " + response.status);
-    }
-    return response.json();
-})
-.then(deals => {
+      }
+    )
+      .then(response => {
 
-    const container = document.getElementById("supabase-deals");
+        if (!response.ok) {
+          throw new Error(
+            "Kategorien konnten nicht geladen werden."
+          );
+        }
 
-    if (!container) {
-        return;
-    }
+        return response.json();
 
-    container.innerHTML = "";
+      })
+      .then(categories => {
 
-    deals.forEach(deal => {
+        const container =
+          document.getElementById("categories");
 
-        const karte = document.createElement("div");
-        karte.className = "card";
+        container.innerHTML = "";
 
-        karte.innerHTML = `
-            <span class="badge">
-                ANGEBOT
-            </span>
+        if (!categories.length) {
 
-            ${deal.bild ? `
-                <img
-                    src="${deal.bild}"
-                    alt="${deal.titel || "Deal"}"
-                >
-            ` : ""}
+          container.innerHTML =
+            '<div class="loading">Keine Kategorien vorhanden.</div>';
+
+          return;
+
+        }
+
+        categories.forEach(category => {
+
+          const element =
+            document.createElement("div");
+
+          element.textContent =
+            (category.icon || "") +
+            " " +
+            category.name;
+
+          element.dataset.slug =
+            category.slug;
+
+          element.addEventListener(
+            "click",
+            () => {
+
+              console.log(
+                "Kategorie ausgewählt:",
+                category.slug
+              );
+
+            }
+          );
+
+          container.appendChild(element);
+
+        });
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Fehler beim Laden der Kategorien:",
+          error
+        );
+
+        document.getElementById("categories").innerHTML =
+          '<div class="error">Die Kategorien konnten momentan nicht geladen werden.</div>';
+
+      });
+
+
+    /* =========================================================
+       DEALS AUS SUPABASE
+       ========================================================= */
+
+    fetch(
+      U + "/rest/v1/deals?select=*&order=id.asc",
+      {
+        headers: {
+          apikey: K
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(deals => {
+
+        const container =
+          document.getElementById("supabase-deals");
+
+        container.innerHTML = "";
+
+        deals.forEach(deal => {
+
+          const card =
+            document.createElement("div");
+
+          card.className = "card";
+
+          card.innerHTML = `
+            <span class="badge">ANGEBOT</span>
+
+            ${
+              deal.bild
+                ? `<img src="${deal.bild}" alt="${deal.titel || ""}">`
+                : ""
+            }
 
             <h3>${deal.titel || ""}</h3>
 
             <div class="rating">
-                ⭐⭐⭐⭐⭐
+              ⭐⭐⭐⭐⭐
             </div>
 
             <p>
-                ${deal.beschreibung || ""}
+              ${deal.beschreibung || ""}
             </p>
 
-            ${deal.preis_anzeigen ? `
-                <div class="price">
-                    ${deal.preis || ""}
-                </div>
-            ` : ""}
+            ${
+              deal.preis_anzeigen
+                ? `<div class="price">${deal.preis || ""}</div>`
+                : ""
+            }
 
-            ${deal.link ? `
-                <a
+            ${
+              deal.link
+                ? `
+                  <a
                     href="${deal.link}"
                     class="offer-button"
                     target="_blank"
-                    rel="noopener noreferrer"
-                >
+                    rel="noopener"
+                  >
                     🛒 Bei Amazon ansehen
-                </a>
-            ` : ""}
-        `;
+                  </a>
+                `
+                : ""
+            }
+          `;
 
-        container.appendChild(karte);
-    });
-})
-.catch(error => {
-    console.error("Supabase Fehler:", error);
-});
-</script>
+          container.appendChild(card);
+
+        });
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Fehler beim Laden der Angebote:",
+          error
+        );
+
+        document.getElementById("supabase-deals").innerHTML =
+          '<div class="error">Die Angebote konnten momentan nicht geladen werden.</div>';
+
+      });
+
+  </script>
 
 </body>
 </html>
