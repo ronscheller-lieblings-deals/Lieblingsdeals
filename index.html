@@ -26,6 +26,7 @@
       text-align: center;
       position: sticky;
       top: 0;
+      z-index: 10;
     }
 
     .logo {
@@ -72,6 +73,37 @@
       font-weight: 700;
       box-shadow: 0 4px 10px #0001;
       cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .categories div:active {
+      transform: scale(0.97);
+    }
+
+    .categories div.active {
+      background: #ff6a00;
+      color: #fff;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .category-header h2 {
+      margin-bottom: 0;
+    }
+
+    .back-button {
+      border: 0;
+      background: #fff;
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
     }
 
     .card {
@@ -134,6 +166,11 @@
       text-align: center;
       box-shadow: 0 -3px 10px #0002;
       font-size: 13px;
+      z-index: 20;
+    }
+
+    .bottom-nav div {
+      cursor: pointer;
     }
 
     .card img {
@@ -159,6 +196,14 @@
       border-radius: 14px;
       color: #b00020;
     }
+
+    .empty {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+      color: #777;
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -182,34 +227,63 @@
   </header>
 
   <div style="font-size:11px;text-align:center;padding:8px;background:#fff8f0;color:#777">
-    Werbung: Affiliate-Links, keine Mehrkosten. Als Amazon-Partner verdiene ich an qualifizierten Verkäufen.
+    Werbung: Einige Links auf dieser Website sind Affiliate-Links. Wenn du über einen solchen Link einen Kauf oder Vertrag abschließt, kann ich eine Provision erhalten. Für dich entstehen dadurch keine zusätzlichen Kosten.
   </div>
 
   <div class="search">
-    <input placeholder="🔍 Produkte suchen...">
+    <input
+      id="search-input"
+      type="search"
+      placeholder="🔍 Produkte suchen..."
+    >
   </div>
 
-  <section>
+  <section id="category-section">
     <h2>📂 Kategorien</h2>
 
-    <!-- Kategorien werden jetzt aus Supabase geladen -->
     <div class="categories" id="categories">
       <div class="loading">Kategorien werden geladen...</div>
     </div>
   </section>
 
-  <section>
-    <h2>🛍️ Unsere Angebote</h2>
+  <section id="offers-section">
+
+    <div class="category-header">
+      <h2 id="offers-title">🛍️ Unsere Angebote</h2>
+
+      <button
+        id="show-all-button"
+        class="back-button"
+        style="display:none"
+      >
+        ← Alle
+      </button>
+    </div>
+
     <div id="supabase-deals">
       <div class="loading">Angebote werden geladen...</div>
     </div>
+
   </section>
 
   <nav class="bottom-nav">
-    <div>🏠<br>Start</div>
-    <div>📂<br>Kategorien</div>
-    <div>❤️<br>Favoriten</div>
-    <div>🔍<br>Suche</div>
+
+    <div id="nav-home">
+      🏠<br>Start
+    </div>
+
+    <div id="nav-categories">
+      📂<br>Kategorien
+    </div>
+
+    <div>
+      ❤️<br>Favoriten
+    </div>
+
+    <div id="nav-search">
+      🔍<br>Suche
+    </div>
+
   </nav>
 
   <footer style="text-align:center;padding:30px;color:#777">
@@ -231,6 +305,11 @@
     const K = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
 
+    let categories = [];
+    let deals = [];
+    let selectedCategoryId = null;
+
+
     /* =========================================================
        AMAZON BUTTON
        ========================================================= */
@@ -250,7 +329,9 @@
           return;
         }
 
-        const button = document.getElementById("amazon-top-button");
+        const button =
+          document.getElementById("amazon-top-button");
+
         const setting = settings[0];
 
         if (
@@ -282,169 +363,482 @@
 
 
     /* =========================================================
-       KATEGORIEN AUS SUPABASE
+       KATEGORIEN LADEN
        ========================================================= */
 
-    fetch(
-      U + "/rest/v1/categories?select=id,name,slug,icon,sort_order&active=eq.true&order=sort_order.asc",
-      {
-        headers: {
-          apikey: K
+    function loadCategories() {
+
+      return fetch(
+        U + "/rest/v1/categories?select=id,name,slug,icon,sort_order&active=eq.true&order=sort_order.asc",
+        {
+          headers: {
+            apikey: K
+          }
         }
-      }
-    )
-      .then(response => {
+      )
+        .then(response => {
 
-        if (!response.ok) {
-          throw new Error(
-            "Kategorien konnten nicht geladen werden."
-          );
-        }
+          if (!response.ok) {
+            throw new Error(
+              "Kategorien konnten nicht geladen werden."
+            );
+          }
 
-        return response.json();
+          return response.json();
 
-      })
-      .then(categories => {
+        })
+        .then(data => {
 
-        const container =
-          document.getElementById("categories");
+          categories = data;
 
-        container.innerHTML = "";
-
-        if (!categories.length) {
-
-          container.innerHTML =
-            '<div class="loading">Keine Kategorien vorhanden.</div>';
-
-          return;
-
-        }
-
-        categories.forEach(category => {
-
-          const element =
-            document.createElement("div");
-
-          element.textContent =
-            (category.icon || "") +
-            " " +
-            category.name;
-
-          element.dataset.slug =
-            category.slug;
-
-          element.addEventListener(
-            "click",
-            () => {
-
-              console.log(
-                "Kategorie ausgewählt:",
-                category.slug
-              );
-
-            }
-          );
-
-          container.appendChild(element);
+          renderCategories();
 
         });
 
-      })
-      .catch(error => {
-
-        console.error(
-          "Fehler beim Laden der Kategorien:",
-          error
-        );
-
-        document.getElementById("categories").innerHTML =
-          '<div class="error">Die Kategorien konnten momentan nicht geladen werden.</div>';
-
-      });
+    }
 
 
     /* =========================================================
-       DEALS AUS SUPABASE
+       KATEGORIEN ANZEIGEN
        ========================================================= */
 
-    fetch(
-      U + "/rest/v1/deals?select=*&order=id.asc",
-      {
-        headers: {
-          apikey: K
-        }
+    function renderCategories() {
+
+      const container =
+        document.getElementById("categories");
+
+      container.innerHTML = "";
+
+      if (!categories.length) {
+
+        container.innerHTML =
+          '<div class="empty">Keine Kategorien vorhanden.</div>';
+
+        return;
+
       }
-    )
-      .then(response => response.json())
-      .then(deals => {
 
-        const container =
-          document.getElementById("supabase-deals");
+      categories.forEach(category => {
 
-        container.innerHTML = "";
+        const element =
+          document.createElement("div");
 
-        deals.forEach(deal => {
+        element.textContent =
+          (category.icon || "") +
+          " " +
+          category.name;
 
-          const card =
-            document.createElement("div");
+        if (
+          selectedCategoryId !== null &&
+          Number(selectedCategoryId) === Number(category.id)
+        ) {
 
-          card.className = "card";
+          element.classList.add("active");
 
-          card.innerHTML = `
-            <span class="badge">ANGEBOT</span>
+        }
 
-            ${
-              deal.bild
-                ? `<img src="${deal.bild}" alt="${deal.titel || ""}">`
-                : ""
-            }
+        element.addEventListener(
+          "click",
+          () => selectCategory(category.id)
+        );
 
-            <h3>${deal.titel || ""}</h3>
+        container.appendChild(element);
 
-            <div class="rating">
-              ⭐⭐⭐⭐⭐
-            </div>
+      });
 
-            <p>
-              ${deal.beschreibung || ""}
-            </p>
+    }
 
-            ${
-              deal.preis_anzeigen
-                ? `<div class="price">${deal.preis || ""}</div>`
-                : ""
-            }
 
-            ${
-              deal.link
-                ? `
-                  <a
-                    href="${deal.link}"
-                    class="offer-button"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    🛒 Bei Amazon ansehen
-                  </a>
-                `
-                : ""
-            }
-          `;
+    /* =========================================================
+       DEALS LADEN
+       ========================================================= */
 
-          container.appendChild(card);
+    function loadDeals() {
+
+      return fetch(
+        U + "/rest/v1/deals?select=*&order=id.asc",
+        {
+          headers: {
+            apikey: K
+          }
+        }
+      )
+        .then(response => {
+
+          if (!response.ok) {
+            throw new Error(
+              "Angebote konnten nicht geladen werden."
+            );
+          }
+
+          return response.json();
+
+        })
+        .then(data => {
+
+          deals = data;
+
+          renderDeals();
 
         });
 
-      })
+    }
+
+
+    /* =========================================================
+       KATEGORIE AUSWÄHLEN
+       ========================================================= */
+
+    function selectCategory(categoryId) {
+
+      selectedCategoryId =
+        Number(categoryId);
+
+      const category =
+        categories.find(
+          item =>
+            Number(item.id) === selectedCategoryId
+        );
+
+      if (!category) {
+        return;
+      }
+
+      document.getElementById("offers-title").textContent =
+        (category.icon || "") +
+        " " +
+        category.name;
+
+      document.getElementById("show-all-button")
+        .style.display = "block";
+
+      renderCategories();
+      renderDeals();
+
+      document.getElementById("offers-section")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }
+
+
+    /* =========================================================
+       ALLE ANGEBOTE ANZEIGEN
+       ========================================================= */
+
+    function showAllDeals() {
+
+      selectedCategoryId = null;
+
+      document.getElementById("offers-title").textContent =
+        "🛍️ Unsere Angebote";
+
+      document.getElementById("show-all-button")
+        .style.display = "none";
+
+      renderCategories();
+      renderDeals();
+
+    }
+
+
+    /* =========================================================
+       DEALS ANZEIGEN
+       ========================================================= */
+
+    function renderDeals() {
+
+      const container =
+        document.getElementById("supabase-deals");
+
+      container.innerHTML = "";
+
+      let visibleDeals = deals;
+
+      if (selectedCategoryId !== null) {
+
+        visibleDeals =
+          deals.filter(
+            deal =>
+              Number(deal.category_id) ===
+              Number(selectedCategoryId)
+          );
+
+      }
+
+      if (!visibleDeals.length) {
+
+        container.innerHTML =
+          '<div class="empty">In dieser Kategorie sind aktuell keine Angebote vorhanden.</div>';
+
+        return;
+
+      }
+
+      visibleDeals.forEach(deal => {
+
+        const card =
+          document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+          <span class="badge">
+            ANGEBOT
+          </span>
+
+          ${
+            deal.bild
+              ? `
+                <img
+                  src="${deal.bild}"
+                  alt="${deal.titel || ""}"
+                >
+              `
+              : ""
+          }
+
+          <h3>
+            ${deal.titel || ""}
+          </h3>
+
+          <div class="rating">
+            ⭐⭐⭐⭐⭐
+          </div>
+
+          <p>
+            ${deal.beschreibung || ""}
+          </p>
+
+          ${
+            deal.preis_anzeigen
+              ? `
+                <div class="price">
+                  ${deal.preis || ""}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            deal.link
+              ? `
+                <a
+                  href="${deal.link}"
+                  class="offer-button"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  🛒 Bei Amazon ansehen
+                </a>
+              `
+              : ""
+          }
+
+        `;
+
+        container.appendChild(card);
+
+      });
+
+    }
+
+
+    /* =========================================================
+       SUCHE
+       ========================================================= */
+
+    document
+      .getElementById("search-input")
+      .addEventListener(
+        "input",
+        function () {
+
+          const search =
+            this.value
+              .trim()
+              .toLowerCase();
+
+          if (!search) {
+
+            renderDeals();
+            return;
+
+          }
+
+          const container =
+            document.getElementById(
+              "supabase-deals"
+            );
+
+          container.innerHTML = "";
+
+          const results =
+            deals.filter(deal => {
+
+              const title =
+                (deal.titel || "")
+                  .toLowerCase();
+
+              const description =
+                (deal.beschreibung || "")
+                  .toLowerCase();
+
+              return (
+                title.includes(search) ||
+                description.includes(search)
+              );
+
+            });
+
+          if (!results.length) {
+
+            container.innerHTML =
+              '<div class="empty">Keine passenden Angebote gefunden.</div>';
+
+            return;
+
+          }
+
+          results.forEach(deal => {
+
+            const card =
+              document.createElement("div");
+
+            card.className = "card";
+
+            card.innerHTML = `
+              <span class="badge">ANGEBOT</span>
+
+              ${
+                deal.bild
+                  ? `<img src="${deal.bild}" alt="${deal.titel || ""}">`
+                  : ""
+              }
+
+              <h3>${deal.titel || ""}</h3>
+
+              <div class="rating">
+                ⭐⭐⭐⭐⭐
+              </div>
+
+              <p>
+                ${deal.beschreibung || ""}
+              </p>
+
+              ${
+                deal.preis_anzeigen
+                  ? `<div class="price">${deal.preis || ""}</div>`
+                  : ""
+              }
+
+              ${
+                deal.link
+                  ? `
+                    <a
+                      href="${deal.link}"
+                      class="offer-button"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      🛒 Bei Amazon ansehen
+                    </a>
+                  `
+                  : ""
+              }
+            `;
+
+            container.appendChild(card);
+
+          });
+
+        }
+      );
+
+
+    /* =========================================================
+       NAVIGATION
+       ========================================================= */
+
+    document
+      .getElementById("nav-home")
+      .addEventListener(
+        "click",
+        () => {
+
+          showAllDeals();
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+        }
+      );
+
+
+    document
+      .getElementById("nav-categories")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("category-section")
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+      );
+
+
+    document
+      .getElementById("nav-search")
+      .addEventListener(
+        "click",
+        () => {
+
+          const input =
+            document.getElementById(
+              "search-input"
+            );
+
+          input.focus();
+
+          input.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
+        }
+      );
+
+
+    document
+      .getElementById("show-all-button")
+      .addEventListener(
+        "click",
+        showAllDeals
+      );
+
+
+    /* =========================================================
+       START
+       ========================================================= */
+
+    Promise.all([
+      loadCategories(),
+      loadDeals()
+    ])
       .catch(error => {
 
         console.error(
-          "Fehler beim Laden der Angebote:",
+          "Fehler beim Initialisieren der Seite:",
           error
         );
-
-        document.getElementById("supabase-deals").innerHTML =
-          '<div class="error">Die Angebote konnten momentan nicht geladen werden.</div>';
 
       });
 
