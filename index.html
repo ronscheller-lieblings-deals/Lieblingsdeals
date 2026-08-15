@@ -124,6 +124,17 @@
       font-weight: 700;
     }
 
+    .affiliate-badge {
+      display: inline-block;
+      background: #fff0e6;
+      color: #ff6a00;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 5px;
+    }
+
     .price {
       font-size: 28px;
       font-weight: 700;
@@ -190,19 +201,23 @@
       color: #777;
     }
 
-    .error {
-      background: #fff;
-      padding: 20px;
-      border-radius: 14px;
-      color: #b00020;
-    }
-
     .empty {
       background: #fff;
       padding: 20px;
       border-radius: 14px;
       text-align: center;
       color: #777;
+      margin-top: 15px;
+    }
+
+    .affiliate-card {
+      border-left: 5px solid #ff6a00;
+    }
+
+    .provider {
+      color: #777;
+      font-size: 13px;
+      margin-top: 8px;
     }
   </style>
 
@@ -264,6 +279,8 @@
       <div class="loading">Angebote werden geladen...</div>
     </div>
 
+    <div id="affiliate-offers"></div>
+
   </section>
 
   <nav class="bottom-nav">
@@ -297,16 +314,12 @@
 
   <script>
 
-    /* =========================================================
-       SUPABASE
-       ========================================================= */
-
     const U = "https://cklnfznlzyushvlybzad.supabase.co";
     const K = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
-
     let categories = [];
     let deals = [];
+    let affiliateOffers = [];
     let selectedCategoryId = null;
 
 
@@ -325,9 +338,7 @@
       .then(response => response.json())
       .then(settings => {
 
-        if (!settings.length) {
-          return;
-        }
+        if (!settings.length) return;
 
         const button =
           document.getElementById("amazon-top-button");
@@ -363,7 +374,7 @@
 
 
     /* =========================================================
-       KATEGORIEN LADEN
+       KATEGORIEN
        ========================================================= */
 
     function loadCategories() {
@@ -398,25 +409,12 @@
     }
 
 
-    /* =========================================================
-       KATEGORIEN ANZEIGEN
-       ========================================================= */
-
     function renderCategories() {
 
       const container =
         document.getElementById("categories");
 
       container.innerHTML = "";
-
-      if (!categories.length) {
-
-        container.innerHTML =
-          '<div class="empty">Keine Kategorien vorhanden.</div>';
-
-        return;
-
-      }
 
       categories.forEach(category => {
 
@@ -450,7 +448,7 @@
 
 
     /* =========================================================
-       DEALS LADEN
+       DEALS
        ========================================================= */
 
     function loadDeals() {
@@ -463,11 +461,37 @@
           }
         }
       )
+        .then(response => response.json())
+        .then(data => {
+
+          deals = data;
+
+          renderDeals();
+
+        });
+
+    }
+
+
+    /* =========================================================
+       AFFILIATE ANGEBOTE
+       ========================================================= */
+
+    function loadAffiliateOffers() {
+
+      return fetch(
+        U + "/rest/v1/affiliate_offers?select=*&active=eq.true&order=sort_order.asc",
+        {
+          headers: {
+            apikey: K
+          }
+        }
+      )
         .then(response => {
 
           if (!response.ok) {
             throw new Error(
-              "Angebote konnten nicht geladen werden."
+              "Affiliate-Angebote konnten nicht geladen werden."
             );
           }
 
@@ -476,9 +500,9 @@
         })
         .then(data => {
 
-          deals = data;
+          affiliateOffers = data;
 
-          renderDeals();
+          renderAffiliateOffers();
 
         });
 
@@ -500,9 +524,7 @@
             Number(item.id) === selectedCategoryId
         );
 
-      if (!category) {
-        return;
-      }
+      if (!category) return;
 
       document.getElementById("offers-title").textContent =
         (category.icon || "") +
@@ -514,6 +536,7 @@
 
       renderCategories();
       renderDeals();
+      renderAffiliateOffers();
 
       document.getElementById("offers-section")
         .scrollIntoView({
@@ -524,7 +547,7 @@
 
 
     /* =========================================================
-       ALLE ANGEBOTE ANZEIGEN
+       ALLE
        ========================================================= */
 
     function showAllDeals() {
@@ -539,12 +562,13 @@
 
       renderCategories();
       renderDeals();
+      renderAffiliateOffers();
 
     }
 
 
     /* =========================================================
-       DEALS ANZEIGEN
+       AMAZON DEALS ANZEIGEN
        ========================================================= */
 
     function renderDeals() {
@@ -564,15 +588,6 @@
               Number(deal.category_id) ===
               Number(selectedCategoryId)
           );
-
-      }
-
-      if (!visibleDeals.length) {
-
-        container.innerHTML =
-          '<div class="empty">In dieser Kategorie sind aktuell keine Angebote vorhanden.</div>';
-
-        return;
 
       }
 
@@ -600,9 +615,7 @@
               : ""
           }
 
-          <h3>
-            ${deal.titel || ""}
-          </h3>
+          <h3>${deal.titel || ""}</h3>
 
           <div class="rating">
             ⭐⭐⭐⭐⭐
@@ -614,11 +627,7 @@
 
           ${
             deal.preis_anzeigen
-              ? `
-                <div class="price">
-                  ${deal.preis || ""}
-                </div>
-              `
+              ? `<div class="price">${deal.preis || ""}</div>`
               : ""
           }
 
@@ -647,6 +656,85 @@
 
 
     /* =========================================================
+       AFFILIATE ANGEBOTE ANZEIGEN
+       ========================================================= */
+
+    function renderAffiliateOffers() {
+
+      const container =
+        document.getElementById("affiliate-offers");
+
+      container.innerHTML = "";
+
+      let visibleOffers =
+        affiliateOffers;
+
+      if (selectedCategoryId !== null) {
+
+        visibleOffers =
+          affiliateOffers.filter(
+            offer =>
+              Number(offer.category_id) ===
+              Number(selectedCategoryId)
+          );
+
+      }
+
+      visibleOffers.forEach(offer => {
+
+        if (!offer.affiliate_url) return;
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "card affiliate-card";
+
+        card.innerHTML = `
+
+          <div>
+
+            <span class="badge">
+              VERGLEICH
+            </span>
+
+            <span class="affiliate-badge">
+              Werbung
+            </span>
+
+          </div>
+
+          <h3 style="margin-top:12px">
+            ${offer.icon || ""} ${offer.title}
+          </h3>
+
+          <p style="margin-top:10px">
+            ${offer.description || ""}
+          </p>
+
+          <div class="provider">
+            Anbieter: ${offer.provider || ""}
+          </div>
+
+          <a
+            href="${offer.affiliate_url}"
+            class="offer-button"
+            target="_blank"
+            rel="noopener"
+          >
+            ${offer.button_text || "Jetzt vergleichen"}
+          </a>
+
+        `;
+
+        container.appendChild(card);
+
+      });
+
+    }
+
+
+    /* =========================================================
        SUCHE
        ========================================================= */
 
@@ -657,34 +745,38 @@
         function () {
 
           const search =
-            this.value
-              .trim()
-              .toLowerCase();
+            this.value.trim().toLowerCase();
 
           if (!search) {
 
             renderDeals();
+            renderAffiliateOffers();
+
             return;
 
           }
 
-          const container =
+          const dealContainer =
             document.getElementById(
               "supabase-deals"
             );
 
-          container.innerHTML = "";
+          const affiliateContainer =
+            document.getElementById(
+              "affiliate-offers"
+            );
 
-          const results =
+          dealContainer.innerHTML = "";
+          affiliateContainer.innerHTML = "";
+
+          const dealResults =
             deals.filter(deal => {
 
               const title =
-                (deal.titel || "")
-                  .toLowerCase();
+                (deal.titel || "").toLowerCase();
 
               const description =
-                (deal.beschreibung || "")
-                  .toLowerCase();
+                (deal.beschreibung || "").toLowerCase();
 
               return (
                 title.includes(search) ||
@@ -693,16 +785,7 @@
 
             });
 
-          if (!results.length) {
-
-            container.innerHTML =
-              '<div class="empty">Keine passenden Angebote gefunden.</div>';
-
-            return;
-
-          }
-
-          results.forEach(deal => {
+          dealResults.forEach(deal => {
 
             const card =
               document.createElement("div");
@@ -724,9 +807,7 @@
                 ⭐⭐⭐⭐⭐
               </div>
 
-              <p>
-                ${deal.beschreibung || ""}
-              </p>
+              <p>${deal.beschreibung || ""}</p>
 
               ${
                 deal.preis_anzeigen
@@ -750,7 +831,70 @@
               }
             `;
 
-            container.appendChild(card);
+            dealContainer.appendChild(card);
+
+          });
+
+
+          const affiliateResults =
+            affiliateOffers.filter(offer => {
+
+              const title =
+                (offer.title || "").toLowerCase();
+
+              const description =
+                (offer.description || "").toLowerCase();
+
+              return (
+                title.includes(search) ||
+                description.includes(search)
+              );
+
+            });
+
+
+          affiliateResults.forEach(offer => {
+
+            if (!offer.affiliate_url) return;
+
+            const card =
+              document.createElement("div");
+
+            card.className =
+              "card affiliate-card";
+
+            card.innerHTML = `
+              <span class="badge">
+                VERGLEICH
+              </span>
+
+              <span class="affiliate-badge">
+                Werbung
+              </span>
+
+              <h3 style="margin-top:12px">
+                ${offer.icon || ""} ${offer.title}
+              </h3>
+
+              <p style="margin-top:10px">
+                ${offer.description || ""}
+              </p>
+
+              <div class="provider">
+                Anbieter: ${offer.provider || ""}
+              </div>
+
+              <a
+                href="${offer.affiliate_url}"
+                class="offer-button"
+                target="_blank"
+                rel="noopener"
+              >
+                ${offer.button_text || "Jetzt vergleichen"}
+              </a>
+            `;
+
+            affiliateContainer.appendChild(card);
 
           });
 
@@ -831,12 +975,13 @@
 
     Promise.all([
       loadCategories(),
-      loadDeals()
+      loadDeals(),
+      loadAffiliateOffers()
     ])
       .catch(error => {
 
         console.error(
-          "Fehler beim Initialisieren der Seite:",
+          "Fehler beim Initialisieren:",
           error
         );
 
