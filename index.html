@@ -659,7 +659,7 @@
        AFFILIATE ANGEBOTE ANZEIGEN
        ========================================================= */
 
-    function renderAffiliateOffers() {
+function renderAffiliateOffers() {
 
   const container =
     document.getElementById("affiliate-offers");
@@ -680,70 +680,113 @@
 
   }
 
-  visibleOffers.forEach(offer => {
+  const groups = [
+    {
+      name: "🛡️ Versicherungen",
+      key: "Versicherungen"
+    },
+    {
+      name: "❤️ Vorsorge",
+      key: "Vorsorge"
+    },
+    {
+      name: "💳 Finanzen",
+      key: "Finanzen"
+    }
+  ];
 
-    if (!offer.affiliate_url && !offer.widget_code) return;
+  groups.forEach(group => {
 
-    const card =
-      document.createElement("div");
+    const groupOffers =
+      visibleOffers.filter(
+        offer =>
+          offer.group_name === group.key
+      );
 
-    card.className =
-      "card affiliate-card";
+    if (!groupOffers.length) return;
 
-    card.innerHTML = `
+    const heading =
+      document.createElement("h2");
 
-      <div>
+    heading.textContent =
+      group.name;
 
-        <span class="badge">
-          VERGLEICH
-        </span>
+    heading.style.marginTop = "30px";
+    heading.style.marginBottom = "10px";
 
-        <span class="affiliate-badge">
-          Werbung
-        </span>
+    container.appendChild(heading);
 
-      </div>
+    groupOffers.forEach(offer => {
 
-      <h3 style="margin-top:12px">
-        ${offer.icon || ""} ${offer.title}
-      </h3>
+      if (
+        !offer.affiliate_url &&
+        !offer.widget_code
+      ) return;
 
-      <p style="margin-top:10px">
-        ${offer.description || ""}
-      </p>
+      const card =
+        document.createElement("div");
 
-      <div class="provider">
-        Anbieter: ${offer.provider || ""}
-      </div>
+      card.className =
+        "card affiliate-card";
 
-      ${
-        offer.widget_code
-          ? `
-            <div
-              class="affiliate-widget"
-              style="margin-top:15px; overflow:hidden;"
-            >
-              ${offer.widget_code}
-            </div>
-          `
-          : `
-            <a
-              href="${offer.affiliate_url}"
-              class="offer-button"
-              target="_blank"
-              rel="noopener"
-            >
-              ${offer.button_text || "Jetzt vergleichen"}
-            </a>
-          `
-      }
+      card.innerHTML = `
 
-    `;
+        <div>
 
-    container.appendChild(card);
+          <span class="badge">
+            VERGLEICH
+          </span>
+
+          <span class="affiliate-badge">
+            Werbung
+          </span>
+
+        </div>
+
+        <h3 style="margin-top:12px">
+          ${offer.icon || ""} ${offer.title}
+        </h3>
+
+        <p style="margin-top:10px">
+          ${offer.description || ""}
+        </p>
+
+        <div class="provider">
+          Anbieter: ${offer.provider || ""}
+        </div>
+
+        ${
+          offer.widget_code
+            ? `
+              <div
+                class="affiliate-widget"
+                style="margin-top:15px; overflow:hidden;"
+              >
+                ${offer.widget_code}
+              </div>
+            `
+            : `
+              <a
+                href="${offer.affiliate_url}"
+                class="offer-button"
+                target="_blank"
+                rel="noopener"
+              >
+                ${offer.button_text || "Jetzt vergleichen"}
+              </a>
+            `
+        }
+
+      `;
+
+      container.appendChild(card);
+
+    });
 
   });
-loadAffiliateWidgetScripts();
+
+  loadAffiliateWidgetScripts();
+
 }
 function loadAffiliateWidgetScripts() {
 
