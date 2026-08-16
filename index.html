@@ -658,7 +658,6 @@
     /* =========================================================
        AFFILIATE ANGEBOTE ANZEIGEN
        ========================================================= */
-
 function renderAffiliateOffers() {
 
   const container =
@@ -666,8 +665,7 @@ function renderAffiliateOffers() {
 
   container.innerHTML = "";
 
-  let visibleOffers =
-    affiliateOffers;
+  let visibleOffers = affiliateOffers;
 
   if (selectedCategoryId !== null) {
 
@@ -682,37 +680,45 @@ function renderAffiliateOffers() {
 
   const groups = [
     {
-      name: "🛡️ Versicherungen",
-      key: "Versicherungen"
+      title: "🛡️ Versicherungen",
+      value: "versicherungen"
     },
     {
-      name: "❤️ Vorsorge",
-      key: "Vorsorge"
+      title: "❤️ Vorsorge",
+      value: "vorsorge"
     },
     {
-      name: "💳 Finanzen",
-      key: "Finanzen"
+      title: "💳 Finanzen",
+      value: "finanzen"
     }
   ];
 
   groups.forEach(group => {
 
     const groupOffers =
-      visibleOffers.filter(
-        offer =>
-          offer.group_name === group.key
-      );
+      visibleOffers.filter(offer => {
 
-    if (!groupOffers.length) return;
+        const groupName =
+          String(offer.group_name || "")
+            .trim()
+            .toLowerCase();
+
+        return groupName === group.value;
+
+      });
+
+    if (groupOffers.length === 0) {
+      return;
+    }
 
     const heading =
       document.createElement("h2");
 
     heading.textContent =
-      group.name;
+      group.title;
 
     heading.style.marginTop = "30px";
-    heading.style.marginBottom = "10px";
+    heading.style.marginBottom = "15px";
 
     container.appendChild(heading);
 
@@ -721,7 +727,9 @@ function renderAffiliateOffers() {
       if (
         !offer.affiliate_url &&
         !offer.widget_code
-      ) return;
+      ) {
+        return;
+      }
 
       const card =
         document.createElement("div");
@@ -744,7 +752,7 @@ function renderAffiliateOffers() {
         </div>
 
         <h3 style="margin-top:12px">
-          ${offer.icon || ""} ${offer.title}
+          ${offer.icon || ""} ${offer.title || ""}
         </h3>
 
         <p style="margin-top:10px">
@@ -788,6 +796,7 @@ function renderAffiliateOffers() {
   loadAffiliateWidgetScripts();
 
 }
+
 function loadAffiliateWidgetScripts() {
 
   document
