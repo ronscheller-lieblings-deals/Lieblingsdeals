@@ -715,7 +715,8 @@ function renderAffiliateOffers() {
             .trim()
             .toLowerCase();
 
-        return groupName === group.value;
+        return groupName === String(group.key || "").trim().toLowerCase();
+        
 
       });
 
