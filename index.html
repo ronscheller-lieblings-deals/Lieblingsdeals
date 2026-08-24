@@ -239,6 +239,47 @@
     >
       🛒 Alle Amazon-Angebote ansehen
     </a>
+    <div id="auth-area" style="margin-top:15px;">
+
+  <button
+    id="login-button"
+    style="
+      background:#fff;
+      color:#ff6a00;
+      border:0;
+      padding:10px 18px;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+    "
+  >
+    👤 Anmelden / Registrieren
+  </button>
+
+  <div
+    id="user-area"
+    style="display:none;"
+  >
+    <span id="user-email"></span>
+
+    <button
+      id="logout-button"
+      style="
+        margin-left:10px;
+        background:#fff;
+        color:#ff6a00;
+        border:0;
+        padding:8px 12px;
+        border-radius:8px;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >
+      Abmelden
+    </button>
+  </div>
+
+</div>
   </header>
 
   <div style="font-size:11px;text-align:center;padding:8px;background:#fff8f0;color:#777">
@@ -316,7 +357,7 @@
 
     const U = "https://cklnfznlzyushvlybzad.supabase.co";
     const K = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
-
+const supabaseClient = window.supabase.createClient(U, K);
     let categories = [];
     let deals = [];
     let affiliateOffers = [];
