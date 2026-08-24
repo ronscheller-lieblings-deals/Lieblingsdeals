@@ -934,26 +934,48 @@ const selectedCategory =
   customerCategories[categoryIndex];
 
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("customer_products")
-            .insert({
-              customer_id: currentUser.id,
-              category_id: selectedCategory.id,
-              title: title.trim(),
-              description:
-                description
-                  ? description.trim()
-                  : null,
-              price: null,
-              image_url: null,
-              affiliate_url:
-                affiliateUrl.trim(),
-              sort_order: 0,
-              active: true
-            });
+const {
+  data,
+  error
+} =
+  await supabaseClient
+    .from("customer_products")
+    .insert({
+      customer_id: currentUser.id,
+      category_id: selectedCategory.id,
+      title: title.trim(),
+      description: description
+        ? description.trim()
+        : null,
+      price: null,
+      image_url: null,
+      affiliate_url: affiliateUrl.trim(),
+      sort_order: 0,
+      active: true
+    })
+    .select()
+    .single();
+
+if (error) {
+
+  console.error(
+    "Produkt INSERT Fehler:",
+    error
+  );
+
+  showMessage(
+    "Produkt konnte nicht erstellt werden: " +
+    error.message,
+    "error"
+  );
+
+  return;
+}
+
+console.log(
+  "Produkt erfolgreich erstellt:",
+  data
+);
 
 
         if (error) {
