@@ -888,46 +888,50 @@
         }
 
 
-        const categoryText =
-          customerCategories
-            .map(
-              category =>
-                category.id +
-                " = " +
-                category.name
-            )
-            .join("\n");
+const categoryText =
+  customerCategories
+    .map(
+      (category, index) =>
+        (index + 1) +
+        " = " +
+        category.name
+    )
+    .join("\n");
 
 
-        const selectedCategory =
-          prompt(
-            "Kategorie auswählen:\n\n" +
-            categoryText +
-            "\n\nBitte die ID eingeben:"
-          );
+const selectedNumber =
+  prompt(
+    "Kategorie auswählen:\n\n" +
+    categoryText +
+    "\n\nBitte die Nummer eingeben:"
+  );
 
 
-        if (!selectedCategory) return;
+if (!selectedNumber) return;
 
 
-        const categoryExists =
-          customerCategories.some(
-            category =>
-              String(category.id) ===
-              String(selectedCategory.trim())
-          );
+const categoryIndex =
+  Number(selectedNumber.trim()) - 1;
 
 
-        if (!categoryExists) {
+if (
+  !Number.isInteger(categoryIndex) ||
+  categoryIndex < 0 ||
+  categoryIndex >= customerCategories.length
+) {
 
-          showMessage(
-            "Ungültige Kategorie.",
-            "error"
-          );
+  showMessage(
+    "Ungültige Kategorie.",
+    "error"
+  );
 
-          return;
+  return;
 
-        }
+}
+
+
+const selectedCategory =
+  customerCategories[categoryIndex];
 
 
         const {
