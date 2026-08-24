@@ -941,7 +941,7 @@ const selectedCategory =
             .from("customer_products")
             .insert({
               customer_id: currentUser.id,
-              category_id: selectedCategory.trim(),
+              category_id: selectedCategory.id,
               title: title.trim(),
               description:
                 description
