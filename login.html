@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>LieblingsDeals – Kundenbereich</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f4f4;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #ff6a00;
+      color: #fff;
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 4px 15px #0001;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 7px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      background: #ff6a00;
+      color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    .secondary {
+      background: #eee;
+      color: #222;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .success {
+      background: #e8f7e8;
+      color: #176b17;
+    }
+
+    .error {
+      background: #ffe8e8;
+      color: #a00000;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .switch button {
+      background: none;
+      color: #ff6a00;
+      padding: 5px;
+      margin: 5px 0 0;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #ff6a00;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">⭐ LieblingsDeals</div>
+  <div class="subtitle">Dein persönlicher Kundenbereich</div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h2 id="form-title">🔐 Anmelden</h2>
+
+    <label for="email">E-Mail-Adresse</label>
+
+    <input
+      id="email"
+      type="email"
+      placeholder="deine@email.de"
+      autocomplete="email"
+    >
+
+    <label for="password">Passwort</label>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Passwort"
+      autocomplete="current-password"
+    >
+
+    <button id="submit-button">
+      Anmelden
+    </button>
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+    <div class="switch">
+
+      <span id="switch-text">
+        Noch kein Kundenkonto?
+      </span>
+
+      <button
+        id="switch-button"
+        type="button"
+      >
+        Registrieren
+      </button>
+
+    </div>
+
+    <a
+      href="index.html"
+      class="back"
+    >
+      ← Zurück zu LieblingsDeals
+    </a>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* =========================================================
+     SUPABASE
+     ========================================================= */
+
+  const SUPABASE_URL =
+    "https://cklnfznlzyushvlybzad.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+
+  const supabaseClient =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  /* =========================================================
+     ELEMENTE
+     ========================================================= */
+
+  const formTitle =
+    document.getElementById("form-title");
+
+  const emailInput =
+    document.getElementById("email");
+
+  const passwordInput =
+    document.getElementById("password");
+
+  const submitButton =
+    document.getElementById("submit-button");
+
+  const switchText =
+    document.getElementById("switch-text");
+
+  const switchButton =
+    document.getElementById("switch-button");
+
+  const message =
+    document.getElementById("message");
+
+
+  let registerMode = false;
+
+
+  /* =========================================================
+     NACHRICHT
+     ========================================================= */
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+
+    message.style.display = "block";
+
+  }
+
+
+  function clearMessage() {
+
+    message.textContent = "";
+
+    message.style.display = "none";
+
+  }
+
+
+  /* =========================================================
+     ZWISCHEN LOGIN / REGISTRIERUNG WECHSELN
+     ========================================================= */
+
+  switchButton.addEventListener(
+    "click",
+    () => {
+
+      registerMode =
+        !registerMode;
+
+      clearMessage();
+
+      if (registerMode) {
+
+        formTitle.textContent =
+          "📝 Kundenkonto erstellen";
+
+        submitButton.textContent =
+          "Registrieren";
+
+        switchText.textContent =
+          "Du hast bereits ein Kundenkonto?";
+
+        switchButton.textContent =
+          "Anmelden";
+
+        passwordInput.autocomplete =
+          "new-password";
+
+      } else {
+
+        formTitle.textContent =
+          "🔐 Anmelden";
+
+        submitButton.textContent =
+          "Anmelden";
+
+        switchText.textContent =
+          "Noch kein Kundenkonto?";
+
+        switchButton.textContent =
+          "Registrieren";
+
+        passwordInput.autocomplete =
+          "current-password";
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     LOGIN / REGISTRIERUNG
+     ========================================================= */
+
+  submitButton.addEventListener(
+    "click",
+    async () => {
+
+      clearMessage();
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!email || !password) {
+
+        showMessage(
+          "Bitte E-Mail und Passwort eingeben.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Das Passwort muss mindestens 6 Zeichen haben.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      submitButton.disabled = true;
+
+
+      try {
+
+        if (registerMode) {
+
+          /* =========================
+             REGISTRIERUNG
+             ========================= */
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signUp({
+              email: email,
+              password: password
+            });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          if (data.session) {
+
+            showMessage(
+              "Konto erfolgreich erstellt. Du wirst weitergeleitet...",
+              "success"
+            );
+
+            setTimeout(
+              () => {
+                window.location.href =
+                  "kundenbereich.html";
+              },
+              1000
+            );
+
+          } else {
+
+            showMessage(
+              "Konto erstellt. Bitte bestätige deine E-Mail-Adresse.",
+              "success"
+            );
+
+          }
+
+
+        } else {
+
+          /* =========================
+             LOGIN
+             ========================= */
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signInWithPassword({
+              email: email,
+              password: password
+            });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          showMessage(
+            "Anmeldung erfolgreich. Du wirst weitergeleitet...",
+            "success"
+          );
+
+
+          setTimeout(
+            () => {
+              window.location.href =
+                "kundenbereich.html";
+            },
+            800
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Auth-Fehler:",
+          error
+        );
+
+
+        showMessage(
+          error.message ||
+          "Es ist ein Fehler aufgetreten.",
+          "error"
+        );
+
+      } finally {
+
+        submitButton.disabled = false;
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     ENTER-TASTE
+     ========================================================= */
+
+  passwordInput.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+
+        submitButton.click();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     BEREITS EINGELOGGT?
+     ========================================================= */
+
+  async function checkExistingSession() {
+
+    const {
+      data
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if (data.session) {
+
+      window.location.href =
+        "kundenbereich.html";
+
+    }
+
+  }
+
+
+  checkExistingSession();
+
+</script>
+
+</body>
+</html>
