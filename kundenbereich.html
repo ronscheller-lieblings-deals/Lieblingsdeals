@@ -282,17 +282,7 @@
         Produkte werden geladen...
       </div>
     </div>
-<div style="margin-top: 15px;">
-  <label for="product-image-input">
-    Produktbild auswählen:
-  </label>
 
-  <input
-    type="file"
-    id="product-image-input"
-    accept="image/jpeg,image/png,image/webp"
-  >
-</div>
   </div>
 
 </div>
@@ -973,6 +963,46 @@ async function editProduct(productId) {
 
 
         if (!title) return;
+        const imageInput =
+  document.createElement("input");
+
+imageInput.type = "file";
+imageInput.accept =
+  "image/jpeg,image/png,image/webp";
+
+imageInput.style.display = "none";
+
+document.body.appendChild(imageInput);
+
+imageInput.click();
+
+await new Promise(resolve => {
+
+  imageInput.addEventListener(
+    "change",
+    resolve,
+    { once: true }
+  );
+
+});
+
+const imageFile =
+  imageInput.files[0];
+
+document.body.removeChild(
+  imageInput
+);
+
+if (!imageFile) {
+
+  showMessage(
+    "Bitte ein Produktbild auswählen.",
+    "error"
+  );
+
+  return;
+
+}
 const imageInput =
   document.getElementById(
     "product-image-input"
