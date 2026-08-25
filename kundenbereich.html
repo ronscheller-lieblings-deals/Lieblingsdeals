@@ -592,11 +592,29 @@
 
         <div class="item-header">
 
-          <div>
+  <div>
 
-            <div class="item-title">
-              ${escapeHtml(product.title)}
-            </div>
+    ${
+      product.image_url
+        ? `
+          <img
+            src="${escapeHtml(product.image_url)}"
+            alt="${escapeHtml(product.title)}"
+            style="
+              width: 100px;
+              height: 100px;
+              object-fit: cover;
+              border-radius: 8px;
+              margin-bottom: 10px;
+            "
+          >
+        `
+        : ""
+    }
+
+    <div class="item-title">
+      ${escapeHtml(product.title)}
+    </div>
 
             <div class="muted">
               ${escapeHtml(product.description || "")}
