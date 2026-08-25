@@ -963,46 +963,7 @@ async function editProduct(productId) {
 
 
         if (!title) return;
-        const imageInput =
-  document.createElement("input");
-
-imageInput.type = "file";
-imageInput.accept =
-  "image/jpeg,image/png,image/webp";
-
-imageInput.style.display = "none";
-
-document.body.appendChild(imageInput);
-
-imageInput.click();
-
-await new Promise(resolve => {
-
-  imageInput.addEventListener(
-    "change",
-    resolve,
-    { once: true }
-  );
-
-});
-
-const imageFile =
-  imageInput.files[0];
-
-document.body.removeChild(
-  imageInput
-);
-
-if (!imageFile) {
-
-  showMessage(
-    "Bitte ein Produktbild auswählen.",
-    "error"
-  );
-
-  return;
-
-}
+        
 const imageInput =
   document.getElementById(
     "product-image-input"
