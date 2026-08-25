@@ -1055,7 +1055,42 @@ if (
 
 const selectedCategory =
   customerCategories[categoryIndex];
+const imageInput =
+  document.createElement("input");
 
+imageInput.type = "file";
+imageInput.accept =
+  "image/jpeg,image/png,image/webp";
+
+imageInput.click();
+
+const selectedImage =
+  await new Promise(resolve => {
+
+    imageInput.onchange = () => {
+
+      resolve(
+        imageInput.files &&
+        imageInput.files[0]
+          ? imageInput.files[0]
+          : null
+      );
+
+    };
+
+  });
+
+
+if (!selectedImage) {
+
+  showMessage(
+    "Kein Bild ausgewählt.",
+    "error"
+  );
+
+  return;
+
+}
 
 const {
   data,
