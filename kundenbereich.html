@@ -783,7 +783,109 @@ if (product.image_url) {
     );
 
   if (affiliateUrl === null) return;
+let newImageUrl =
+  product.image_url || null;
 
+
+const replaceImage =
+  confirm(
+    "Möchtest du das Produktbild ändern?"
+  );
+
+
+if (replaceImage) {
+
+  const imageInput =
+    document.createElement("input");
+
+  imageInput.type = "file";
+  imageInput.accept =
+    "image/jpeg,image/png,image/webp";
+
+  imageInput.click();
+
+
+  await new Promise(resolve => {
+
+    imageInput.addEventListener(
+      "change",
+      resolve,
+      { once: true }
+    );
+
+  });
+
+
+  const imageFile =
+    imageInput.files[0];
+
+
+  if (imageFile) {
+
+    const fileExtension =
+      imageFile.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+    const filePath =
+      currentUser.id +
+      "/" +
+      crypto.randomUUID() +
+      "." +
+      fileExtension;
+
+
+    const {
+      error: uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from("product-images")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            contentType:
+              imageFile.type,
+            upsert: false
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Bild Upload Fehler:",
+        uploadError
+      );
+
+      showMessage(
+        "Produktbild konnte nicht hochgeladen werden.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const {
+      data: publicUrlData
+    } =
+      supabaseClient
+        .storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+
+    newImageUrl =
+      publicUrlData.publicUrl;
+
+  }
+
+}
 
   const {
     error
