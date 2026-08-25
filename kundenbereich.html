@@ -955,8 +955,78 @@ async function editProduct(productId) {
 
 
         if (!title) return;
+const imageInput =
+  document.getElementById(
+    "product-image-input"
+  );
+
+const imageFile =
+  imageInput.files[0];
+
+let imageUrl = null;
+if (imageFile) {
+
+  const fileExtension =
+    imageFile.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+  const filePath =
+    currentUser.id +
+    "/" +
+    crypto.randomUUID() +
+    "." +
+    fileExtension;
 
 
+  const {
+    error: uploadError
+  } =
+    await supabaseClient
+      .storage
+      .from("product-images")
+      .upload(
+        filePath,
+        imageFile,
+        {
+          contentType:
+            imageFile.type,
+          upsert: false
+        }
+      );
+
+
+  if (uploadError) {
+
+    console.error(
+      "Bild Upload Fehler:",
+      uploadError
+    );
+
+    showMessage(
+      "Produktbild konnte nicht hochgeladen werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data: publicUrlData
+  } =
+    supabaseClient
+      .storage
+      .from("product-images")
+      .getPublicUrl(filePath);
+
+
+  imageUrl =
+    publicUrlData.publicUrl;
+
+}
         const description =
           prompt(
             "Beschreibung des Produkts:"
@@ -1081,7 +1151,7 @@ const {
         ? description.trim()
         : null,
       price: null,
-      image_url: null,
+      image_url: imageUrl,
       affiliate_url: affiliateUrl.trim(),
       sort_order: 0,
       active: true
