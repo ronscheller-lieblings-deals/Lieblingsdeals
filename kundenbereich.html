@@ -685,7 +685,115 @@
 
   }
 
+async function editProduct(productId) {
 
+  const {
+    data: product,
+    error: loadError
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .select("*")
+      .eq("id", productId)
+      .single();
+
+
+  if (loadError || !product) {
+
+    console.error(loadError);
+
+    showMessage(
+      "Produkt konnte nicht geladen werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const title =
+    prompt(
+      "Produktname:",
+      product.title || ""
+    );
+
+  if (title === null) return;
+
+
+  const description =
+    prompt(
+      "Beschreibung:",
+      product.description || ""
+    );
+
+  if (description === null) return;
+
+
+  const price =
+    prompt(
+      "Preis:",
+      product.price !== null
+        ? product.price
+        : ""
+    );
+
+  if (price === null) return;
+
+
+  const affiliateUrl =
+    prompt(
+      "Affiliate-URL:",
+      product.affiliate_url || ""
+    );
+
+  if (affiliateUrl === null) return;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .update({
+        title: title.trim(),
+        description:
+          description.trim()
+            ? description.trim()
+            : null,
+        price:
+          price.trim()
+            ? Number(price.replace(",", "."))
+            : null,
+        affiliate_url:
+          affiliateUrl.trim()
+      })
+      .eq("id", productId);
+
+
+  if (error) {
+
+    console.error(error);
+
+    showMessage(
+      "Produkt konnte nicht bearbeitet werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    "Produkt wurde aktualisiert.",
+    "success"
+  );
+
+
+  await loadProducts();
+
+}
   /* =========================================================
      PRODUKT LÖSCHEN
      ========================================================= */
