@@ -965,14 +965,38 @@ async function editProduct(productId) {
         if (!title) return;
         
 const imageInput =
-  document.getElementById(
-    "product-image-input"
+  document.createElement("input");
+
+imageInput.type = "file";
+imageInput.accept =
+  "image/jpeg,image/png,image/webp";
+
+imageInput.click();
+
+await new Promise(resolve => {
+
+  imageInput.addEventListener(
+    "change",
+    resolve,
+    { once: true }
   );
+
+});
 
 const imageFile =
   imageInput.files[0];
 
 let imageUrl = null;
+
+if (!imageFile) {
+
+  showMessage(
+    "Bitte ein Produktbild auswählen.",
+    "error"
+  );
+
+  return;
+}
 if (imageFile) {
 
   const fileExtension =
