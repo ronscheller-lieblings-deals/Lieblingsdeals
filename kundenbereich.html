@@ -1159,6 +1159,11 @@ const {
   data,
   error
 } =
+  alert(
+  imageUrl
+    ? "Bild-URL vorhanden:\n\n" + imageUrl
+    : "imageUrl ist NULL"
+);
   await supabaseClient
     .from("customer_products")
     .insert({
