@@ -738,7 +738,14 @@ async function editProduct(productId) {
     return;
 
   }
+if (product.image_url) {
 
+  alert(
+    "Aktuelles Produktbild vorhanden:\n\n" +
+    product.image_url
+  );
+
+}
 
   const title =
     prompt(
