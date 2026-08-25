@@ -622,12 +622,22 @@
       `;
 
 
-      item
-        .querySelector("button")
-        .addEventListener(
-          "click",
-          () => deleteProduct(product.id)
-        );
+     const deleteButton =
+  item.querySelector(".danger");
+
+deleteButton.addEventListener(
+  "click",
+  () => deleteProduct(product.id)
+);
+
+
+const editButton =
+  item.querySelector(".edit");
+
+editButton.addEventListener(
+  "click",
+  () => editProduct(product.id)
+);
 
 
       productsContainer.appendChild(item);
