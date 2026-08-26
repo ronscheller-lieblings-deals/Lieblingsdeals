@@ -901,7 +901,28 @@ if (replaceImage) {
 
     newImageUrl =
       publicUrlData.publicUrl;
+if (oldImagePath) {
 
+  const {
+    error: deleteError
+  } =
+    await supabaseClient
+      .storage
+      .from("product-images")
+      .remove([
+        oldImagePath
+      ]);
+
+  if (deleteError) {
+
+    console.error(
+      "Altes Produktbild konnte nicht gelöscht werden:",
+      deleteError
+    );
+
+  }
+
+}
   }
 
 }
