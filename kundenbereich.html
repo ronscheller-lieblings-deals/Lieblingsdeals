@@ -606,7 +606,85 @@ showMessage(
       "Bild wurde hochgeladen.",
       "success"
     );
+const price =
+  priceText
+    ? Number(
+        priceText.replace(",", ".")
+      )
+    : null;
 
+
+const {
+  data,
+  error
+} =
+  await supabaseClient
+    .from("customer_products")
+    .insert({
+      customer_id:
+        currentUser.id,
+
+      category_id:
+        categoryId,
+
+      title:
+        title,
+
+      description:
+        description
+          ? description
+          : null,
+
+      price:
+        price,
+
+      image_url:
+        imageUrl,
+
+      affiliate_url:
+        affiliateUrl,
+
+      sort_order:
+        0,
+
+      active:
+        true
+    })
+    .select()
+    .single();
+
+
+if (error) {
+
+  console.error(
+    "Produkt INSERT Fehler:",
+    error
+  );
+
+  showMessage(
+    "Produkt konnte nicht erstellt werden: " +
+    error.message,
+    "error"
+  );
+
+  return;
+
+}
+
+
+console.log(
+  "Produkt erfolgreich erstellt:",
+  data
+);
+
+
+showMessage(
+  "Produkt wurde erstellt.",
+  "success"
+);
+
+
+await loadProducts();
   }
 );
 
