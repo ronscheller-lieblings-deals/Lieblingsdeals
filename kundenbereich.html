@@ -453,7 +453,80 @@ const cancelProductButton =
   document.getElementById("cancel-product-button");
 
   let currentUser = null;
+saveProductButton.addEventListener(
+  "click",
+  () => {
 
+    const title =
+      productTitleInput.value.trim();
+
+    const description =
+      productDescriptionInput.value.trim();
+
+    const price =
+      productPriceInput.value.trim();
+
+    const affiliateUrl =
+      productAffiliateInput.value.trim();
+
+    const categoryId =
+      productCategoryInput.value;
+
+
+    if (!title) {
+
+      showMessage(
+        "Bitte einen Produktnamen eingeben.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!affiliateUrl) {
+
+      showMessage(
+        "Eine Affiliate-URL ist erforderlich.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!categoryId) {
+
+      showMessage(
+        "Bitte eine Kategorie auswählen.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "Produktformular:",
+      {
+        title,
+        description,
+        price,
+        affiliateUrl,
+        categoryId
+      }
+    );
+
+    showMessage(
+      "Formulardaten wurden erkannt.",
+      "success"
+    );
+
+  }
+);
 
   /* =========================================================
      NACHRICHT
