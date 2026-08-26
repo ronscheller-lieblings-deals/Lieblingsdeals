@@ -694,17 +694,17 @@ console.log(
 );
 
 
+productForm.reset();
+
+productForm.style.display =
+  "none";
+
 showMessage(
   "Produkt wurde erstellt.",
   "success"
 );
 
-
 await loadProducts();
-    productForm.reset();
-
-productForm.style.display =
-  "none";
   }
 );
 
