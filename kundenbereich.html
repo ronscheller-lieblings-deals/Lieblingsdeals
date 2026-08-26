@@ -460,8 +460,9 @@ console.log("FORMULAR ELEMENTE GELADEN");
 saveProductButton.addEventListener(
   "click",
   async () => {
-console.log(
-  "SPEICHERN BUTTON WURDE GEDRÜCKT"
+showMessage(
+  "Speichern-Button wurde gedrückt.",
+  "success"
 );
     const title =
       productTitleInput.value.trim();
