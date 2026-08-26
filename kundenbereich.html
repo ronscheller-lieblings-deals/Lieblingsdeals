@@ -455,7 +455,7 @@ const cancelProductButton =
   let currentUser = null;
 saveProductButton.addEventListener(
   "click",
-  () => {
+  async () => {
 
     const title =
       productTitleInput.value.trim();
@@ -463,7 +463,7 @@ saveProductButton.addEventListener(
     const description =
       productDescriptionInput.value.trim();
 
-    const price =
+    const priceText =
       productPriceInput.value.trim();
 
     const affiliateUrl =
@@ -471,6 +471,9 @@ saveProductButton.addEventListener(
 
     const categoryId =
       productCategoryInput.value;
+
+    const imageFile =
+      productImageInput.files[0];
 
 
     if (!title) {
@@ -509,19 +512,91 @@ saveProductButton.addEventListener(
     }
 
 
+    if (!imageFile) {
+
+      showMessage(
+        "Bitte ein Produktbild auswählen.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    let imageUrl = null;
+
+
+    const fileExtension =
+      imageFile.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+    const filePath =
+      currentUser.id +
+      "/" +
+      crypto.randomUUID() +
+      "." +
+      fileExtension;
+
+
+    const {
+      error: uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from("product-images")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            contentType:
+              imageFile.type,
+            upsert: false
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Bild Upload Fehler:",
+        uploadError
+      );
+
+      showMessage(
+        "Produktbild konnte nicht hochgeladen werden.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const {
+      data: publicUrlData
+    } =
+      supabaseClient
+        .storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+
+    imageUrl =
+      publicUrlData.publicUrl;
+
+
     console.log(
-      "Produktformular:",
-      {
-        title,
-        description,
-        price,
-        affiliateUrl,
-        categoryId
-      }
+      "Bild erfolgreich hochgeladen:",
+      imageUrl
     );
 
+
     showMessage(
-      "Formulardaten wurden erkannt.",
+      "Bild wurde hochgeladen.",
       "success"
     );
 
