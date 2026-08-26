@@ -1233,7 +1233,7 @@ document
   .getElementById("add-product-button")
   .addEventListener(
     "click",
-    () => {
+    async () => {
 
       const form =
         document.getElementById(
@@ -1242,6 +1242,67 @@ document
 
       form.style.display =
         "block";
+
+
+      productCategoryInput.innerHTML =
+        '<option value="">Kategorien werden geladen...</option>';
+
+
+      const {
+        data: categories,
+        error
+      } =
+        await supabaseClient
+          .from("customer_categories")
+          .select("id,name")
+          .order("created_at", {
+            ascending: true
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+        productCategoryInput.innerHTML =
+          '<option value="">Kategorien konnten nicht geladen werden</option>';
+
+        return;
+
+      }
+
+
+      if (!categories.length) {
+
+        productCategoryInput.innerHTML =
+          '<option value="">Keine Kategorien vorhanden</option>';
+
+        return;
+
+      }
+
+
+      productCategoryInput.innerHTML =
+        '<option value="">Kategorie auswählen</option>';
+
+
+      categories.forEach(category => {
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          category.id;
+
+        option.textContent =
+          category.name;
+
+        productCategoryInput.appendChild(
+          option
+        );
+
+      });
+
 
       window.scrollTo({
         top: form.offsetTop,
