@@ -899,30 +899,32 @@ if (replaceImage) {
         .getPublicUrl(filePath);
 
 
-    newImageUrl =
+newImageUrl =
       publicUrlData.publicUrl;
-if (oldImagePath) {
 
-  const {
-    error: deleteError
-  } =
-    await supabaseClient
-      .storage
-      .from("product-images")
-      .remove([
-        oldImagePath
-      ]);
+    if (oldImagePath) {
 
-  if (deleteError) {
+      const {
+        error: deleteError
+      } =
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .remove([
+            oldImagePath
+          ]);
 
-    console.error(
-      "Altes Produktbild konnte nicht gelöscht werden:",
-      deleteError
-    );
+      if (deleteError) {
 
-  }
+        console.error(
+          "Altes Produktbild konnte nicht gelöscht werden:",
+          deleteError
+        );
 
-}
+      }
+
+    }
+
   }
 
 }
