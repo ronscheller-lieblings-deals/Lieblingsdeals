@@ -774,7 +774,18 @@ productCategoryInput.innerHTML =
 
 
     data.forEach(product => {
+const option =
+  document.createElement("option");
 
+option.value =
+  category.id;
+
+option.textContent =
+  category.name;
+
+productCategoryInput.appendChild(
+  option
+);
       const item =
         document.createElement("div");
 
