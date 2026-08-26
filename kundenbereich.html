@@ -612,7 +612,23 @@ const price =
         priceText.replace(",", ".")
       )
     : null;
+showMessage(
+  "Jetzt wird das Produkt gespeichert...",
+  "success"
+);
 
+console.log(
+  "INSERT DATEN:",
+  {
+    customer_id: currentUser.id,
+    category_id: categoryId,
+    title: title,
+    description: description,
+    price: price,
+    image_url: imageUrl,
+    affiliate_url: affiliateUrl
+  }
+);
 
 const {
   data,
