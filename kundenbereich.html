@@ -785,7 +785,26 @@ if (product.image_url) {
   if (affiliateUrl === null) return;
 let newImageUrl =
   product.image_url || null;
+let oldImagePath = null;
 
+if (product.image_url) {
+
+  const marker =
+    "/storage/v1/object/public/product-images/";
+
+  const markerIndex =
+    product.image_url.indexOf(marker);
+
+  if (markerIndex !== -1) {
+
+    oldImagePath =
+      product.image_url.substring(
+        markerIndex + marker.length
+      );
+
+  }
+
+}
 
 const replaceImage =
   confirm(
