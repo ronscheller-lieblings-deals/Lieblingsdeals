@@ -1130,7 +1130,27 @@ newImageUrl =
   /* =========================================================
      KATEGORIE HINZUFÜGEN
      ========================================================= */
+document
+  .getElementById("add-product-button")
+  .addEventListener(
+    "click",
+    () => {
 
+      const form =
+        document.getElementById(
+          "product-form"
+        );
+
+      form.style.display =
+        "block";
+
+      window.scrollTo({
+        top: form.offsetTop,
+        behavior: "smooth"
+      });
+
+    }
+  );
   document
     .getElementById("add-category-button")
     .addEventListener(
