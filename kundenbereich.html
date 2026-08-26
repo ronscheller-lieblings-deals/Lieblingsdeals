@@ -282,7 +282,110 @@
         Produkte werden geladen...
       </div>
     </div>
+<div
+  id="product-form"
+  style="display: none; margin-top: 20px;"
+>
 
+  <h3>Produkt erstellen</h3>
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-title-input">
+      Produktname:
+    </label>
+
+    <input
+      type="text"
+      id="product-title-input"
+      placeholder="Produktname"
+    >
+  </div>
+
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-image-input">
+      Produktbild:
+    </label>
+
+    <input
+      type="file"
+      id="product-image-input"
+      accept="image/jpeg,image/png,image/webp"
+    >
+  </div>
+
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-description-input">
+      Beschreibung:
+    </label>
+
+    <textarea
+      id="product-description-input"
+      placeholder="Beschreibung des Produkts"
+    ></textarea>
+  </div>
+
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-price-input">
+      Preis:
+    </label>
+
+    <input
+      type="text"
+      id="product-price-input"
+      placeholder="z. B. 19,99"
+    >
+  </div>
+
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-affiliate-input">
+      Affiliate-URL:
+    </label>
+
+    <input
+      type="url"
+      id="product-affiliate-input"
+      placeholder="https://..."
+    >
+  </div>
+
+
+  <div style="margin-bottom: 12px;">
+    <label for="product-category-input">
+      Kategorie:
+    </label>
+
+    <select id="product-category-input">
+      <option value="">
+        Kategorie auswählen
+      </option>
+    </select>
+  </div>
+
+
+  <div style="display: flex; gap: 10px;">
+
+    <button
+      type="button"
+      id="save-product-button"
+      class="primary"
+    >
+      Produkt speichern
+    </button>
+
+    <button
+      type="button"
+      id="cancel-product-button"
+    >
+      Abbrechen
+    </button>
+
+  </div>
+
+</div>
   </div>
 
 </div>
