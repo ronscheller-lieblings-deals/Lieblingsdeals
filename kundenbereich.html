@@ -602,20 +602,14 @@ showMessage(
     );
 
 
-    showMessage(
-      "Bild wurde hochgeladen.",
-      "success"
-    );
+    
 const price =
   priceText
     ? Number(
         priceText.replace(",", ".")
       )
     : null;
-showMessage(
-  "Jetzt wird das Produkt gespeichert...",
-  "success"
-);
+
 
 console.log(
   "INSERT DATEN:",
@@ -668,10 +662,7 @@ const {
     })
     .select()
     .single();
-showMessage(
-  "INSERT wurde beantwortet.",
-  "success"
-);
+
 
 if (error) {
 
