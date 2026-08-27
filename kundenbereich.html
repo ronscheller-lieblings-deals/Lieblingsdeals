@@ -1401,8 +1401,7 @@ document
   .addEventListener(
     "click",
     async () => {
-message.innerHTML = "";
-message.className = "message";
+clearMessage();
       const form =
         document.getElementById(
           "product-form"
