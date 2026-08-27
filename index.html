@@ -362,7 +362,81 @@ const supabaseClient = window.supabase.createClient(U, K);
     let deals = [];
     let affiliateOffers = [];
     let selectedCategoryId = null;
+/* =========================================================
+   KUNDEN-KATEGORIEN UND PRODUKTE
+   ========================================================= */
 
+let customerCategories = [];
+let customerProducts = [];
+
+function loadCustomerCategories() {
+
+  return fetch(
+    U + "/rest/v1/customer_categories?select=id,name,slug,icon&active=eq.true&order=created_at.asc",
+    {
+      headers: {
+        apikey: K
+      }
+    }
+  )
+    .then(response => {
+
+      if (!response.ok) {
+        throw new Error(
+          "Kunden-Kategorien konnten nicht geladen werden."
+        );
+      }
+
+      return response.json();
+
+    })
+    .then(data => {
+
+      customerCategories = data;
+
+      console.log(
+        "Kunden-Kategorien geladen:",
+        customerCategories
+      );
+
+    });
+
+}
+
+
+function loadCustomerProducts() {
+
+  return fetch(
+    U + "/rest/v1/customer_products?select=*&active=eq.true&order=sort_order.asc,created_at.asc",
+    {
+      headers: {
+        apikey: K
+      }
+    }
+  )
+    .then(response => {
+
+      if (!response.ok) {
+        throw new Error(
+          "Kunden-Produkte konnten nicht geladen werden."
+        );
+      }
+
+      return response.json();
+
+    })
+    .then(data => {
+
+      customerProducts = data;
+
+      console.log(
+        "Kunden-Produkte geladen:",
+        customerProducts
+      );
+
+    });
+
+}
 
     /* =========================================================
        AMAZON BUTTON
