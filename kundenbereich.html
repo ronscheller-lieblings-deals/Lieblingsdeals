@@ -665,17 +665,17 @@ alert("INSERT IST FERTIG");
       data
     );
 
+productForm.reset();
+
+productForm.style.display =
+  "none";
+
+showMessage(
+  "Produkt wurde erstellt.",
+  "success"
+);
+
 await loadProducts();
-    productForm.reset();
-
-    productForm.style.display =
-      "none";
-
-alert("FORMULAR SOLLTE JETZT GESCHLOSSEN SEIN");
-    showMessage(
-      "Produkt wurde erstellt.",
-      "success"
-    );
 
 
     
