@@ -448,11 +448,7 @@ const productCategoryInput =
 
 const saveProductButton =
   document.getElementById("save-product-button");
-alert(
-  saveProductButton
-    ? "SAVE BUTTON GEFUNDEN"
-    : "SAVE BUTTON NICHT GEFUNDEN"
-);
+
 const cancelProductButton =
   document.getElementById("cancel-product-button");
 console.log("FORMULAR ELEMENTE GELADEN");
@@ -461,7 +457,7 @@ console.log("FORMULAR ELEMENTE GELADEN");
 saveProductButton.addEventListener(
   "click",
   async () => {
-alert("SPEICHERN WURDE GESTARTET");
+
     const title =
       productTitleInput.value.trim();
 
@@ -640,7 +636,7 @@ alert("SPEICHERN WURDE GESTARTET");
         })
         .select()
         .single();
-alert("INSERT IST FERTIG");
+
 console.log("DATEN NACH INSERT:", data);
 console.log("FEHLER NACH INSERT:", error);
     if (error) {
