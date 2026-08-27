@@ -662,17 +662,12 @@ console.log("FEHLER NACH INSERT:", error);
       data
     );
 
-productForm.reset();
-
-productForm.style.display =
-  "none";
-
 showMessage(
   "Produkt wurde erstellt.",
   "success"
 );
 
-await loadProducts();
+window.location.reload();
 
 
     
