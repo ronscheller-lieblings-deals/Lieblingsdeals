@@ -409,9 +409,44 @@ function loadCustomerCategories() {
         "Kunden-Kategorien geladen:",
         customerCategories
       );
-
+renderCustomerCategories();
     });
+function renderCustomerCategories() {
 
+  const container =
+    document.getElementById("customer-categories");
+
+  container.innerHTML = "";
+
+  if (!customerCategories.length) {
+
+    container.innerHTML =
+      '<div class="empty">Noch keine Kunden-Angebote vorhanden.</div>';
+
+    return;
+
+  }
+
+  customerCategories.forEach(category => {
+
+    const element =
+      document.createElement("div");
+
+    element.textContent =
+      (category.icon || "📂") +
+      " " +
+      category.name;
+
+    element.addEventListener(
+      "click",
+      () => showCustomerProducts(category.id)
+    );
+
+    container.appendChild(element);
+
+  });
+
+}
 }
 
 
