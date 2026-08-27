@@ -1241,10 +1241,12 @@ function loadAffiliateWidgetScripts() {
        ========================================================= */
 
     Promise.all([
-      loadCategories(),
-      loadDeals(),
-      loadAffiliateOffers()
-    ])
+  loadCategories(),
+  loadDeals(),
+  loadAffiliateOffers(),
+  loadCustomerCategories(),
+  loadCustomerProducts()
+])
       .catch(error => {
 
         console.error(
