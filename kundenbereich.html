@@ -641,7 +641,8 @@ alert("SPEICHERN WURDE GESTARTET");
         .select()
         .single();
 alert("INSERT IST FERTIG");
-alert("JETZT KOMMT DER CODE NACH INSERT");
+console.log("DATEN NACH INSERT:", data);
+console.log("FEHLER NACH INSERT:", error);
     if (error) {
 
       console.error(
