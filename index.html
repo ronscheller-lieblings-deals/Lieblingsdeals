@@ -525,20 +525,16 @@ function showCustomerProducts(categoryId) {
       return response.json();
 
     })
-  .then(products => {
+.then(products => {
 
-  container.innerHTML = `
-    <div class="empty">
-      Supabase hat ${products.length} Produkt(e) zurückgegeben.
-      <br><br>
-      Kategorie-ID:
-      ${escapeHtml(String(categoryId))}
-    </div>
-  `;
+  container.innerHTML = "";
 
   if (!products.length) {
-    return;
 
+    container.innerHTML =
+      '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
+
+    return;
       }
 
       products.forEach(product => {
