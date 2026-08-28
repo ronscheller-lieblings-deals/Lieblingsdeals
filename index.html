@@ -492,7 +492,95 @@ function loadCustomerProducts() {
 
 }
 
+function showCustomerProducts(categoryId) {
 
+  const container =
+    document.getElementById("customer-products");
+
+  container.innerHTML = "";
+
+  const products =
+    customerProducts.filter(
+      product =>
+        String(product.category_id) ===
+        String(categoryId)
+    );
+
+  if (!products.length) {
+
+    container.innerHTML =
+      '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
+
+    return;
+
+  }
+
+  products.forEach(product => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+
+      ${
+        product.image_url
+          ? `
+            <img
+              src="${escapeHtml(product.image_url)}"
+              alt="${escapeHtml(product.title)}"
+            >
+          `
+          : ""
+      }
+
+      <h3>
+        ${escapeHtml(product.title)}
+      </h3>
+
+      ${
+        product.description
+          ? `
+            <p style="margin-top:10px;">
+              ${escapeHtml(product.description)}
+            </p>
+          `
+          : ""
+      }
+
+      ${
+        product.price !== null
+          ? `
+            <div class="price" style="margin-top:10px;">
+              ${escapeHtml(product.price)} €
+            </div>
+          `
+          : ""
+      }
+
+      <a
+        href="${escapeHtml(product.affiliate_url)}"
+        class="offer-button"
+        target="_blank"
+        rel="noopener"
+      >
+        🛒 Zum Angebot
+      </a>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+
+  document
+    .getElementById("customer-products-section")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
     /* =========================================================
        AMAZON BUTTON
        ========================================================= */
