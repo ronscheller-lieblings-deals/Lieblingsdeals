@@ -610,17 +610,22 @@ function showCustomerProducts(categoryId) {
         });
 
     })
-    .catch(error => {
+  .catch(error => {
 
-      console.error(
-        "Fehler beim Laden der Kunden-Produkte:",
-        error
-      );
+  console.error(
+    "Fehler beim Laden der Kunden-Produkte:",
+    error
+  );
 
-      container.innerHTML =
-        '<div class="empty">Kunden-Produkte konnten nicht geladen werden.</div>';
+  container.innerHTML = `
+    <div class="empty">
+      <strong>Fehler beim Laden der Kunden-Produkte</strong>
+      <br><br>
+      ${escapeHtml(error.message || String(error))}
+    </div>
+  `;
 
-    });
+});
 
 }
     /* =========================================================
