@@ -497,87 +497,129 @@ function showCustomerProducts(categoryId) {
   const container =
     document.getElementById("customer-products");
 
-  container.innerHTML = "";
+  container.innerHTML =
+    '<div class="loading">Produkte werden geladen...</div>';
 
-  const products =
-    customerProducts.filter(
-      product =>
-        String(product.category_id) ===
-        String(categoryId)
-    );
+  fetch(
+    U +
+    "/rest/v1/customer_products" +
+    "?select=*" +
+    "&category_id=eq." +
+    encodeURIComponent(categoryId) +
+    "&active=eq.true" +
+    "&order=sort_order.asc,created_at.asc",
+    {
+      headers: {
+        apikey: K
+      }
+    }
+  )
+    .then(response => {
 
-  if (!products.length) {
-
-    container.innerHTML =
-      '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
-
-    return;
-
-  }
-
-  products.forEach(product => {
-
-    const card =
-      document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-
-      ${
-        product.image_url
-          ? `
-            <img
-              src="${escapeHtml(product.image_url)}"
-              alt="${escapeHtml(product.title)}"
-            >
-          `
-          : ""
+      if (!response.ok) {
+        throw new Error(
+          "Produkte konnten nicht geladen werden."
+        );
       }
 
-      <h3>
-        ${escapeHtml(product.title)}
-      </h3>
+      return response.json();
 
-      ${
-        product.description
-          ? `
-            <p style="margin-top:10px;">
-              ${escapeHtml(product.description)}
-            </p>
-          `
-          : ""
+    })
+    .then(products => {
+
+      container.innerHTML = "";
+
+      if (!products.length) {
+
+        container.innerHTML =
+          '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
+
+        return;
+
       }
 
-      ${
-        product.price !== null
-          ? `
-            <div class="price" style="margin-top:10px;">
-              ${escapeHtml(product.price)} €
-            </div>
-          `
-          : ""
-      }
+      products.forEach(product => {
 
-      <a
-        href="${escapeHtml(product.affiliate_url)}"
-        class="offer-button"
-        target="_blank"
-        rel="noopener"
-      >
-        🛒 Zum Angebot
-      </a>
+        const card =
+          document.createElement("div");
 
-    `;
+        card.className = "card";
 
-    container.appendChild(card);
+        card.innerHTML = `
 
-  });
+          ${
+            product.image_url
+              ? `
+                <img
+                  src="${escapeHtml(product.image_url)}"
+                  alt="${escapeHtml(product.title || "")}"
+                >
+              `
+              : ""
+          }
 
-  document
-    .getElementById("customer-products-section")
-    .scrollIntoView({
-      behavior: "smooth"
+          <h3>
+            ${escapeHtml(product.title || "")}
+          </h3>
+
+          ${
+            product.description
+              ? `
+                <p style="margin-top:10px;">
+                  ${escapeHtml(product.description)}
+                </p>
+              `
+              : ""
+          }
+
+          ${
+            product.price !== null
+              ? `
+                <div class="price" style="margin-top:10px;">
+                  ${escapeHtml(product.price)} €
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            product.affiliate_url
+              ? `
+                <a
+                  href="${escapeHtml(product.affiliate_url)}"
+                  class="offer-button"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  🛒 Zum Angebot
+                </a>
+              `
+              : ""
+          }
+
+        `;
+
+        container.appendChild(card);
+
+      });
+
+      document
+        .getElementById("customer-products-section")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    })
+    .catch(error => {
+
+      console.error(
+        "Fehler beim Laden der Kunden-Produkte:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Kunden-Produkte konnten nicht geladen werden.</div>';
+
     });
 
 }
