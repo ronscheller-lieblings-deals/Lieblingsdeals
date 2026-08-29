@@ -17,7 +17,8 @@
     body {
       background: #f4f4f4;
       color: #222;
-      padding-bottom: 40px;
+      min-height: 100vh;
+      padding-bottom: 50px;
     }
 
     header {
@@ -38,7 +39,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 25px auto;
       padding: 0 20px;
     }
@@ -56,12 +57,20 @@
     }
 
     h3 {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .account-info {
       color: #666;
-      line-height: 1.6;
+      line-height: 1.7;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     button {
@@ -71,6 +80,11 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
     }
 
     .primary {
@@ -88,18 +102,16 @@
       color: #a00000;
     }
 
-    .top-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .edit {
+      background: #fff3e8;
+      color: #d95700;
     }
 
     .category-list,
     .product-list {
       display: grid;
       gap: 12px;
+      margin-top: 15px;
     }
 
     .item {
@@ -113,7 +125,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 10px;
+      gap: 15px;
     }
 
     .item-title {
@@ -125,19 +137,34 @@
       color: #777;
       font-size: 13px;
       margin-top: 5px;
+      line-height: 1.5;
     }
 
-    .empty {
+    .product-image {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      margin-bottom: 10px;
+      border: 1px solid #eee;
+      background: #fff;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .empty,
+    .loading {
       padding: 20px;
       text-align: center;
       color: #777;
       background: #fafafa;
       border-radius: 12px;
-    }
-
-    .loading {
-      color: #777;
-      padding: 10px 0;
     }
 
     .message {
@@ -158,8 +185,68 @@
       color: #a00000;
     }
 
-    .logout {
-      margin-top: 10px;
+    .form-box {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-actions button {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .price {
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .affiliate-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #ff6a00;
+      font-weight: 700;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .affiliate-link:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
@@ -167,11 +254,24 @@
         padding: 0 15px;
       }
 
+      .item-header {
+        flex-direction: column;
+      }
+
+      .item-actions {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .item-actions button {
+        flex: 1;
+      }
+
       .top-actions {
         align-items: stretch;
       }
 
-      .top-actions button {
+      .top-actions > button {
         width: 100%;
       }
     }
@@ -187,15 +287,11 @@
   <div class="subtitle">Dein persönlicher Kundenbereich</div>
 </header>
 
-
 <div class="container">
 
   <div id="message" class="message"></div>
 
-
-  <!-- =====================================================
-       KONTO
-       ===================================================== -->
+  <!-- KONTO -->
 
   <div class="card">
 
@@ -204,18 +300,12 @@
       <div>
         <h2>👤 Mein Konto</h2>
 
-        <div
-          id="account-info"
-          class="account-info"
-        >
+        <div id="account-info" class="account-info">
           Konto wird geladen...
         </div>
       </div>
 
-      <button
-        id="logout-button"
-        class="danger"
-      >
+      <button id="logout-button" class="danger">
         🚪 Abmelden
       </button>
 
@@ -224,9 +314,7 @@
   </div>
 
 
-  <!-- =====================================================
-       KATEGORIEN
-       ===================================================== -->
+  <!-- KATEGORIEN -->
 
   <div class="card">
 
@@ -234,19 +322,13 @@
 
       <h2>📂 Meine Kategorien</h2>
 
-      <button
-        id="add-category-button"
-        class="primary"
-      >
+      <button id="add-category-button" class="primary">
         ➕ Kategorie
       </button>
 
     </div>
 
-    <div
-      id="categories"
-      class="category-list"
-    >
+    <div id="categories" class="category-list">
       <div class="loading">
         Kategorien werden geladen...
       </div>
@@ -255,9 +337,7 @@
   </div>
 
 
-  <!-- =====================================================
-       PRODUKTE
-       ===================================================== -->
+  <!-- PRODUKTE -->
 
   <div class="card">
 
@@ -265,127 +345,148 @@
 
       <h2>🛍️ Meine Produkte</h2>
 
-      <button
-        id="add-product-button"
-        class="primary"
-      >
+      <button id="add-product-button" class="primary">
         ➕ Produkt
       </button>
 
     </div>
 
-    <div
-      id="products"
-      class="product-list"
-    >
+    <div id="products" class="product-list">
       <div class="loading">
         Produkte werden geladen...
       </div>
     </div>
-<div
-  id="product-form"
-  style="display: none; margin-top: 20px;"
->
-
-  <h3>Produkt erstellen</h3>
-
-  <div style="margin-bottom: 12px;">
-    <label for="product-title-input">
-      Produktname:
-    </label>
-
-    <input
-      type="text"
-      id="product-title-input"
-      placeholder="Produktname"
-    >
-  </div>
 
 
-  <div style="margin-bottom: 12px;">
-    <label for="product-image-input">
-      Produktbild:
-    </label>
+    <!-- PRODUKT-FORMULAR -->
 
-    <input
-      type="file"
-      id="product-image-input"
-      accept="image/jpeg,image/png,image/webp"
-    >
-  </div>
+    <div id="product-form" class="form-box">
 
+      <h3 id="product-form-title">
+        Produkt erstellen
+      </h3>
 
-  <div style="margin-bottom: 12px;">
-    <label for="product-description-input">
-      Beschreibung:
-    </label>
+      <div class="form-group">
 
-    <textarea
-      id="product-description-input"
-      placeholder="Beschreibung des Produkts"
-    ></textarea>
-  </div>
+        <label for="product-title-input">
+          Produktname
+        </label>
 
+        <input
+          type="text"
+          id="product-title-input"
+          placeholder="Produktname"
+          maxlength="200"
+        >
 
-  <div style="margin-bottom: 12px;">
-    <label for="product-price-input">
-      Preis:
-    </label>
-
-    <input
-      type="text"
-      id="product-price-input"
-      placeholder="z. B. 19,99"
-    >
-  </div>
+      </div>
 
 
-  <div style="margin-bottom: 12px;">
-    <label for="product-affiliate-input">
-      Affiliate-URL:
-    </label>
+      <div class="form-group">
 
-    <input
-      type="url"
-      id="product-affiliate-input"
-      placeholder="https://..."
-    >
-  </div>
+        <label for="product-image-input">
+          Produktbild
+        </label>
 
+        <input
+          type="file"
+          id="product-image-input"
+          accept="image/jpeg,image/png,image/webp"
+        >
 
-  <div style="margin-bottom: 12px;">
-    <label for="product-category-input">
-      Kategorie:
-    </label>
+        <div
+          id="current-image-info"
+          class="muted"
+          style="display:none;"
+        >
+          Aktuelles Bild bleibt erhalten, wenn kein neues Bild ausgewählt wird.
+        </div>
 
-    <select id="product-category-input">
-      <option value="">
-        Kategorie auswählen
-      </option>
-    </select>
-  </div>
+      </div>
 
 
-  <div style="display: flex; gap: 10px;">
+      <div class="form-group">
 
-    <button
-      type="button"
-      id="save-product-button"
-      class="primary"
-    >
-      Produkt speichern
-    </button>
+        <label for="product-description-input">
+          Beschreibung
+        </label>
 
-    <button
-      type="button"
-      id="cancel-product-button"
-    >
-      Abbrechen
-    </button>
+        <textarea
+          id="product-description-input"
+          placeholder="Beschreibung des Produkts"
+          maxlength="5000"
+        ></textarea>
 
-  </div>
+      </div>
 
-</div>
+
+      <div class="form-group">
+
+        <label for="product-price-input">
+          Preis
+        </label>
+
+        <input
+          type="text"
+          id="product-price-input"
+          placeholder="z. B. 19,99"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="product-affiliate-input">
+          Affiliate-URL
+        </label>
+
+        <input
+          type="url"
+          id="product-affiliate-input"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="product-category-input">
+          Kategorie
+        </label>
+
+        <select id="product-category-input">
+          <option value="">
+            Kategorie auswählen
+          </option>
+        </select>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          id="save-product-button"
+          class="primary"
+        >
+          Produkt speichern
+        </button>
+
+        <button
+          type="button"
+          id="cancel-product-button"
+          class="secondary"
+        >
+          Abbrechen
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
 
 </div>
@@ -393,40 +494,44 @@
 
 <script>
 
-  /* =========================================================
-     SUPABASE
-     ========================================================= */
+/* =========================================================
+   SUPABASE
+   ========================================================= */
 
-  const SUPABASE_URL =
-    "https://cklnfznlzyushvlybzad.supabase.co";
+const SUPABASE_URL =
+  "https://cklnfznlzyushvlybzad.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+const SUPABASE_KEY =
+  "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  /* =========================================================
-     ELEMENTE
-     ========================================================= */
+/* =========================================================
+   ELEMENTE
+   ========================================================= */
 
-  const message =
-    document.getElementById("message");
+const message =
+  document.getElementById("message");
 
-  const accountInfo =
-    document.getElementById("account-info");
+const accountInfo =
+  document.getElementById("account-info");
 
-  const categoriesContainer =
-    document.getElementById("categories");
+const categoriesContainer =
+  document.getElementById("categories");
 
-  const productsContainer =
-    document.getElementById("products");
+const productsContainer =
+  document.getElementById("products");
+
 const productForm =
   document.getElementById("product-form");
+
+const productFormTitle =
+  document.getElementById("product-form-title");
 
 const productTitleInput =
   document.getElementById("product-title-input");
@@ -446,17 +551,951 @@ const productAffiliateInput =
 const productCategoryInput =
   document.getElementById("product-category-input");
 
+const currentImageInfo =
+  document.getElementById("current-image-info");
+
 const saveProductButton =
   document.getElementById("save-product-button");
 
 const cancelProductButton =
   document.getElementById("cancel-product-button");
-console.log("FORMULAR ELEMENTE GELADEN");
-  let currentUser = null;
-  
+
+const addProductButton =
+  document.getElementById("add-product-button");
+
+const addCategoryButton =
+  document.getElementById("add-category-button");
+
+const logoutButton =
+  document.getElementById("logout-button");
+
+
+let currentUser = null;
+let editingProductId = null;
+let editingProductImageUrl = null;
+
+
+/* =========================================================
+   NACHRICHTEN
+   ========================================================= */
+
+function showMessage(text, type) {
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+  message.style.display = "block";
+
+}
+
+
+function clearMessage() {
+
+  message.textContent = "";
+
+  message.className = "message";
+
+  message.style.display = "none";
+
+}
+
+
+/* =========================================================
+   HTML SICHER DARSTELLEN
+   ========================================================= */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* =========================================================
+   URL VALIDIEREN
+   ========================================================= */
+
+function isValidHttpUrl(value) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
+
+  } catch {
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================================
+   PREIS
+   ========================================================= */
+
+function parsePrice(value) {
+
+  if (!value || !value.trim()) {
+    return null;
+  }
+
+  const normalized =
+    value
+      .trim()
+      .replace(/\./g, "")
+      .replace(",", ".");
+
+  const number =
+    Number(normalized);
+
+  return Number.isFinite(number)
+    ? number
+    : null;
+
+}
+
+
+/* =========================================================
+   DATEIPFAD AUS PUBLIC URL
+   ========================================================= */
+
+function getStoragePathFromUrl(url) {
+
+  if (!url) {
+    return null;
+  }
+
+  const marker =
+    "/storage/v1/object/public/product-images/";
+
+  const index =
+    url.indexOf(marker);
+
+  if (index === -1) {
+    return null;
+  }
+
+  return decodeURIComponent(
+    url.substring(
+      index + marker.length
+    )
+  );
+
+}
+
+
+/* =========================================================
+   SESSION
+   ========================================================= */
+
+async function checkSession() {
+
+  clearMessage();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (error) {
+
+    console.error(
+      "Session-Fehler:",
+      error
+    );
+
+    showMessage(
+      "Die Anmeldung konnte nicht überprüft werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!data.session) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  currentUser =
+    data.session.user;
+
+
+  accountInfo.innerHTML = `
+    <strong>E-Mail:</strong>
+    ${escapeHtml(currentUser.email || "")}
+    <br>
+    <strong>User-ID:</strong>
+    ${escapeHtml(currentUser.id)}
+  `;
+
+
+  await Promise.all([
+    loadCategories(),
+    loadProducts()
+  ]);
+
+}
+
+
+/* =========================================================
+   KATEGORIEN LADEN
+   ========================================================= */
+
+async function loadCategories() {
+
+  categoriesContainer.innerHTML =
+    '<div class="loading">Kategorien werden geladen...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("customer_categories")
+      .select("*")
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .order("created_at", {
+        ascending: true
+      });
+
+
+  if (error) {
+
+    console.error(
+      "Kategorie-Ladefehler:",
+      error
+    );
+
+    categoriesContainer.innerHTML =
+      '<div class="empty">Kategorien konnten momentan nicht geladen werden.</div>';
+
+    return;
+
+  }
+
+
+  productCategoryInput.innerHTML =
+    '<option value="">Kategorie auswählen</option>';
+
+
+  if (!data || data.length === 0) {
+
+    categoriesContainer.innerHTML =
+      '<div class="empty">Du hast noch keine eigenen Kategorien.</div>';
+
+    return;
+
+  }
+
+
+  categoriesContainer.innerHTML = "";
+
+
+  data.forEach(category => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "item";
+
+
+    item.innerHTML = `
+
+      <div class="item-header">
+
+        <div>
+
+          <div class="item-title">
+            ${escapeHtml(category.icon || "📂")}
+            ${escapeHtml(category.name)}
+          </div>
+
+          <div class="muted">
+            Slug: ${escapeHtml(category.slug || "")}
+          </div>
+
+        </div>
+
+        <div class="item-actions">
+
+          <button
+            class="danger"
+            type="button"
+          >
+            Löschen
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    const deleteButton =
+      item.querySelector(".danger");
+
+
+    deleteButton.addEventListener(
+      "click",
+      () => deleteCategory(category.id)
+    );
+
+
+    categoriesContainer.appendChild(item);
+
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      category.id;
+
+    option.textContent =
+      `${category.icon || "📂"} ${category.name}`;
+
+    productCategoryInput.appendChild(option);
+
+  });
+
+}
+
+
+/* =========================================================
+   PRODUKTE LADEN
+   ========================================================= */
+
+async function loadProducts() {
+
+  productsContainer.innerHTML =
+    '<div class="loading">Produkte werden geladen...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .select("*")
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .order("sort_order", {
+        ascending: true
+      })
+      .order("created_at", {
+        ascending: true
+      });
+
+
+  if (error) {
+
+    console.error(
+      "Produkt-Ladefehler:",
+      error
+    );
+
+    productsContainer.innerHTML =
+      '<div class="empty">Produkte konnten momentan nicht geladen werden.</div>';
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    productsContainer.innerHTML =
+      '<div class="empty">Du hast noch keine eigenen Produkte.</div>';
+
+    return;
+
+  }
+
+
+  productsContainer.innerHTML = "";
+
+
+  data.forEach(product => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "item";
+
+
+    const imageHtml =
+      product.image_url
+        ? `
+          <img
+            class="product-image"
+            src="${escapeHtml(product.image_url)}"
+            alt="${escapeHtml(product.title)}"
+          >
+        `
+        : "";
+
+
+    const priceHtml =
+      product.price !== null &&
+      product.price !== undefined
+        ? `
+          <div class="price">
+            ${escapeHtml(
+              Number(product.price).toFixed(2).replace(".", ",")
+            )} €
+          </div>
+        `
+        : "";
+
+
+    const affiliateHtml =
+      product.affiliate_url
+        ? `
+          <a
+            class="affiliate-link"
+            href="${escapeHtml(product.affiliate_url)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🔗 Angebot öffnen
+          </a>
+        `
+        : "";
+
+
+    item.innerHTML = `
+
+      <div class="item-header">
+
+        <div style="flex:1;">
+
+          ${imageHtml}
+
+          <div class="item-title">
+            ${escapeHtml(product.title)}
+          </div>
+
+          ${
+            product.description
+              ? `
+                <div class="muted">
+                  ${escapeHtml(product.description)}
+                </div>
+              `
+              : ""
+          }
+
+          ${priceHtml}
+
+          ${affiliateHtml}
+
+        </div>
+
+
+        <div class="item-actions">
+
+          <button
+            class="edit"
+            type="button"
+          >
+            ✏️ Bearbeiten
+          </button>
+
+          <button
+            class="danger"
+            type="button"
+          >
+            🗑️ Löschen
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    const editButton =
+      item.querySelector(".edit");
+
+    const deleteButton =
+      item.querySelector(".danger");
+
+
+    editButton.addEventListener(
+      "click",
+      () => editProduct(product.id)
+    );
+
+
+    deleteButton.addEventListener(
+      "click",
+      () => deleteProduct(product.id)
+    );
+
+
+    productsContainer.appendChild(item);
+
+  });
+
+}
+
+
+/* =========================================================
+   KATEGORIE ERSTELLEN
+   ========================================================= */
+
+addCategoryButton.addEventListener(
+  "click",
+  async () => {
+
+    clearMessage();
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    const name =
+      prompt(
+        "Name der neuen Kategorie:"
+      );
+
+
+    if (name === null) {
+      return;
+    }
+
+
+    const cleanName =
+      name.trim();
+
+
+    if (!cleanName) {
+
+      showMessage(
+        "Bitte einen Kategorienamen eingeben.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const slug =
+      cleanName
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+
+    if (!slug) {
+
+      showMessage(
+        "Für diese Kategorie konnte kein gültiger Slug erstellt werden.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    addCategoryButton.disabled =
+      true;
+
+
+    try {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("customer_categories")
+          .insert({
+            customer_id:
+              currentUser.id,
+
+            name:
+              cleanName,
+
+            slug:
+              slug,
+
+            icon:
+              "📂",
+
+            active:
+              true
+          });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      showMessage(
+        "Kategorie wurde erstellt.",
+        "success"
+      );
+
+
+      await loadCategories();
+
+    } catch (error) {
+
+      console.error(
+        "Kategorie-Erstellfehler:",
+        error
+      );
+
+      showMessage(
+        "Kategorie konnte nicht erstellt werden.",
+        "error"
+      );
+
+    } finally {
+
+      addCategoryButton.disabled =
+        false;
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   KATEGORIE LÖSCHEN
+   ========================================================= */
+
+async function deleteCategory(categoryId) {
+
+  if (!currentUser) {
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Möchtest du diese Kategorie wirklich löschen?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_categories")
+      .delete()
+      .eq(
+        "id",
+        categoryId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Kategorie-Löschfehler:",
+      error
+    );
+
+    showMessage(
+      "Kategorie konnte nicht gelöscht werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    "Kategorie wurde gelöscht.",
+    "success"
+  );
+
+
+  await Promise.all([
+    loadCategories(),
+    loadProducts()
+  ]);
+
+}
+
+
+/* =========================================================
+   PRODUKT-FORMULAR ÖFFNEN
+   ========================================================= */
+
+async function openProductForm(product = null) {
+
+  clearMessage();
+
+
+  editingProductId =
+    product
+      ? product.id
+      : null;
+
+
+  editingProductImageUrl =
+    product
+      ? product.image_url
+      : null;
+
+
+  productFormTitle.textContent =
+    product
+      ? "Produkt bearbeiten"
+      : "Produkt erstellen";
+
+
+  productTitleInput.value =
+    product?.title || "";
+
+
+  productDescriptionInput.value =
+    product?.description || "";
+
+
+  productPriceInput.value =
+    product?.price !== null &&
+    product?.price !== undefined
+      ? String(product.price).replace(".", ",")
+      : "";
+
+
+  productAffiliateInput.value =
+    product?.affiliate_url || "";
+
+
+  productImageInput.value =
+    "";
+
+
+  currentImageInfo.style.display =
+    product?.image_url
+      ? "block"
+      : "none";
+
+
+  await loadCategoryOptions(
+    product?.category_id || ""
+  );
+
+
+  productForm.style.display =
+    "block";
+
+
+  productForm.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+/* =========================================================
+   KATEGORIE-OPTIONEN
+   ========================================================= */
+
+async function loadCategoryOptions(
+  selectedCategoryId = ""
+) {
+
+  productCategoryInput.innerHTML =
+    '<option value="">Kategorien werden geladen...</option>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("customer_categories")
+      .select("id,name,icon")
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .order("created_at", {
+        ascending: true
+      });
+
+
+  if (error) {
+
+    console.error(
+      "Kategorie-Optionen Fehler:",
+      error
+    );
+
+    productCategoryInput.innerHTML =
+      '<option value="">Kategorien konnten nicht geladen werden</option>';
+
+    return false;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    productCategoryInput.innerHTML =
+      '<option value="">Keine Kategorien vorhanden</option>';
+
+    return false;
+
+  }
+
+
+  productCategoryInput.innerHTML =
+    '<option value="">Kategorie auswählen</option>';
+
+
+  data.forEach(category => {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      category.id;
+
+    option.textContent =
+      `${category.icon || "📂"} ${category.name}`;
+
+    if (
+      String(category.id) ===
+      String(selectedCategoryId)
+    ) {
+
+      option.selected =
+        true;
+
+    }
+
+
+    productCategoryInput.appendChild(option);
+
+  });
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   PRODUKT HINZUFÜGEN
+   ========================================================= */
+
+addProductButton.addEventListener(
+  "click",
+  async () => {
+
+    await openProductForm();
+
+  }
+);
+
+
+/* =========================================================
+   PRODUKT-FORMULAR ABBRECHEN
+   ========================================================= */
+
+cancelProductButton.addEventListener(
+  "click",
+  () => {
+
+    productForm.style.display =
+      "none";
+
+    editingProductId =
+      null;
+
+    editingProductImageUrl =
+      null;
+
+    productImageInput.value =
+      "";
+
+    clearMessage();
+
+  }
+);
+
+
+/* =========================================================
+   PRODUKT SPEICHERN
+   ========================================================= */
+
 saveProductButton.addEventListener(
   "click",
   async () => {
+
+    clearMessage();
+
+
+    if (!currentUser) {
+
+      showMessage(
+        "Bitte zuerst anmelden.",
+        "error"
+      );
+
+      return;
+
+    }
+
 
     const title =
       productTitleInput.value.trim();
@@ -477,6 +1516,8 @@ saveProductButton.addEventListener(
       productImageInput.files[0];
 
 
+    /* TITEL */
+
     if (!title) {
 
       showMessage(
@@ -489,10 +1530,12 @@ saveProductButton.addEventListener(
     }
 
 
+    /* AFFILIATE URL */
+
     if (!affiliateUrl) {
 
       showMessage(
-        "Eine Affiliate-URL ist erforderlich.",
+        "Bitte eine Affiliate-URL eingeben.",
         "error"
       );
 
@@ -500,6 +1543,20 @@ saveProductButton.addEventListener(
 
     }
 
+
+    if (!isValidHttpUrl(affiliateUrl)) {
+
+      showMessage(
+        "Bitte eine gültige http- oder https-Affiliate-URL eingeben.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /* KATEGORIE */
 
     if (!categoryId) {
 
@@ -513,7 +1570,39 @@ saveProductButton.addEventListener(
     }
 
 
-    if (!imageFile) {
+    /* PREIS */
+
+    let price = null;
+
+    if (priceText) {
+
+      price =
+        parsePrice(priceText);
+
+
+      if (
+        price === null ||
+        price < 0
+      ) {
+
+        showMessage(
+          "Bitte einen gültigen Preis eingeben.",
+          "error"
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    /* BEIM NEUEN PRODUKT BILD ERFORDERN */
+
+    if (
+      !editingProductId &&
+      !imageFile
+    ) {
 
       showMessage(
         "Bitte ein Produktbild auswählen.",
@@ -525,559 +1614,360 @@ saveProductButton.addEventListener(
     }
 
 
-    let imageUrl = null;
+    saveProductButton.disabled =
+      true;
 
 
-    const fileExtension =
-      imageFile.name
-        .split(".")
-        .pop()
-        .toLowerCase();
+    try {
+
+      let imageUrl =
+        editingProductImageUrl || null;
 
 
-    const filePath =
-      currentUser.id +
-      "/" +
-      crypto.randomUUID() +
-      "." +
-      fileExtension;
+      /* =============================================
+         NEUES BILD HOCHLADEN
+         ============================================= */
+
+      if (imageFile) {
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ];
 
 
-    const {
-      error: uploadError
-    } =
-      await supabaseClient
-        .storage
-        .from("product-images")
-        .upload(
-          filePath,
-          imageFile,
-          {
-            contentType:
-              imageFile.type,
-            upsert: false
+        if (
+          !allowedTypes.includes(
+            imageFile.type
+          )
+        ) {
+
+          throw new Error(
+            "Nur JPG-, PNG- und WebP-Bilder sind erlaubt."
+          );
+
+        }
+
+
+        /* 5 MB */
+
+        if (
+          imageFile.size >
+          5 * 1024 * 1024
+        ) {
+
+          throw new Error(
+            "Das Produktbild darf maximal 5 MB groß sein."
+          );
+
+        }
+
+
+        const extension =
+          imageFile.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+        const filePath =
+          currentUser.id +
+          "/" +
+          crypto.randomUUID() +
+          "." +
+          extension;
+
+
+        const {
+          error: uploadError
+        } =
+          await supabaseClient
+            .storage
+            .from("product-images")
+            .upload(
+              filePath,
+              imageFile,
+              {
+                contentType:
+                  imageFile.type,
+
+                upsert:
+                  false
+              }
+            );
+
+
+        if (uploadError) {
+
+          console.error(
+            "Bild-Upload:",
+            uploadError
+          );
+
+          throw new Error(
+            "Produktbild konnte nicht hochgeladen werden."
+          );
+
+        }
+
+
+        const {
+          data: publicUrlData
+        } =
+          supabaseClient
+            .storage
+            .from("product-images")
+            .getPublicUrl(
+              filePath
+            );
+
+
+        imageUrl =
+          publicUrlData.publicUrl;
+
+
+        /* ALTES BILD LÖSCHEN */
+
+        if (
+          editingProductImageUrl
+        ) {
+
+          const oldPath =
+            getStoragePathFromUrl(
+              editingProductImageUrl
+            );
+
+
+          if (oldPath) {
+
+            const {
+              error: deleteImageError
+            } =
+              await supabaseClient
+                .storage
+                .from("product-images")
+                .remove([
+                  oldPath
+                ]);
+
+
+            if (deleteImageError) {
+
+              console.warn(
+                "Altes Bild konnte nicht gelöscht werden:",
+                deleteImageError
+              );
+
+            }
+
           }
+
+        }
+
+      }
+
+
+      /* =============================================
+         DATEN
+         ============================================= */
+
+      const productData = {
+
+        customer_id:
+          currentUser.id,
+
+        category_id:
+          categoryId,
+
+        title:
+          title,
+
+        description:
+          description || null,
+
+        price:
+          price,
+
+        image_url:
+          imageUrl,
+
+        affiliate_url:
+          affiliateUrl,
+
+        active:
+          true
+
+      };
+
+
+      /* =============================================
+         NEU
+         ============================================= */
+
+      if (!editingProductId) {
+
+        productData.sort_order =
+          0;
+
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("customer_products")
+            .insert(
+              productData
+            );
+
+
+        if (error) {
+
+          console.error(
+            "Produkt INSERT:",
+            error
+          );
+
+          throw new Error(
+            "Produkt konnte nicht gespeichert werden."
+          );
+
+        }
+
+
+        showMessage(
+          "Produkt wurde erfolgreich erstellt.",
+          "success"
         );
 
-
-    if (uploadError) {
-
-      console.error(
-        "Bild Upload Fehler:",
-        uploadError
-      );
-
-      showMessage(
-        "Produktbild konnte nicht hochgeladen werden.",
-        "error"
-      );
-
-      return;
-
-    }
+      }
 
 
-    const {
-      data: publicUrlData
-    } =
-      supabaseClient
-        .storage
-        .from("product-images")
-        .getPublicUrl(filePath);
+      /* =============================================
+         BEARBEITEN
+         ============================================= */
+
+      else {
+
+        delete productData.customer_id;
 
 
-    imageUrl =
-      publicUrlData.publicUrl;
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("customer_products")
+            .update(
+              productData
+            )
+            .eq(
+              "id",
+              editingProductId
+            )
+            .eq(
+              "customer_id",
+              currentUser.id
+            );
 
 
-    const price =
-      priceText
-        ? Number(
-            priceText.replace(",", ".")
-          )
-        : null;
+        if (error) {
+
+          console.error(
+            "Produkt UPDATE:",
+            error
+          );
+
+          throw new Error(
+            "Produkt konnte nicht aktualisiert werden."
+          );
+
+        }
 
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .insert({
-          customer_id:
-            currentUser.id,
+        showMessage(
+          "Produkt wurde erfolgreich aktualisiert.",
+          "success"
+        );
 
-          category_id:
-            categoryId,
+      }
 
-          title:
-            title,
 
-          description:
-            description
-              ? description
-              : null,
+      productForm.style.display =
+        "none";
 
-          price:
-            price,
 
-          image_url:
-            imageUrl,
+      editingProductId =
+        null;
 
-          affiliate_url:
-            affiliateUrl,
+      editingProductImageUrl =
+        null;
 
-          sort_order:
-            0,
 
-          active:
-            true
-        })
-        .select()
-        .single();
+      productImageInput.value =
+        "";
 
-console.log("DATEN NACH INSERT:", data);
-console.log("FEHLER NACH INSERT:", error);
-    if (error) {
+
+      await loadProducts();
+
+
+    } catch (error) {
 
       console.error(
-        "Produkt INSERT Fehler:",
+        "Produkt speichern:",
         error
       );
 
+
       showMessage(
-        "Produkt konnte nicht erstellt werden: " +
-        error.message,
+        error.message ||
+        "Produkt konnte nicht gespeichert werden.",
         "error"
       );
 
-      return;
+    } finally {
+
+      saveProductButton.disabled =
+        false;
 
     }
-
-
-    console.log(
-      "Produkt erfolgreich erstellt:",
-      data
-    );
-
-showMessage(
-  "Produkt wurde erstellt.",
-  "success"
-);
-
-window.location.reload();
-
-
-    
 
   }
 );
 
-  /* =========================================================
-     NACHRICHT
-     ========================================================= */
 
-  function showMessage(text, type) {
-
-    message.textContent = text;
-
-    message.className =
-      "message " + type;
-
-    message.style.display = "block";
-
-  }
-
-
-  function clearMessage() {
-
-    message.textContent = "";
-
-    message.style.display = "none";
-
-  }
-
-
-  /* =========================================================
-     SESSION PRÜFEN
-     ========================================================= */
-
-  async function checkSession() {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.auth.getSession();
-
-
-    if (error) {
-
-      console.error(error);
-
-      showMessage(
-        "Die Sitzung konnte nicht geladen werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if (!data.session) {
-
-      window.location.href =
-        "login.html";
-
-      return;
-
-    }
-
-
-    currentUser =
-      data.session.user;
-
-
-    accountInfo.innerHTML = `
-      <strong>E-Mail:</strong>
-      ${escapeHtml(currentUser.email || "")}
-      <br>
-      <strong>User-ID:</strong>
-      ${escapeHtml(currentUser.id)}
-    `;
-
-
-    await loadCategories();
-
-    await loadProducts();
-
-  }
-
-
-  /* =========================================================
-     HTML SICHER DARSTELLEN
-     ========================================================= */
-
-  function escapeHtml(value) {
-
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-
-  }
-
-
-  /* =========================================================
-     KATEGORIEN LADEN
-     ========================================================= */
-
-  async function loadCategories() {
-
-    categoriesContainer.innerHTML =
-      '<div class="loading">Kategorien werden geladen...</div>';
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customer_categories")
-        .select("*")
-        .order("created_at", {
-          ascending: true
-        });
-
-
-    if (error) {
-
-      console.error(error);
-
-      categoriesContainer.innerHTML =
-        '<div class="empty">Kategorien konnten nicht geladen werden.</div>';
-
-      return;
-
-    }
-
-
-    if (!data.length) {
-
-      categoriesContainer.innerHTML =
-        '<div class="empty">Du hast noch keine eigenen Kategorien.</div>';
-
-      return;
-
-    }
-
-
-    categoriesContainer.innerHTML = "";
-productCategoryInput.innerHTML =
-  '<option value="">Kategorie auswählen</option>';
-
-    data.forEach(category => {
-
-      const item =
-        document.createElement("div");
-
-      item.className = "item";
-
-      item.innerHTML = `
-
-        <div class="item-header">
-
-          <div>
-
-            <div class="item-title">
-              ${escapeHtml(category.icon || "")}
-              ${escapeHtml(category.name)}
-            </div>
-
-            <div class="muted">
-              Slug:
-              ${escapeHtml(category.slug)}
-            </div>
-
-          </div>
-
-          <button
-            class="danger"
-            data-id="${escapeHtml(category.id)}"
-          >
-            Löschen
-          </button>
-
-        </div>
-
-      `;
-
-
-      item
-        .querySelector("button")
-        .addEventListener(
-          "click",
-          () => deleteCategory(category.id)
-        );
-
-
-      categoriesContainer.appendChild(item);
-
-    });
-
-  }
-
-
-  /* =========================================================
-     PRODUKTE LADEN
-     ========================================================= */
-
-  async function loadProducts() {
-
-    productsContainer.innerHTML =
-      '<div class="loading">Produkte werden geladen...</div>';
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .select("*")
-        .order("sort_order", {
-          ascending: true
-        });
-
-
-    if (error) {
-
-      console.error(error);
-
-      productsContainer.innerHTML =
-        '<div class="empty">Produkte konnten nicht geladen werden.</div>';
-
-      return;
-
-    }
-
-
-    if (!data.length) {
-
-      productsContainer.innerHTML =
-        '<div class="empty">Du hast noch keine eigenen Produkte.</div>';
-
-      return;
-
-    }
-
-
-    productsContainer.innerHTML = "";
-
-
-    data.forEach(product => {
-
-      const item =
-        document.createElement("div");
-
-      item.className = "item";
-
-      item.innerHTML = `
-
-        <div class="item-header">
-
-  <div>
-
-    ${
-      product.image_url
-        ? `
-          <img
-            src="${escapeHtml(product.image_url)}"
-            alt="${escapeHtml(product.title)}"
-            style="
-              width: 100px;
-              height: 100px;
-              object-fit: cover;
-              border-radius: 8px;
-              margin-bottom: 10px;
-            "
-          >
-        `
-        : ""
-    }
-
-    <div class="item-title">
-      ${escapeHtml(product.title)}
-    </div>
-
-            <div class="muted">
-              ${escapeHtml(product.description || "")}
-            </div>
-
-            ${
-              product.price !== null
-                ? `
-                  <div class="muted">
-                    Preis:
-                    ${escapeHtml(product.price)} €
-                  </div>
-                `
-                : ""
-            }
-
-          </div>
-
-          <button
-            class="danger"
-            data-id="${escapeHtml(product.id)}"
-          >
-            Löschen
-          </button>
-<button
-  class="edit"
-  data-id="${escapeHtml(product.id)}"
->
-  Bearbeiten
-</button>
-        </div>
-
-      `;
-
-
-     const deleteButton =
-  item.querySelector(".danger");
-
-deleteButton.addEventListener(
-  "click",
-  () => deleteProduct(product.id)
-);
-
-
-const editButton =
-  item.querySelector(".edit");
-
-editButton.addEventListener(
-  "click",
-  () => editProduct(product.id)
-);
-
-
-      productsContainer.appendChild(item);
-
-    });
-
-  }
-
-
-  /* =========================================================
-     KATEGORIE LÖSCHEN
-     ========================================================= */
-
-  async function deleteCategory(categoryId) {
-
-    const confirmed =
-      confirm(
-        "Möchtest du diese Kategorie wirklich löschen?"
-      );
-
-
-    if (!confirmed) return;
-
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("customer_categories")
-        .delete()
-        .eq("id", categoryId);
-
-
-    if (error) {
-
-      console.error(error);
-
-      showMessage(
-        "Kategorie konnte nicht gelöscht werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    showMessage(
-      "Kategorie wurde gelöscht.",
-      "success"
-    );
-
-
-    await loadCategories();
-
-  }
+/* =========================================================
+   PRODUKT BEARBEITEN
+   ========================================================= */
 
 async function editProduct(productId) {
 
+  clearMessage();
+
+
   const {
     data: product,
-    error: loadError
+    error
   } =
     await supabaseClient
       .from("customer_products")
       .select("*")
-      .eq("id", productId)
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
       .single();
 
 
-  if (loadError || !product) {
+  if (error || !product) {
 
-    console.error(loadError);
+    console.error(
+      "Produkt laden:",
+      error
+    );
 
     showMessage(
       "Produkt konnte nicht geladen werden.",
@@ -1087,226 +1977,66 @@ async function editProduct(productId) {
     return;
 
   }
-if (product.image_url) {
 
-  alert(
-    "Aktuelles Produktbild vorhanden:\n\n" +
-    product.image_url
+
+  await openProductForm(
+    product
   );
 
 }
 
-  const title =
-    prompt(
-      "Produktname:",
-      product.title || ""
-    );
 
-  if (title === null) return;
+/* =========================================================
+   PRODUKT LÖSCHEN
+   ========================================================= */
 
+async function deleteProduct(productId) {
 
-  const description =
-    prompt(
-      "Beschreibung:",
-      product.description || ""
-    );
-
-  if (description === null) return;
-
-
-  const price =
-    prompt(
-      "Preis:",
-      product.price !== null
-        ? product.price
-        : ""
-    );
-
-  if (price === null) return;
-
-
-  const affiliateUrl =
-    prompt(
-      "Affiliate-URL:",
-      product.affiliate_url || ""
-    );
-
-  if (affiliateUrl === null) return;
-let newImageUrl =
-  product.image_url || null;
-let oldImagePath = null;
-
-if (product.image_url) {
-
-  const marker =
-    "/storage/v1/object/public/product-images/";
-
-  const markerIndex =
-    product.image_url.indexOf(marker);
-
-  if (markerIndex !== -1) {
-
-    oldImagePath =
-      product.image_url.substring(
-        markerIndex + marker.length
-      );
-
+  if (!currentUser) {
+    return;
   }
 
-}
 
-const replaceImage =
-  confirm(
-    "Möchtest du das Produktbild ändern?"
-  );
-
-
-if (replaceImage) {
-
-  const imageInput =
-    document.createElement("input");
-
-  imageInput.type = "file";
-  imageInput.accept =
-    "image/jpeg,image/png,image/webp";
-
-  imageInput.click();
-
-
-  await new Promise(resolve => {
-
-    imageInput.addEventListener(
-      "change",
-      resolve,
-      { once: true }
+  const confirmed =
+    confirm(
+      "Möchtest du dieses Produkt wirklich löschen?"
     );
 
-  });
 
-
-  const imageFile =
-    imageInput.files[0];
-
-
-  if (imageFile) {
-
-    const fileExtension =
-      imageFile.name
-        .split(".")
-        .pop()
-        .toLowerCase();
-
-
-    const filePath =
-      currentUser.id +
-      "/" +
-      crypto.randomUUID() +
-      "." +
-      fileExtension;
-
-
-    const {
-      error: uploadError
-    } =
-      await supabaseClient
-        .storage
-        .from("product-images")
-        .upload(
-          filePath,
-          imageFile,
-          {
-            contentType:
-              imageFile.type,
-            upsert: false
-          }
-        );
-
-
-    if (uploadError) {
-
-      console.error(
-        "Bild Upload Fehler:",
-        uploadError
-      );
-
-      showMessage(
-        "Produktbild konnte nicht hochgeladen werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    const {
-      data: publicUrlData
-    } =
-      supabaseClient
-        .storage
-        .from("product-images")
-        .getPublicUrl(filePath);
-
-
-newImageUrl =
-      publicUrlData.publicUrl;
-
-    if (oldImagePath) {
-
-      const {
-        error: deleteError
-      } =
-        await supabaseClient
-          .storage
-          .from("product-images")
-          .remove([
-            oldImagePath
-          ]);
-
-      if (deleteError) {
-
-        console.error(
-          "Altes Produktbild konnte nicht gelöscht werden:",
-          deleteError
-        );
-
-      }
-
-    }
-
+  if (!confirmed) {
+    return;
   }
 
-}
+
+  /* PRODUKT ZUERST LADEN */
 
   const {
-    error
+    data: product,
+    error: loadError
   } =
     await supabaseClient
       .from("customer_products")
-      .update({
-        title: title.trim(),
-        description:
-          description.trim()
-            ? description.trim()
-            : null,
-        price:
-          price.trim()
-            ? Number(price.replace(",", "."))
-            : null,
-        affiliate_url:
-          affiliateUrl.trim(),
-        image_url:
-  newImageUrl
-      })
-      .eq("id", productId);
+      .select("id,image_url")
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .single();
 
 
-  if (error) {
+  if (loadError || !product) {
 
-    console.error(error);
+    console.error(
+      "Produkt vor Löschen:",
+      loadError
+    );
 
     showMessage(
-      "Produkt konnte nicht bearbeitet werden.",
+      "Produkt konnte nicht gefunden werden.",
       "error"
     );
 
@@ -1315,8 +2045,80 @@ newImageUrl =
   }
 
 
+  /* PRODUKT LÖSCHEN */
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .delete()
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Produkt-Löschfehler:",
+      error
+    );
+
+    showMessage(
+      "Produkt konnte nicht gelöscht werden.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  /* BILD LÖSCHEN */
+
+  if (product.image_url) {
+
+    const imagePath =
+      getStoragePathFromUrl(
+        product.image_url
+      );
+
+
+    if (imagePath) {
+
+      const {
+        error: imageDeleteError
+      } =
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .remove([
+            imagePath
+          ]);
+
+
+      if (imageDeleteError) {
+
+        console.warn(
+          "Produktbild konnte nicht gelöscht werden:",
+          imageDeleteError
+        );
+
+      }
+
+    }
+
+  }
+
+
   showMessage(
-    "Produkt wurde aktualisiert.",
+    "Produkt wurde gelöscht.",
     "success"
   );
 
@@ -1324,36 +2126,38 @@ newImageUrl =
   await loadProducts();
 
 }
-  /* =========================================================
-     PRODUKT LÖSCHEN
-     ========================================================= */
-
-  async function deleteProduct(productId) {
-
-    const confirmed =
-      confirm(
-        "Möchtest du dieses Produkt wirklich löschen?"
-      );
 
 
-    if (!confirmed) return;
+/* =========================================================
+   ABMELDEN
+   ========================================================= */
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    logoutButton.disabled =
+      true;
 
 
     const {
       error
     } =
-      await supabaseClient
-        .from("customer_products")
-        .delete()
-        .eq("id", productId);
+      await supabaseClient.auth.signOut();
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        "Logout:",
+        error
+      );
+
+      logoutButton.disabled =
+        false;
 
       showMessage(
-        "Produkt konnte nicht gelöscht werden.",
+        "Abmelden fehlgeschlagen.",
         "error"
       );
 
@@ -1362,222 +2166,38 @@ newImageUrl =
     }
 
 
-    showMessage(
-      "Produkt wurde gelöscht.",
-      "success"
-    );
-
-
-    await loadProducts();
+    window.location.href =
+      "login.html";
 
   }
+);
 
 
-  /* =========================================================
-     KATEGORIE HINZUFÜGEN
-     ========================================================= */
-document
-  .getElementById("add-product-button")
-  .addEventListener(
-    "click",
-    async () => {
-clearMessage();
-      const form =
-        document.getElementById(
-          "product-form"
-        );
+/* =========================================================
+   AUTH-ÄNDERUNGEN
+   ========================================================= */
 
-      form.style.display =
-        "block";
+supabaseClient.auth.onAuthStateChange(
+  (event, session) => {
 
+    if (
+      event === "SIGNED_OUT"
+    ) {
 
-      productCategoryInput.innerHTML =
-        '<option value="">Kategorien werden geladen...</option>';
-
-
-      const {
-        data: categories,
-        error
-      } =
-        await supabaseClient
-          .from("customer_categories")
-          .select("id,name")
-          .order("created_at", {
-            ascending: true
-          });
-
-
-      if (error) {
-
-        console.error(error);
-
-        productCategoryInput.innerHTML =
-          '<option value="">Kategorien konnten nicht geladen werden</option>';
-
-        return;
-
-      }
-
-
-      if (!categories.length) {
-
-        productCategoryInput.innerHTML =
-          '<option value="">Keine Kategorien vorhanden</option>';
-
-        return;
-
-      }
-
-
-      productCategoryInput.innerHTML =
-        '<option value="">Kategorie auswählen</option>';
-
-
-      categories.forEach(category => {
-
-        const option =
-          document.createElement("option");
-
-        option.value =
-          category.id;
-
-        option.textContent =
-          category.name;
-
-        productCategoryInput.appendChild(
-          option
-        );
-
-      });
-
-
-      window.scrollTo({
-        top: form.offsetTop,
-        behavior: "smooth"
-      });
+      window.location.href =
+        "login.html";
 
     }
-  );
-  document
-    .getElementById("add-category-button")
-    .addEventListener(
-      "click",
-      async () => {
 
-        const name =
-          prompt(
-            "Name der neuen Kategorie:"
-          );
+  }
+);
 
 
-        if (!name) return;
+/* =========================================================
+   START
+   ========================================================= */
 
-
-        const cleanName =
-          name.trim();
-
-
-        if (!cleanName) return;
-
-
-        const slug =
-          cleanName
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("customer_categories")
-            .insert({
-              customer_id: currentUser.id,
-              name: cleanName,
-              slug: slug,
-              icon: "📂",
-              active: true
-            });
-
-
-        if (error) {
-
-          console.error(error);
-
-          showMessage(
-            "Kategorie konnte nicht erstellt werden.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        showMessage(
-          "Kategorie wurde erstellt.",
-          "success"
-        );
-
-
-        await loadCategories();
-
-      }
-    );
-
-
-  /* =========================================================
-     PRODUKT HINZUFÜGEN
-     ========================================================= */
-
-
-
-
-  /* =========================================================
-     ABMELDEN
-     ========================================================= */
-
-  document
-    .getElementById("logout-button")
-    .addEventListener(
-      "click",
-      async () => {
-
-        const {
-          error
-        } =
-          await supabaseClient.auth.signOut();
-
-
-        if (error) {
-
-          console.error(error);
-
-          showMessage(
-            "Abmelden fehlgeschlagen.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        window.location.href =
-          "login.html";
-
-      }
-    );
-
-
-  /* =========================================================
-     START
-     ========================================================= */
-
-  checkSession();
+checkSession();
 
 </script>
 
