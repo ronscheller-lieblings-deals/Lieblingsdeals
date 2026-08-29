@@ -1637,65 +1637,62 @@
      KUNDEN-PRODUKTE
      ========================================================= */
 
-  async function loadCustomerProducts() {
+  /* =========================================================
+   KUNDEN-PRODUKTE LADEN
+   ========================================================= */
 
-    const container =
-      document.getElementById(
-        "customer-products"
-      );
+async function loadCustomerProducts() {
 
+  const container =
+    document.getElementById(
+      "customer-products"
+    );
 
-    container.innerHTML =
-      '<div class="loading">Kunden-Produkte werden geladen...</div>';
+  container.innerHTML =
+    '<div class="loading">Kunden-Produkte werden geladen...</div>';
 
+  try {
 
-    try {
-
-      const response =
-        await fetch(
-          U +
-          "/rest/v1/customer_products?select=*&active=eq.true&order=sort_order.asc,created_at.asc",
-          {
-            headers: {
-              apikey: K,
-              "Content-Type": "application/json"
-            }
+    const response =
+      await fetch(
+        U +
+        "/rest/v1/customer_products?select=id,customer_id,category_id,title,description,price,image_url,affiliate_url,sort_order,created_at&active=eq.true&order=sort_order.asc,created_at.asc",
+        {
+          headers: {
+            apikey: K,
+            "Content-Type": "application/json"
           }
-        );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Kunden-Produkte konnten nicht geladen werden. HTTP " +
-          response.status
-        );
-
-      }
-
-
-      customerProducts =
-        await response.json();
-
-
-      container.innerHTML =
-        '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
-
-
-    } catch (error) {
-
-      console.error(
-        "Kunden-Produkte Fehler:",
-        error
+        }
       );
 
+    if (!response.ok) {
 
-      container.innerHTML =
-        '<div class="empty">Kunden-Produkte konnten nicht geladen werden.</div>';
+      throw new Error(
+        "Kunden-Produkte konnten nicht geladen werden. HTTP " +
+        response.status
+      );
 
     }
 
+    customerProducts =
+      await response.json();
+
+    container.innerHTML =
+      '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
+
+  } catch (error) {
+
+    console.error(
+      "Kunden-Produkte Fehler:",
+      error
+    );
+
+    container.innerHTML =
+      '<div class="empty">Kunden-Produkte konnten nicht geladen werden.</div>';
+
   }
+
+}
 
 
   /* =========================================================
