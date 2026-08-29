@@ -8,9 +8,9 @@
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
 
@@ -22,29 +22,29 @@
 
     header {
       background: #ff6a00;
-      color: #fff;
+      color: white;
       padding: 20px;
       text-align: center;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
     .logo {
       font-size: 30px;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .subtitle {
-      font-size: 14px;
       margin-top: 5px;
+      font-size: 14px;
     }
 
     .search {
       margin: 20px;
     }
 
-    input {
+    .search input {
       width: 100%;
       padding: 15px;
       border: 0;
@@ -72,11 +72,11 @@
     }
 
     .categories div {
-      background: #fff;
+      background: white;
       padding: 18px;
       border-radius: 14px;
       text-align: center;
-      font-weight: 700;
+      font-weight: bold;
       box-shadow: 0 4px 10px #0001;
       cursor: pointer;
       transition: transform .15s ease;
@@ -88,32 +88,11 @@
 
     .categories div.active {
       background: #ff6a00;
-      color: #fff;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .category-header h2 {
-      margin-bottom: 0;
-    }
-
-    .back-button {
-      border: 0;
-      background: #fff;
-      padding: 9px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
+      color: white;
     }
 
     .card {
-      background: #fff;
+      background: white;
       border-radius: 16px;
       padding: 16px;
       margin-top: 20px;
@@ -123,11 +102,11 @@
     .badge {
       display: inline-block;
       background: #ff6a00;
-      color: #fff;
+      color: white;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .affiliate-badge {
@@ -137,13 +116,13 @@
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: bold;
       margin-left: 5px;
     }
 
     .price {
       font-size: 28px;
-      font-weight: 700;
+      font-weight: bold;
       color: #ff6a00;
       margin-top: 10px;
     }
@@ -152,12 +131,12 @@
       display: block;
       text-align: center;
       background: #ff6a00;
-      color: #fff;
+      color: white;
       padding: 15px;
       border-radius: 12px;
       text-decoration: none;
       font-size: 17px;
-      font-weight: 700;
+      font-weight: bold;
       margin-top: 15px;
     }
 
@@ -165,11 +144,11 @@
       display: inline-block;
       margin-top: 15px;
       padding: 12px 20px;
-      background: #fff;
+      background: white;
       color: #ff6a00;
       border-radius: 12px;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .bottom-nav {
@@ -177,14 +156,14 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: #fff;
+      background: white;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       padding: 10px 0;
       text-align: center;
       box-shadow: 0 -3px 10px #0002;
       font-size: 13px;
-      z-index: 20;
+      z-index: 200;
     }
 
     .bottom-nav div {
@@ -196,11 +175,13 @@
       border-radius: 12px;
       margin: 15px 0;
       display: block;
+      max-height: 400px;
+      object-fit: cover;
     }
 
     .rating {
       margin: 10px 0;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .loading {
@@ -210,21 +191,12 @@
     }
 
     .empty {
-      background: #fff;
+      background: white;
       padding: 20px;
       border-radius: 14px;
       text-align: center;
       color: #777;
       margin-top: 15px;
-    }
-
-    .error {
-      background: #fff0f0;
-      color: #b00020;
-      padding: 15px;
-      border-radius: 14px;
-      margin-top: 15px;
-      text-align: center;
     }
 
     .affiliate-card {
@@ -241,10 +213,6 @@
       margin-top: 20px;
     }
 
-    .customer-product-card:first-child {
-      margin-top: 0;
-    }
-
     .customer-product-image {
       width: 100%;
       max-height: 350px;
@@ -256,6 +224,38 @@
     .customer-product-description {
       margin-top: 10px;
       line-height: 1.5;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .category-header h2 {
+      margin-bottom: 0;
+    }
+
+    .back-button {
+      border: 0;
+      background: white;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+    }
+
+    footer a {
+      color: #ff6a00;
+      text-decoration: none;
     }
 
     @media (max-width: 600px) {
@@ -276,7 +276,9 @@
 
 <header>
 
-  <div class="logo">⭐ LieblingsDeals</div>
+  <div class="logo">
+    ⭐ LieblingsDeals
+  </div>
 
   <div class="subtitle">
     Die besten Angebote jeden Tag
@@ -367,7 +369,10 @@
 
   <h2>📂 Kategorien</h2>
 
-  <div class="categories" id="categories">
+  <div
+    class="categories"
+    id="categories"
+  >
     <div class="loading">
       Kategorien werden geladen...
     </div>
@@ -379,7 +384,10 @@
 
   <h2>⭐ Kunden-Angebote</h2>
 
-  <div class="categories" id="customer-categories">
+  <div
+    class="categories"
+    id="customer-categories"
+  >
     <div class="loading">
       Kunden-Angebote werden geladen...
     </div>
@@ -458,13 +466,7 @@
 
 </nav>
 
-<footer
-  style="
-    text-align:center;
-    padding:30px;
-    color:#777;
-  "
->
+<footer>
 
   <p>
     LieblingsDeals © 2026 |
@@ -477,61 +479,87 @@
 
 <script>
 
-const SUPABASE_URL =
-  "https://cklnfznlzyushvlybzad.supabase.co";
+  /* =========================================================
+     SUPABASE
+     ========================================================= */
 
-const SUPABASE_KEY =
-  "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+  const SUPABASE_URL =
+    "https://cklnfznlzyushvlybzad.supabase.co";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  const SUPABASE_KEY =
+    "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
-let categories = [];
-let deals = [];
-let affiliateOffers = [];
-let customerCategories = [];
-let customerProducts = [];
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-let selectedCategoryId = null;
-let selectedCustomerCategoryId = null;
 
-function escapeHtml(value) {
+  /* =========================================================
+     DATEN
+     ========================================================= */
 
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  let categories = [];
+  let deals = [];
+  let affiliateOffers = [];
+  let customerCategories = [];
+  let customerProducts = [];
 
-}
+  let selectedCategoryId = null;
+  let selectedCustomerCategoryId = null;
 
-function escapeAttribute(value) {
 
-  return escapeHtml(value);
+  /* =========================================================
+     HILFSFUNKTIONEN
+     ========================================================= */
 
-}
+  function escapeHtml(value) {
 
-function showError(elementId, message) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
-  const element =
-    document.getElementById(elementId);
+  }
 
-  if (!element) return;
 
-  element.innerHTML =
-    '<div class="error">' +
-    escapeHtml(message) +
-    '</div>';
+  function safeUrl(value) {
 
-}
+    if (!value) return "";
 
-async function updateAuthArea() {
+    try {
 
-  try {
+      const url =
+        new URL(value, window.location.href);
+
+      if (
+        url.protocol === "http:" ||
+        url.protocol === "https:"
+      ) {
+
+        return url.href;
+
+      }
+
+    } catch (error) {
+
+      return "";
+
+    }
+
+    return "";
+
+  }
+
+
+  /* =========================================================
+     AUTH
+     ========================================================= */
+
+  async function updateAuthArea() {
 
     const {
       data,
@@ -540,23 +568,38 @@ async function updateAuthArea() {
       await supabaseClient.auth.getSession();
 
     if (error) {
-      console.error(error);
+
+      console.error(
+        "Auth:",
+        error
+      );
+
       return;
+
     }
 
     const loginButton =
-      document.getElementById("login-button");
+      document.getElementById(
+        "login-button"
+      );
 
     const userArea =
-      document.getElementById("user-area");
+      document.getElementById(
+        "user-area"
+      );
 
     const userEmail =
-      document.getElementById("user-email");
+      document.getElementById(
+        "user-email"
+      );
 
     if (data.session) {
 
-      loginButton.style.display = "none";
-      userArea.style.display = "block";
+      loginButton.style.display =
+        "none";
+
+      userArea.style.display =
+        "block";
 
       userEmail.textContent =
         data.session.user.email || "";
@@ -569,59 +612,72 @@ async function updateAuthArea() {
       userArea.style.display =
         "none";
 
-      userEmail.textContent = "";
+      userEmail.textContent =
+        "";
 
     }
 
-  } catch (error) {
+  }
 
-    console.error(
-      "Auth Fehler:",
-      error
+
+  document
+    .getElementById("login-button")
+    .addEventListener(
+      "click",
+      function () {
+
+        window.location.href =
+          "login.html";
+
+      }
     );
 
-  }
 
-}
+  document
+    .getElementById("logout-button")
+    .addEventListener(
+      "click",
+      async function () {
 
-document
-  .getElementById("login-button")
-  .addEventListener(
-    "click",
-    () => {
-      window.location.href = "login.html";
-    }
-  );
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
 
-document
-  .getElementById("logout-button")
-  .addEventListener(
-    "click",
-    async () => {
+        if (error) {
 
-      const {
-        error
-      } =
-        await supabaseClient.auth.signOut();
+          console.error(
+            "Logout:",
+            error
+          );
 
-      if (error) {
-        console.error(error);
+        }
+
+        await updateAuthArea();
+
       }
+    );
 
-      await updateAuthArea();
+
+  supabaseClient.auth.onAuthStateChange(
+    function () {
+
+      updateAuthArea();
 
     }
   );
 
-supabaseClient.auth.onAuthStateChange(
-  () => {
-    updateAuthArea();
-  }
-);
 
-async function loadAmazonButton() {
+  /* =========================================================
+     AMAZON EINSTELLUNGEN
+     ========================================================= */
 
-  try {
+  async function loadAmazonButton() {
+
+    const button =
+      document.getElementById(
+        "amazon-top-button"
+      );
 
     const {
       data,
@@ -636,520 +692,1113 @@ async function loadAmazonButton() {
         .maybeSingle();
 
     if (error) {
+
       console.error(
         "Amazon:",
         error
       );
+
       return;
+
     }
 
-    if (!data) return;
-
-    const button =
-      document.getElementById(
-        "amazon-top-button"
-      );
-
     if (
+      data &&
       data.amazon_button_aktiv &&
       data.amazon_link
     ) {
 
-      button.href =
-        data.amazon_link;
+      const url =
+        safeUrl(data.amazon_link);
 
-      button.textContent =
-        data.amazon_button_text ||
-        "🛒 Alle Amazon-Angebote ansehen";
+      if (url) {
+
+        button.href =
+          url;
+
+        button.textContent =
+          data.amazon_button_text ||
+          "🛒 Alle Amazon-Angebote ansehen";
+
+        button.style.display =
+          "inline-block";
+
+        return;
+
+      }
+
+    }
+
+    button.style.display =
+      "none";
+
+  }
+
+
+  /* =========================================================
+     KATEGORIEN
+     ========================================================= */
+
+  async function loadCategories() {
+
+    const container =
+      document.getElementById(
+        "categories"
+      );
+
+    container.innerHTML =
+      '<div class="loading">Kategorien werden geladen...</div>';
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("categories")
+        .select(
+          "id,name,slug,icon,sort_order"
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "sort_order",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+
+      console.error(
+        "Kategorien:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Kategorien konnten momentan nicht geladen werden.</div>';
+
+      return;
+
+    }
+
+    categories =
+      data || [];
+
+    renderCategories();
+
+  }
+
+
+  function renderCategories() {
+
+    const container =
+      document.getElementById(
+        "categories"
+      );
+
+    container.innerHTML =
+      "";
+
+    if (!categories.length) {
+
+      container.innerHTML =
+        '<div class="empty">Noch keine Kategorien vorhanden.</div>';
+
+      return;
+
+    }
+
+    categories.forEach(
+      function (category) {
+
+        const element =
+          document.createElement(
+            "div"
+          );
+
+        element.textContent =
+          (
+            category.icon || ""
+          ) +
+          " " +
+          (
+            category.name || ""
+          );
+
+        if (
+          selectedCategoryId !== null &&
+          Number(category.id) ===
+          Number(selectedCategoryId)
+        ) {
+
+          element.classList.add(
+            "active"
+          );
+
+        }
+
+        element.addEventListener(
+          "click",
+          function () {
+
+            selectCategory(
+              category.id
+            );
+
+          }
+        );
+
+        container.appendChild(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     DEALS
+     ========================================================= */
+
+  async function loadDeals() {
+
+    const container =
+      document.getElementById(
+        "supabase-deals"
+      );
+
+    container.innerHTML =
+      '<div class="loading">Angebote werden geladen...</div>';
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("deals")
+        .select("*")
+        .order(
+          "id",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+
+      console.error(
+        "Deals:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Angebote konnten momentan nicht geladen werden.</div>';
+
+      return;
+
+    }
+
+    deals =
+      data || [];
+
+    renderDeals();
+
+  }
+
+
+  function selectCategory(
+    categoryId
+  ) {
+
+    selectedCategoryId =
+      Number(categoryId);
+
+    const category =
+      categories.find(
+        function (item) {
+
+          return Number(item.id) ===
+            selectedCategoryId;
+
+        }
+      );
+
+    if (!category) return;
+
+    document.getElementById(
+      "offers-title"
+    ).textContent =
+      (
+        category.icon || "📂"
+      ) +
+      " " +
+      (
+        category.name || "Angebote"
+      );
+
+    document.getElementById(
+      "show-all-button"
+    ).style.display =
+      "block";
+
+    renderCategories();
+    renderDeals();
+    renderAffiliateOffers();
+
+    document
+      .getElementById(
+        "offers-section"
+      )
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  function showAllDeals() {
+
+    selectedCategoryId =
+      null;
+
+    document.getElementById(
+      "offers-title"
+    ).textContent =
+      "🛍️ Unsere Angebote";
+
+    document.getElementById(
+      "show-all-button"
+    ).style.display =
+      "none";
+
+    renderCategories();
+    renderDeals();
+    renderAffiliateOffers();
+
+  }
+
+
+  function createDealCard(
+    deal
+  ) {
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "card";
+
+    const imageUrl =
+      safeUrl(deal.bild);
+
+    const dealUrl =
+      safeUrl(deal.link);
+
+    card.innerHTML = `
+
+      <span class="badge">
+        ANGEBOT
+      </span>
+
+      ${
+        imageUrl
+          ? `
+            <img
+              src="${escapeHtml(imageUrl)}"
+              alt="${escapeHtml(deal.titel || "")}"
+              loading="lazy"
+            >
+          `
+          : ""
+      }
+
+      <h3>
+        ${escapeHtml(deal.titel || "")}
+      </h3>
+
+      <div class="rating">
+        ⭐⭐⭐⭐⭐
+      </div>
+
+      ${
+        deal.beschreibung
+          ? `
+            <p>
+              ${escapeHtml(
+                deal.beschreibung
+              )}
+            </p>
+          `
+          : ""
+      }
+
+      ${
+        deal.preis_anzeigen &&
+        deal.preis
+          ? `
+            <div class="price">
+              ${escapeHtml(
+                deal.preis
+              )}
+            </div>
+          `
+          : ""
+      }
+
+      ${
+        dealUrl
+          ? `
+            <a
+              href="${escapeHtml(dealUrl)}"
+              class="offer-button"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              🛒 Bei Amazon ansehen
+            </a>
+          `
+          : ""
+      }
+
+    `;
+
+    return card;
+
+  }
+
+
+  function renderDeals() {
+
+    const container =
+      document.getElementById(
+        "supabase-deals"
+      );
+
+    container.innerHTML =
+      "";
+
+    let visibleDeals =
+      deals;
+
+    if (
+      selectedCategoryId !== null
+    ) {
+
+      visibleDeals =
+        deals.filter(
+          function (deal) {
+
+            return Number(
+              deal.category_id
+            ) ===
+            Number(
+              selectedCategoryId
+            );
+
+          }
+        );
+
+    }
+
+    if (!visibleDeals.length) {
+
+      container.innerHTML =
+        '<div class="empty">Keine Angebote in dieser Kategorie gefunden.</div>';
+
+      return;
+
+    }
+
+    visibleDeals.forEach(
+      function (deal) {
+
+        container.appendChild(
+          createDealCard(deal)
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     AFFILIATE ANGEBOTE
+     ========================================================= */
+
+  async function loadAffiliateOffers() {
+
+    const container =
+      document.getElementById(
+        "affiliate-offers"
+      );
+
+    container.innerHTML =
+      '<div class="loading">Vergleichsangebote werden geladen...</div>';
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("affiliate_offers")
+        .select("*")
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "sort_order",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+
+      console.error(
+        "Affiliate:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Vergleichsangebote konnten momentan nicht geladen werden.</div>';
+
+      return;
+
+    }
+
+    affiliateOffers =
+      data || [];
+
+    renderAffiliateOffers();
+
+  }
+
+
+  function renderAffiliateOffers() {
+
+    const container =
+      document.getElementById(
+        "affiliate-offers"
+      );
+
+    container.innerHTML =
+      "";
+
+    let visibleOffers =
+      affiliateOffers;
+
+    if (
+      selectedCategoryId !== null
+    ) {
+
+      visibleOffers =
+        affiliateOffers.filter(
+          function (offer) {
+
+            return Number(
+              offer.category_id
+            ) ===
+            Number(
+              selectedCategoryId
+            );
+
+          }
+        );
+
+    }
+
+    if (!visibleOffers.length) {
+      return;
+    }
+
+    visibleOffers.forEach(
+      function (offer) {
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "card affiliate-card";
+
+        const offerUrl =
+          safeUrl(
+            offer.affiliate_url
+          );
+
+        card.innerHTML = `
+
+          <div>
+
+            <span class="badge">
+              VERGLEICH
+            </span>
+
+            <span class="affiliate-badge">
+              Werbung
+            </span>
+
+          </div>
+
+          <h3 style="margin-top:12px">
+
+            ${escapeHtml(
+              offer.icon || ""
+            )}
+
+            ${escapeHtml(
+              offer.title || ""
+            )}
+
+          </h3>
+
+          ${
+            offer.description
+              ? `
+                <p style="margin-top:10px">
+                  ${escapeHtml(
+                    offer.description
+                  )}
+                </p>
+              `
+              : ""
+          }
+
+          ${
+            offer.provider
+              ? `
+                <div class="provider">
+                  Anbieter:
+                  ${escapeHtml(
+                    offer.provider
+                  )}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            offerUrl
+              ? `
+                <a
+                  href="${escapeHtml(offerUrl)}"
+                  class="offer-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ${escapeHtml(
+                    offer.button_text ||
+                    "Jetzt vergleichen"
+                  )}
+                </a>
+              `
+              : ""
+          }
+
+        `;
+
+        container.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     KUNDEN-KATEGORIEN
+     ========================================================= */
+
+  async function loadCustomerCategories() {
+
+    const container =
+      document.getElementById(
+        "customer-categories"
+      );
+
+    container.innerHTML =
+      '<div class="loading">Kunden-Angebote werden geladen...</div>';
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("customer_categories")
+        .select(
+          "id,name,slug,icon"
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+
+      console.error(
+        "Kunden-Kategorien:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Kunden-Angebote konnten momentan nicht geladen werden.</div>';
+
+      return;
+
+    }
+
+    customerCategories =
+      data || [];
+
+    renderCustomerCategories();
+
+  }
+
+
+  function renderCustomerCategories() {
+
+    const container =
+      document.getElementById(
+        "customer-categories"
+      );
+
+    container.innerHTML =
+      "";
+
+    if (!customerCategories.length) {
+
+      container.innerHTML =
+        '<div class="empty">Noch keine Kunden-Angebote vorhanden.</div>';
+
+      return;
+
+    }
+
+    customerCategories.forEach(
+      function (category) {
+
+        const element =
+          document.createElement(
+            "div"
+          );
+
+        element.textContent =
+          (
+            category.icon || "⭐"
+          ) +
+          " " +
+          (
+            category.name || ""
+          );
+
+        if (
+          selectedCustomerCategoryId !== null &&
+          String(
+            selectedCustomerCategoryId
+          ) ===
+          String(category.id)
+        ) {
+
+          element.classList.add(
+            "active"
+          );
+
+        }
+
+        element.addEventListener(
+          "click",
+          function () {
+
+            showCustomerProducts(
+              category.id
+            );
+
+          }
+        );
+
+        container.appendChild(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     KUNDEN-PRODUKTE
+     ========================================================= */
+
+  async function loadCustomerProducts() {
+
+    const container =
+      document.getElementById(
+        "customer-products"
+      );
+
+    container.innerHTML =
+      '<div class="loading">Kunden-Produkte werden geladen...</div>';
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("customer_products")
+        .select(
+          "id,customer_id,category_id,title,description,price,image_url,affiliate_url,sort_order,created_at"
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "sort_order",
+          {
+            ascending: true
+          }
+        )
+        .order(
+          "created_at",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+
+      console.error(
+        "Kunden-Produkte:",
+        error
+      );
+
+      container.innerHTML =
+        '<div class="empty">Kunden-Produkte konnten momentan nicht geladen werden.</div>';
+
+      return;
+
+    }
+
+    customerProducts =
+      data || [];
+
+    container.innerHTML =
+      '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
+
+  }
+
+
+  function showCustomerProducts(
+    categoryId
+  ) {
+
+    selectedCustomerCategoryId =
+      categoryId;
+
+    renderCustomerCategories();
+
+    const category =
+      customerCategories.find(
+        function (item) {
+
+          return String(item.id) ===
+            String(categoryId);
+
+        }
+      );
+
+    const title =
+      document.getElementById(
+        "customer-products-title"
+      );
+
+    if (category) {
+
+      title.textContent =
+        (
+          category.icon || "⭐"
+        ) +
+        " " +
+        (
+          category.name || "Kunden-Produkte"
+        );
+
+    }
+
+    const container =
+      document.getElementById(
+        "customer-products"
+      );
+
+    const products =
+      customerProducts.filter(
+        function (product) {
+
+          return String(
+            product.category_id
+          ) ===
+          String(
+            categoryId
+          );
+
+        }
+      );
+
+    container.innerHTML =
+      "";
+
+    if (!products.length) {
+
+      container.innerHTML =
+        '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
 
     } else {
 
-      button.style.display = "none";
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      "Amazon Fehler:",
-      error
-    );
-
-  }
-
-}
-
-async function loadCategories() {
-
-  const container =
-    document.getElementById(
-      "categories"
-    );
-
-  container.innerHTML =
-    '<div class="loading">Kategorien werden geladen...</div>';
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("categories")
-      .select(
-        "id,name,slug,icon,sort_order"
-      )
-      .eq("active", true)
-      .order("sort_order", {
-        ascending: true
-      });
-
-  if (error) {
-
-    console.error(
-      "Kategorien Fehler:",
-      error
-    );
-
-    showError(
-      "categories",
-      "Kategorien konnten nicht geladen werden."
-    );
-
-    return;
-
-  }
-
-  categories =
-    data || [];
-
-  renderCategories();
-
-}
-
-function renderCategories() {
-
-  const container =
-    document.getElementById(
-      "categories"
-    );
-
-  container.innerHTML = "";
-
-  if (!categories.length) {
-
-    container.innerHTML =
-      '<div class="empty">Noch keine Kategorien vorhanden.</div>';
-
-    return;
-
-  }
-
-  categories.forEach(
-    category => {
-
-      const element =
-        document.createElement("div");
-
-      element.textContent =
-        (category.icon || "") +
-        " " +
-        (category.name || "");
-
-      if (
-        selectedCategoryId !== null &&
-        Number(selectedCategoryId) ===
-        Number(category.id)
-      ) {
-
-        element.classList.add("active");
-
-      }
-
-      element.addEventListener(
-        "click",
-        () => {
-          selectCategory(category.id);
-        }
-      );
-
-      container.appendChild(element);
-
-    }
-  );
-
-}
-
-async function loadDeals() {
-
-  const container =
-    document.getElementById(
-      "supabase-deals"
-    );
-
-  container.innerHTML =
-    '<div class="loading">Angebote werden geladen...</div>';
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("deals")
-      .select("*")
-      .order("id", {
-        ascending: true
-      });
-
-  if (error) {
-
-    console.error(
-      "Deals Fehler:",
-      error
-    );
-
-    showError(
-      "supabase-deals",
-      "Angebote konnten nicht geladen werden."
-    );
-
-    return;
-
-  }
-
-  deals =
-    data || [];
-
-  renderDeals();
-
-}
-
-async function loadAffiliateOffers() {
-
-  const container =
-    document.getElementById(
-      "affiliate-offers"
-    );
-
-  container.innerHTML =
-    "";
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("affiliate_offers")
-      .select("*")
-      .eq("active", true)
-      .order("sort_order", {
-        ascending: true
-      });
-
-  if (error) {
-
-    console.error(
-      "Affiliate Fehler:",
-      error
-    );
-
-    showError(
-      "affiliate-offers",
-      "Vergleichsangebote konnten nicht geladen werden."
-    );
-
-    return;
-
-  }
-
-  affiliateOffers =
-    data || [];
-
-  renderAffiliateOffers();
-
-}
-
-function selectCategory(categoryId) {
-
-  selectedCategoryId =
-    Number(categoryId);
-
-  const category =
-    categories.find(
-      item =>
-        Number(item.id) ===
-        selectedCategoryId
-    );
-
-  if (!category) return;
-
-  document.getElementById(
-    "offers-title"
-  ).textContent =
-    (category.icon || "") +
-    " " +
-    (category.name || "Angebote");
-
-  document.getElementById(
-    "show-all-button"
-  ).style.display =
-    "block";
-
-  renderCategories();
-  renderDeals();
-  renderAffiliateOffers();
-
-  document.getElementById(
-    "offers-section"
-  ).scrollIntoView({
-    behavior: "smooth"
-  });
-
-}
-
-function showAllDeals() {
-
-  selectedCategoryId =
-    null;
-
-  document.getElementById(
-    "offers-title"
-  ).textContent =
-    "🛍️ Unsere Angebote";
-
-  document.getElementById(
-    "show-all-button"
-  ).style.display =
-    "none";
-
-  renderCategories();
-  renderDeals();
-  renderAffiliateOffers();
-
-}
-
-function renderDeals() {
-
-  const container =
-    document.getElementById(
-      "supabase-deals"
-    );
-
-  container.innerHTML = "";
-
-  let visibleDeals =
-    deals;
-
-  if (
-    selectedCategoryId !== null
-  ) {
-
-    visibleDeals =
-      deals.filter(
-        deal =>
-          Number(deal.category_id) ===
-          Number(selectedCategoryId)
-      );
-
-  }
-
-  if (!visibleDeals.length) {
-
-    container.innerHTML =
-      '<div class="empty">Keine Angebote in dieser Kategorie gefunden.</div>';
-
-    return;
-
-  }
-
-  visibleDeals.forEach(
-    deal => {
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "card";
-
-      card.innerHTML = `
-
-        <span class="badge">
-          ANGEBOT
-        </span>
-
-        ${
-          deal.bild
-            ? `
-              <img
-                src="${escapeAttribute(deal.bild)}"
-                alt="${escapeAttribute(deal.titel || "")}"
-              >
-            `
-            : ""
-        }
-
-        <h3>
-          ${escapeHtml(deal.titel || "")}
-        </h3>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        ${
-          deal.beschreibung
-            ? `
-              <p>
-                ${escapeHtml(deal.beschreibung)}
-              </p>
-            `
-            : ""
-        }
-
-        ${
-          deal.preis_anzeigen
-            ? `
-              <div class="price">
-                ${escapeHtml(deal.preis || "")}
-              </div>
-            `
-            : ""
-        }
-
-        ${
-          deal.link
-            ? `
-              <a
-                href="${escapeAttribute(deal.link)}"
-                class="offer-button"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                🛒 Bei Amazon ansehen
-              </a>
-            `
-            : ""
-        }
-
-      `;
-
-      container.appendChild(card);
-
-    }
-  );
-
-}
-
-function renderAffiliateOffers() {
-
-  const container =
-    document.getElementById(
-      "affiliate-offers"
-    );
-
-  container.innerHTML = "";
-
-  let visibleOffers =
-    affiliateOffers;
-
-  if (
-    selectedCategoryId !== null
-  ) {
-
-    visibleOffers =
-      affiliateOffers.filter(
-        offer =>
-          Number(offer.category_id) ===
-          Number(selectedCategoryId)
-      );
-
-  }
-
-  const groups = [
-
-    {
-      name: "🛡️ Versicherungen",
-      key: "Versicherungen"
-    },
-
-    {
-      name: "❤️ Vorsorge",
-      key: "Vorsorge"
-    },
-
-    {
-      name: "💳 Finanzen",
-      key: "Finanzen"
-    },
-
-    {
-      name: "⚡ Energie",
-      key: "Energie"
-    },
-
-    {
-      name: "🌐 Internet & Mobilfunk",
-      key: "Internet & Mobilfunk"
-    },
-
-    {
-      name: "✈️ Reisen",
-      key: "Reisen"
-    }
-
-  ];
-
-  groups.forEach(
-    group => {
-
-      const groupOffers =
-        visibleOffers.filter(
-          offer =>
-            String(
-              offer.group_name || ""
-            )
-              .trim()
-              .toLowerCase() ===
-            String(
-              group.key
-            )
-              .trim()
-              .toLowerCase()
-        );
-
-      if (!groupOffers.length) {
-        return;
-      }
-
-      const heading =
-        document.createElement("h2");
-
-      heading.textContent =
-        group.name;
-
-      heading.style.marginTop =
-        "30px";
-
-      container.appendChild(heading);
-
-      groupOffers.forEach(
-        offer => {
-
-          if (
-            !offer.affiliate_url &&
-            !offer.widget_code
-          ) {
-            return;
-          }
+      products.forEach(
+        function (product) {
 
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           card.className =
-            "card affiliate-card";
+            "card customer-product-card";
+
+          const imageUrl =
+            safeUrl(
+              product.image_url
+            );
+
+          const affiliateUrl =
+            safeUrl(
+              product.affiliate_url
+            );
 
           card.innerHTML = `
 
-            <div>
+            ${
+              imageUrl
+                ? `
+                  <img
+                    class="customer-product-image"
+                    src="${escapeHtml(imageUrl)}"
+                    alt="${escapeHtml(product.title || "")}"
+                    loading="lazy"
+                  >
+                `
+                : ""
+            }
+
+            <h3>
+              ${escapeHtml(
+                product.title || ""
+              )}
+            </h3>
+
+            ${
+              product.description
+                ? `
+                  <p class="customer-product-description">
+                    ${escapeHtml(
+                      product.description
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+            ${
+              product.price !== null &&
+              product.price !== undefined &&
+              product.price !== ""
+                ? `
+                  <div class="price">
+                    ${escapeHtml(
+                      String(product.price)
+                    )} €
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              affiliateUrl
+                ? `
+                  <a
+                    href="${escapeHtml(affiliateUrl)}"
+                    class="offer-button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    🛒 Zum Angebot
+                  </a>
+                `
+                : ""
+            }
+
+          `;
+
+          container.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+    document
+      .getElementById(
+        "customer-products-section"
+      )
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  /* =========================================================
+     SUCHE
+     ========================================================= */
+
+  document
+    .getElementById("search-input")
+    .addEventListener(
+      "input",
+      function () {
+
+        const search =
+          this.value
+            .trim()
+            .toLowerCase();
+
+        if (!search) {
+
+          renderDeals();
+          renderAffiliateOffers();
+
+          return;
+
+        }
+
+        const dealContainer =
+          document.getElementById(
+            "supabase-deals"
+          );
+
+        const affiliateContainer =
+          document.getElementById(
+            "affiliate-offers"
+          );
+
+        dealContainer.innerHTML =
+          "";
+
+        affiliateContainer.innerHTML =
+          "";
+
+        const dealResults =
+          deals.filter(
+            function (deal) {
+
+              const title =
+                String(
+                  deal.titel || ""
+                ).toLowerCase();
+
+              const description =
+                String(
+                  deal.beschreibung || ""
+                ).toLowerCase();
+
+              return (
+                title.includes(search) ||
+                description.includes(search)
+              );
+
+            }
+          );
+
+        if (!dealResults.length) {
+
+          dealContainer.innerHTML =
+            '<div class="empty">Keine passenden Angebote gefunden.</div>';
+
+        } else {
+
+          dealResults.forEach(
+            function (deal) {
+
+              dealContainer.appendChild(
+                createDealCard(deal)
+              );
+
+            }
+          );
+
+        }
+
+        const affiliateResults =
+          affiliateOffers.filter(
+            function (offer) {
+
+              const title =
+                String(
+                  offer.title || ""
+                ).toLowerCase();
+
+              const description =
+                String(
+                  offer.description || ""
+                ).toLowerCase();
+
+              return (
+                title.includes(search) ||
+                description.includes(search)
+              );
+
+            }
+          );
+
+        affiliateResults.forEach(
+          function (offer) {
+
+            const url =
+              safeUrl(
+                offer.affiliate_url
+              );
+
+            if (!url) return;
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+            card.className =
+              "card affiliate-card";
+
+            card.innerHTML = `
 
               <span class="badge">
                 VERGLEICH
@@ -1159,779 +1808,179 @@ function renderAffiliateOffers() {
                 Werbung
               </span>
 
-            </div>
+              <h3 style="margin-top:12px">
 
-            <h3 style="margin-top:12px">
+                ${escapeHtml(
+                  offer.icon || ""
+                )}
 
-              ${escapeHtml(
-                offer.icon || ""
-              )}
+                ${escapeHtml(
+                  offer.title || ""
+                )}
 
-              ${escapeHtml(
-                offer.title || ""
-              )}
+              </h3>
 
-            </h3>
+              ${
+                offer.description
+                  ? `
+                    <p style="margin-top:10px">
+                      ${escapeHtml(
+                        offer.description
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
 
-            ${
-              offer.description
-                ? `
-                  <p style="margin-top:10px">
-                    ${escapeHtml(
-                      offer.description
-                    )}
-                  </p>
-                `
-                : ""
-            }
+              ${
+                offer.provider
+                  ? `
+                    <div class="provider">
+                      Anbieter:
+                      ${escapeHtml(
+                        offer.provider
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
 
-            ${
-              offer.provider
-                ? `
-                  <div class="provider">
-                    Anbieter:
-                    ${escapeHtml(
-                      offer.provider
-                    )}
-                  </div>
-                `
-                : ""
-            }
+              <a
+                href="${escapeHtml(url)}"
+                class="offer-button"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ${escapeHtml(
+                  offer.button_text ||
+                  "Jetzt vergleichen"
+                )}
+              </a>
 
-            ${
-              offer.widget_code
-                ? `
-                  <div
-                    class="affiliate-widget"
-                    style="margin-top:15px;overflow:hidden;"
-                  >
-                    ${offer.widget_code}
-                  </div>
-                `
-                : `
-                  <a
-                    href="${escapeAttribute(
-                      offer.affiliate_url
-                    )}"
-                    class="offer-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    ${escapeHtml(
-                      offer.button_text ||
-                      "Jetzt vergleichen"
-                    )}
-                  </a>
-                `
-            }
+            `;
 
-          `;
-
-          container.appendChild(card);
-
-        }
-      );
-
-    }
-  );
-
-  loadAffiliateWidgetScripts();
-
-}
-
-function loadAffiliateWidgetScripts() {
-
-  document
-    .querySelectorAll(
-      "#affiliate-offers script"
-    )
-    .forEach(
-      oldScript => {
-
-        const newScript =
-          document.createElement("script");
-
-        Array.from(
-          oldScript.attributes
-        ).forEach(
-          attribute => {
-
-            newScript.setAttribute(
-              attribute.name,
-              attribute.value
+            affiliateContainer.appendChild(
+              card
             );
 
           }
         );
 
-        newScript.textContent =
-          oldScript.textContent;
-
-        oldScript.parentNode.replaceChild(
-          newScript,
-          oldScript
-        );
-
       }
     );
 
-}
 
-async function loadCustomerCategories() {
-
-  const container =
-    document.getElementById(
-      "customer-categories"
-    );
-
-  container.innerHTML =
-    '<div class="loading">Kunden-Angebote werden geladen...</div>';
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("customer_categories")
-      .select(
-        "id,name,slug,icon"
-      )
-      .eq("active", true)
-      .order("created_at", {
-        ascending: true
-      });
-
-  if (error) {
-
-    console.error(
-      "Kunden-Kategorien:",
-      error
-    );
-
-    showError(
-      "customer-categories",
-      "Kunden-Angebote konnten nicht geladen werden."
-    );
-
-    return;
-
-  }
-
-  customerCategories =
-    data || [];
-
-  renderCustomerCategories();
-
-}
-
-function renderCustomerCategories() {
-
-  const container =
-    document.getElementById(
-      "customer-categories"
-    );
-
-  container.innerHTML = "";
-
-  if (!customerCategories.length) {
-
-    container.innerHTML =
-      '<div class="empty">Noch keine Kunden-Angebote vorhanden.</div>';
-
-    return;
-
-  }
-
-  customerCategories.forEach(
-    category => {
-
-      const element =
-        document.createElement("div");
-
-      element.textContent =
-        (category.icon || "📂") +
-        " " +
-        (category.name || "");
-
-      if (
-        selectedCustomerCategoryId !== null &&
-        String(
-          selectedCustomerCategoryId
-        ) ===
-        String(category.id)
-      ) {
-
-        element.classList.add("active");
-
-      }
-
-      element.addEventListener(
-        "click",
-        () => {
-          showCustomerProducts(category.id);
-        }
-      );
-
-      container.appendChild(element);
-
-    }
-  );
-
-}
-
-async function loadCustomerProducts() {
-
-  const container =
-    document.getElementById(
-      "customer-products"
-    );
-
-  container.innerHTML =
-    '<div class="loading">Kunden-Produkte werden geladen...</div>';
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("customer_products")
-      .select(
-        "id,customer_id,category_id,title,description,price,image_url,affiliate_url,sort_order,created_at"
-      )
-      .eq("active", true)
-      .order("sort_order", {
-        ascending: true
-      })
-      .order("created_at", {
-        ascending: true
-      });
-
-  if (error) {
-
-    console.error(
-      "Kunden-Produkte:",
-      error
-    );
-
-    showError(
-      "customer-products",
-      "Kunden-Produkte konnten nicht geladen werden."
-    );
-
-    return;
-
-  }
-
-  customerProducts =
-    data || [];
-
-  container.innerHTML =
-    '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
-
-}
-
-function showCustomerProducts(categoryId) {
-
-  selectedCustomerCategoryId =
-    categoryId;
-
-  renderCustomerCategories();
-
-  const container =
-    document.getElementById(
-      "customer-products"
-    );
-
-  const title =
-    document.getElementById(
-      "customer-products-title"
-    );
-
-  const category =
-    customerCategories.find(
-      item =>
-        String(item.id) ===
-        String(categoryId)
-    );
-
-  title.textContent =
-    category
-      ? (category.icon || "⭐") +
-        " " +
-        category.name
-      : "🛍️ Kunden-Produkte";
-
-  const products =
-    customerProducts.filter(
-      product =>
-        String(
-          product.category_id
-        ) ===
-        String(categoryId)
-    );
-
-  container.innerHTML = "";
-
-  if (!products.length) {
-
-    container.innerHTML =
-      '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
-
-  } else {
-
-    products.forEach(
-      product => {
-
-        const card =
-          document.createElement("div");
-
-        card.className =
-          "card customer-product-card";
-
-        card.innerHTML = `
-
-          ${
-            product.image_url
-              ? `
-                <img
-                  class="customer-product-image"
-                  src="${escapeAttribute(
-                    product.image_url
-                  )}"
-                  alt="${escapeAttribute(
-                    product.title || ""
-                  )}"
-                >
-              `
-              : ""
-          }
-
-          <h3>
-            ${escapeHtml(
-              product.title || ""
-            )}
-          </h3>
-
-          ${
-            product.description
-              ? `
-                <p class="customer-product-description">
-                  ${escapeHtml(
-                    product.description
-                  )}
-                </p>
-              `
-              : ""
-          }
-
-          ${
-            product.price !== null &&
-            product.price !== undefined
-              ? `
-                <div class="price">
-                  ${escapeHtml(
-                    String(product.price)
-                  )} €
-                </div>
-              `
-              : ""
-          }
-
-          ${
-            product.affiliate_url
-              ? `
-                <a
-                  href="${escapeAttribute(
-                    product.affiliate_url
-                  )}"
-                  class="offer-button"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🛒 Zum Angebot
-                </a>
-              `
-              : ""
-          }
-
-        `;
-
-        container.appendChild(card);
-
-      }
-    );
-
-  }
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
 
   document
-    .getElementById(
-      "customer-products-section"
-    )
-    .scrollIntoView({
-      behavior: "smooth"
-    });
+    .getElementById("nav-home")
+    .addEventListener(
+      "click",
+      function () {
 
-}
+        showAllDeals();
 
-function performSearch(search) {
-
-  const dealContainer =
-    document.getElementById(
-      "supabase-deals"
-    );
-
-  const affiliateContainer =
-    document.getElementById(
-      "affiliate-offers"
-    );
-
-  if (!search) {
-
-    renderDeals();
-    renderAffiliateOffers();
-
-    return;
-
-  }
-
-  const dealResults =
-    deals.filter(
-      deal => {
-
-        const title =
-          String(
-            deal.titel || ""
-          ).toLowerCase();
-
-        const description =
-          String(
-            deal.beschreibung || ""
-          ).toLowerCase();
-
-        return (
-          title.includes(search) ||
-          description.includes(search)
-        );
-
-      }
-    );
-
-  dealContainer.innerHTML = "";
-
-  if (!dealResults.length) {
-
-    dealContainer.innerHTML =
-      '<div class="empty">Keine passenden Angebote gefunden.</div>';
-
-  }
-
-  dealResults.forEach(
-    deal => {
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "card";
-
-      card.innerHTML = `
-
-        <span class="badge">
-          ANGEBOT
-        </span>
-
-        ${
-          deal.bild
-            ? `
-              <img
-                src="${escapeAttribute(
-                  deal.bild
-                )}"
-                alt="${escapeAttribute(
-                  deal.titel || ""
-                )}"
-              >
-            `
-            : ""
-        }
-
-        <h3>
-          ${escapeHtml(
-            deal.titel || ""
-          )}
-        </h3>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        ${
-          deal.beschreibung
-            ? `
-              <p>
-                ${escapeHtml(
-                  deal.beschreibung
-                )}
-              </p>
-            `
-            : ""
-        }
-
-        ${
-          deal.preis_anzeigen
-            ? `
-              <div class="price">
-                ${escapeHtml(
-                  deal.preis || ""
-                )}
-              </div>
-            `
-            : ""
-        }
-
-        ${
-          deal.link
-            ? `
-              <a
-                href="${escapeAttribute(
-                  deal.link
-                )}"
-                class="offer-button"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                🛒 Bei Amazon ansehen
-              </a>
-            `
-            : ""
-        }
-
-      `;
-
-      dealContainer.appendChild(card);
-
-    }
-  );
-
-  const affiliateResults =
-    affiliateOffers.filter(
-      offer => {
-
-        const title =
-          String(
-            offer.title || ""
-          ).toLowerCase();
-
-        const description =
-          String(
-            offer.description || ""
-          ).toLowerCase();
-
-        return (
-          title.includes(search) ||
-          description.includes(search)
-        );
-
-      }
-    );
-
-  affiliateContainer.innerHTML = "";
-
-  affiliateResults.forEach(
-    offer => {
-
-      if (!offer.affiliate_url) {
-        return;
-      }
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "card affiliate-card";
-
-      card.innerHTML = `
-
-        <span class="badge">
-          VERGLEICH
-        </span>
-
-        <span class="affiliate-badge">
-          Werbung
-        </span>
-
-        <h3 style="margin-top:12px">
-          ${escapeHtml(
-            offer.icon || ""
-          )}
-          ${escapeHtml(
-            offer.title || ""
-          )}
-        </h3>
-
-        ${
-          offer.description
-            ? `
-              <p style="margin-top:10px">
-                ${escapeHtml(
-                  offer.description
-                )}
-              </p>
-            `
-            : ""
-        }
-
-        ${
-          offer.provider
-            ? `
-              <div class="provider">
-                Anbieter:
-                ${escapeHtml(
-                  offer.provider
-                )}
-              </div>
-            `
-            : ""
-        }
-
-        <a
-          href="${escapeAttribute(
-            offer.affiliate_url
-          )}"
-          class="offer-button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          ${escapeHtml(
-            offer.button_text ||
-            "Jetzt vergleichen"
-          )}
-        </a>
-
-      `;
-
-      affiliateContainer.appendChild(card);
-
-    }
-  );
-
-}
-
-document
-  .getElementById("search-input")
-  .addEventListener(
-    "input",
-    function() {
-
-      performSearch(
-        this.value
-          .trim()
-          .toLowerCase()
-      );
-
-    }
-  );
-
-document
-  .getElementById("nav-home")
-  .addEventListener(
-    "click",
-    () => {
-
-      showAllDeals();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
-  );
-
-document
-  .getElementById("nav-categories")
-  .addEventListener(
-    "click",
-    () => {
-
-      document
-        .getElementById(
-          "category-section"
-        )
-        .scrollIntoView({
+        window.scrollTo({
+          top: 0,
           behavior: "smooth"
         });
 
-    }
-  );
+      }
+    );
 
-document
-  .getElementById("nav-search")
-  .addEventListener(
-    "click",
-    () => {
 
-      const input =
-        document.getElementById(
-          "search-input"
+  document
+    .getElementById("nav-categories")
+    .addEventListener(
+      "click",
+      function () {
+
+        document
+          .getElementById(
+            "category-section"
+          )
+          .scrollIntoView({
+            behavior: "smooth"
+          });
+
+      }
+    );
+
+
+  document
+    .getElementById("nav-search")
+    .addEventListener(
+      "click",
+      function () {
+
+        const input =
+          document.getElementById(
+            "search-input"
+          );
+
+        input.focus();
+
+        input.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      }
+    );
+
+
+  document
+    .getElementById("nav-favorites")
+    .addEventListener(
+      "click",
+      function () {
+
+        alert(
+          "Die Favoriten-Funktion kommt noch."
         );
 
-      input.focus();
+      }
+    );
 
-      input.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
 
-    }
-  );
+  document
+    .getElementById("show-all-button")
+    .addEventListener(
+      "click",
+      showAllDeals
+    );
 
-document
-  .getElementById("nav-favorites")
-  .addEventListener(
-    "click",
-    () => {
 
-      alert(
-        "Die Favoriten-Funktion kommt noch."
-      );
+  /* =========================================================
+     START
+     ========================================================= */
 
-    }
-  );
+  async function initializeApp() {
 
-document
-  .getElementById("show-all-button")
-  .addEventListener(
-    "click",
-    showAllDeals
-  );
+    await updateAuthArea();
 
-async function initializeApp() {
+    await Promise.allSettled([
 
-  await updateAuthArea();
+      loadAmazonButton(),
 
-  await Promise.all([
-    loadAmazonButton(),
-    loadCategories(),
-    loadDeals(),
-    loadAffiliateOffers(),
-    loadCustomerCategories(),
-    loadCustomerProducts()
-  ]);
+      loadCategories(),
 
-}
+      loadDeals(),
 
-initializeApp()
-  .catch(
-    error => {
+      loadAffiliateOffers(),
 
-      console.error(
-        "Initialisierungsfehler:",
-        error
-      );
+      loadCustomerCategories(),
 
-    }
-  );
+      loadCustomerProducts()
+
+    ]);
+
+  }
+
+
+  initializeApp();
 
 </script>
 
