@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>LieblingsDeals</title>
 
   <style>
@@ -57,6 +58,10 @@
 
     h2 {
       margin-bottom: 15px;
+    }
+
+    h3 {
+      margin-bottom: 8px;
     }
 
     .categories {
@@ -139,6 +144,7 @@
       font-size: 28px;
       font-weight: 700;
       color: #ff6a00;
+      margin-top: 10px;
     }
 
     .offer-button {
@@ -188,6 +194,7 @@
       width: 100%;
       border-radius: 12px;
       margin: 15px 0;
+      display: block;
     }
 
     .rating {
@@ -219,6 +226,41 @@
       font-size: 13px;
       margin-top: 8px;
     }
+
+    .customer-product-card {
+      margin-top: 20px;
+    }
+
+    .customer-product-card:first-child {
+      margin-top: 0;
+    }
+
+    .customer-product-image {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .customer-product-description {
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .categories {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      section {
+        padding: 15px;
+      }
+
+      .search {
+        margin: 15px;
+      }
+    }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -226,83 +268,134 @@
 
 <body>
 
-  <header>
-    <div class="logo">⭐ LieblingsDeals</div>
-    <div class="subtitle">Die besten Angebote jeden Tag</div>
+<header>
 
-    <a
-      id="amazon-top-button"
-      class="amazon-top-button"
-      href="#"
-      target="_blank"
-      rel="noopener"
-    >
-      🛒 Alle Amazon-Angebote ansehen
-    </a>
-    <div id="auth-area" style="margin-top:15px;">
+  <div class="logo">
+    ⭐ LieblingsDeals
+  </div>
 
-  <button
-    id="login-button"
-    style="
-      background:#fff;
-      color:#ff6a00;
-      border:0;
-      padding:10px 18px;
-      border-radius:10px;
-      font-weight:bold;
-      cursor:pointer;
-    "
+  <div class="subtitle">
+    Die besten Angebote jeden Tag
+  </div>
+
+  <a
+    id="amazon-top-button"
+    class="amazon-top-button"
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
   >
-    👤 Anmelden / Registrieren
-  </button>
+    🛒 Alle Amazon-Angebote ansehen
+  </a>
 
-  <div
-    id="user-area"
-    style="display:none;"
-  >
-    <span id="user-email"></span>
+  <div id="auth-area" style="margin-top:15px;">
 
     <button
-      id="logout-button"
+      id="login-button"
+      type="button"
       style="
-        margin-left:10px;
         background:#fff;
         color:#ff6a00;
         border:0;
-        padding:8px 12px;
-        border-radius:8px;
+        padding:10px 18px;
+        border-radius:10px;
         font-weight:bold;
         cursor:pointer;
       "
     >
-      Abmelden
+      👤 Anmelden / Registrieren
     </button>
+
+    <div
+      id="user-area"
+      style="display:none;"
+    >
+
+      <span id="user-email"></span>
+
+      <button
+        id="logout-button"
+        type="button"
+        style="
+          margin-left:10px;
+          background:#fff;
+          color:#ff6a00;
+          border:0;
+          padding:8px 12px;
+          border-radius:8px;
+          font-weight:bold;
+          cursor:pointer;
+        "
+      >
+        Abmelden
+      </button>
+
+    </div>
+
   </div>
+
+</header>
+
+
+<div
+  style="
+    font-size:11px;
+    text-align:center;
+    padding:8px;
+    background:#fff8f0;
+    color:#777;
+  "
+>
+  Werbung: Einige Links auf dieser Website sind Affiliate-Links.
+  Wenn du über einen solchen Link einen Kauf oder Vertrag abschließt,
+  kann ich eine Provision erhalten. Für dich entstehen dadurch keine
+  zusätzlichen Kosten.
+</div>
+
+
+<div class="search">
+
+  <input
+    id="search-input"
+    type="search"
+    placeholder="🔍 Produkte suchen..."
+    autocomplete="off"
+  >
 
 </div>
-  </header>
 
-  <div style="font-size:11px;text-align:center;padding:8px;background:#fff8f0;color:#777">
-    Werbung: Einige Links auf dieser Website sind Affiliate-Links. Wenn du über einen solchen Link einen Kauf oder Vertrag abschließt, kann ich eine Provision erhalten. Für dich entstehen dadurch keine zusätzlichen Kosten.
-  </div>
 
-  <div class="search">
-    <input
-      id="search-input"
-      type="search"
-      placeholder="🔍 Produkte suchen..."
-    >
-  </div>
+<!-- =====================================================
+     ÖFFENTLICHE KATEGORIEN
+     ===================================================== -->
 
-  <section id="category-section">
-    <h2>📂 Kategorien</h2>
+<section id="category-section">
 
-    <div class="categories" id="categories">
-      <div class="loading">Kategorien werden geladen...</div>
+  <h2>
+    📂 Kategorien
+  </h2>
+
+  <div
+    class="categories"
+    id="categories"
+  >
+    <div class="loading">
+      Kategorien werden geladen...
     </div>
-  </section>
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     KUNDEN-KATEGORIEN
+     ===================================================== -->
+
 <section id="customer-category-section">
-  <h2>⭐ Kunden-Angebote</h2>
+
+  <h2>
+    ⭐ Kunden-Angebote
+  </h2>
 
   <div
     class="categories"
@@ -312,576 +405,741 @@
       Kunden-Angebote werden geladen...
     </div>
   </div>
+
 </section>
-  <section id="customer-products-section">
-  <h2>🛍️ Kunden-Produkte</h2>
+
+
+<!-- =====================================================
+     KUNDEN-PRODUKTE
+     ===================================================== -->
+
+<section id="customer-products-section">
+
+  <div class="category-header">
+
+    <h2 id="customer-products-title">
+      🛍️ Kunden-Produkte
+    </h2>
+
+  </div>
 
   <div id="customer-products">
-    <div class="loading">
-      Kunden-Produkte werden geladen...
+
+    <div class="empty">
+      Wähle eine Kunden-Kategorie aus.
     </div>
+
   </div>
+
 </section>
-  <section id="offers-section">
 
-    <div class="category-header">
-      <h2 id="offers-title">🛍️ Unsere Angebote</h2>
 
-      <button
-        id="show-all-button"
-        class="back-button"
-        style="display:none"
-      >
-        ← Alle
-      </button>
+<!-- =====================================================
+     ÖFFENTLICHE ANGEBOTE
+     ===================================================== -->
+
+<section id="offers-section">
+
+  <div class="category-header">
+
+    <h2 id="offers-title">
+      🛍️ Unsere Angebote
+    </h2>
+
+    <button
+      id="show-all-button"
+      class="back-button"
+      type="button"
+      style="display:none"
+    >
+      ← Alle
+    </button>
+
+  </div>
+
+
+  <div id="supabase-deals">
+
+    <div class="loading">
+      Angebote werden geladen...
     </div>
 
-    <div id="supabase-deals">
-      <div class="loading">Angebote werden geladen...</div>
-    </div>
-
-    <div id="affiliate-offers"></div>
-
-  </section>
-
-  <nav class="bottom-nav">
-
-    <div id="nav-home">
-      🏠<br>Start
-    </div>
-
-    <div id="nav-categories">
-      📂<br>Kategorien
-    </div>
-
-    <div>
-      ❤️<br>Favoriten
-    </div>
-
-    <div id="nav-search">
-      🔍<br>Suche
-    </div>
-
-  </nav>
-
-  <footer style="text-align:center;padding:30px;color:#777">
-    <p>
-      LieblingsDeals © 2026 |
-      <a href="impressum.html">Impressum</a> |
-      <a href="datenschutz.html">Datenschutz</a>
-    </p>
-  </footer>
+  </div>
 
 
-  <script>
+  <div id="affiliate-offers"></div>
 
-    const U = "https://cklnfznlzyushvlybzad.supabase.co";
-    const K = "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
-const supabaseClient = window.supabase.createClient(U, K);
-    let categories = [];
-    let deals = [];
-    let affiliateOffers = [];
-    let selectedCategoryId = null;
-/* =========================================================
-   KUNDEN-KATEGORIEN UND PRODUKTE
-   ========================================================= */
+</section>
 
-let customerCategories = [];
-let customerProducts = [];
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-function loadCustomerCategories() {
 
-  return fetch(
-    U + "/rest/v1/customer_categories?select=id,name,slug,icon&active=eq.true&order=created_at.asc",
-    {
-      headers: {
-        apikey: K
-      }
-    }
-  )
-    .then(response => {
+<!-- =====================================================
+     BOTTOM NAVIGATION
+     ===================================================== -->
 
-      if (!response.ok) {
-        throw new Error(
-          "Kunden-Kategorien konnten nicht geladen werden."
-        );
-      }
+<nav class="bottom-nav">
 
-      return response.json();
+  <div id="nav-home">
+    🏠<br>Start
+  </div>
 
-    })
-    .then(data => {
+  <div id="nav-categories">
+    📂<br>Kategorien
+  </div>
 
-      customerCategories = data;
+  <div id="nav-favorites">
+    ❤️<br>Favoriten
+  </div>
 
-      console.log(
-        "Kunden-Kategorien geladen:",
-        customerCategories
-      );
-renderCustomerCategories();
-    });
-function renderCustomerCategories() {
+  <div id="nav-search">
+    🔍<br>Suche
+  </div>
 
-  const container =
-    document.getElementById("customer-categories");
+</nav>
 
-  container.innerHTML = "";
 
-  if (!customerCategories.length) {
+<footer
+  style="
+    text-align:center;
+    padding:30px;
+    color:#777;
+  "
+>
 
-    container.innerHTML =
-      '<div class="empty">Noch keine Kunden-Angebote vorhanden.</div>';
+  <p>
+    LieblingsDeals © 2026 |
+    <a href="impressum.html">
+      Impressum
+    </a>
+    |
+    <a href="datenschutz.html">
+      Datenschutz
+    </a>
+  </p>
 
-    return;
+</footer>
+
+
+<script>
+
+  /* =========================================================
+     SUPABASE
+     ========================================================= */
+
+  const U =
+    "https://cklnfznlzyushvlybzad.supabase.co";
+
+  const K =
+    "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+
+  const supabaseClient =
+    window.supabase.createClient(U, K);
+
+
+  /* =========================================================
+     DATEN
+     ========================================================= */
+
+  let categories = [];
+
+  let deals = [];
+
+  let affiliateOffers = [];
+
+  let customerCategories = [];
+
+  let customerProducts = [];
+
+  let selectedCategoryId = null;
+
+  let selectedCustomerCategoryId = null;
+
+
+  /* =========================================================
+     HILFSFUNKTIONEN
+     ========================================================= */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
   }
 
-  customerCategories.forEach(category => {
 
-    const element =
-      document.createElement("div");
+  function escapeAttribute(value) {
 
-    element.textContent =
-      (category.icon || "📂") +
-      " " +
-      category.name;
-
-    element.addEventListener(
-      "click",
-      () => showCustomerProducts(category.id)
-    );
-
-    container.appendChild(element);
-
-  });
-
-}
-}
-
-function loadCustomerProducts() {
-
-  return fetch(
-    U + "/rest/v1/customer_products?select=*&active=eq.true&order=sort_order.asc,created_at.asc",
-    {
-      headers: {
-        apikey: K,
-        "Content-Type": "application/json"
-      }
-    }
-  )
-    .then(response => {
-
-      if (!response.ok) {
-        throw new Error(
-          "Kunden-Produkte konnten nicht geladen werden. HTTP " +
-          response.status
-        );
-      }
-
-      return response.json();
-
-    })
-    .then(data => {
-
-      customerProducts = data;
-
-      console.log(
-        "Kunden-Produkte geladen:",
-        customerProducts
-      );
-
-      return customerProducts;
-
-    });
-
-}
-
-
-function showCustomerProducts(categoryId) {
-
-  const container =
-    document.getElementById("customer-products");
-
-  container.innerHTML =
-    '<div class="loading">Produkte werden geladen...</div>';
-
-  const selectedCategory =
-    String(categoryId);
-
-  const products =
-    customerProducts.filter(product => {
-
-      return (
-        String(product.category_id) ===
-        selectedCategory
-      );
-
-    });
-
-  container.innerHTML = "";
-
-  if (!products.length) {
-
-    container.innerHTML =
-      '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
-
-    return;
+    return escapeHtml(value);
 
   }
 
-  products.forEach(product => {
 
-    const card =
-      document.createElement("div");
+  /* =========================================================
+     AUTHENTIFIZIERUNG
+     ========================================================= */
 
-    card.className = "card";
+  async function updateAuthArea() {
 
-    card.innerHTML = `
+    const {
+      data
+    } =
+      await supabaseClient.auth.getSession();
 
-      ${
-        product.image_url
-          ? `
-            <img
-              src="${escapeHtml(product.image_url)}"
-              alt="${escapeHtml(product.title || "")}"
-            >
-          `
-          : ""
-      }
 
-      <h3>
-        ${escapeHtml(product.title || "")}
-      </h3>
+    const loginButton =
+      document.getElementById("login-button");
 
-      ${
-        product.description
-          ? `
-            <p style="margin-top:10px;">
-              ${escapeHtml(product.description)}
-            </p>
-          `
-          : ""
-      }
+    const userArea =
+      document.getElementById("user-area");
 
-      ${
-        product.price !== null
-          ? `
-            <div class="price" style="margin-top:10px;">
-              ${escapeHtml(String(product.price))} €
-            </div>
-          `
-          : ""
-      }
+    const userEmail =
+      document.getElementById("user-email");
 
-      ${
-        product.affiliate_url
-          ? `
-            <a
-              href="${escapeHtml(product.affiliate_url)}"
-              class="offer-button"
-              target="_blank"
-              rel="noopener"
-            >
-              🛒 Zum Angebot
-            </a>
-          `
-          : ""
-      }
 
-    `;
+    if (data.session) {
 
-    container.appendChild(card);
+      loginButton.style.display =
+        "none";
 
-  });
+      userArea.style.display =
+        "block";
+
+      userEmail.textContent =
+        data.session.user.email || "";
+
+    } else {
+
+      loginButton.style.display =
+        "inline-block";
+
+      userArea.style.display =
+        "none";
+
+      userEmail.textContent =
+        "";
+
+    }
+
+  }
+
 
   document
-    .getElementById("customer-products-section")
-    .scrollIntoView({
-      behavior: "smooth"
-    });
+    .getElementById("login-button")
+    .addEventListener(
+      "click",
+      () => {
 
-}
-    /* =========================================================
-       AMAZON BUTTON
-       ========================================================= */
+        window.location.href =
+          "login.html";
 
-    fetch(
-      U + "/rest/v1/site_settings?select=amazon_link,amazon_button_text,amazon_button_aktiv&limit=1",
-      {
-        headers: {
-          apikey: K
-        }
       }
-    )
-      .then(response => response.json())
-      .then(settings => {
+    );
 
-        if (!settings.length) return;
 
-        const button =
-          document.getElementById("amazon-top-button");
+  document
+    .getElementById("logout-button")
+    .addEventListener(
+      "click",
+      async () => {
 
-        const setting = settings[0];
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
 
-        if (
-          setting.amazon_button_aktiv &&
-          setting.amazon_link
-        ) {
 
-          button.href = setting.amazon_link;
+        if (error) {
 
-          button.textContent =
-            setting.amazon_button_text ||
-            "🛒 Alle Amazon-Angebote ansehen";
+          console.error(
+            "Logout Fehler:",
+            error
+          );
 
-        } else {
-
-          button.style.display = "none";
+          return;
 
         }
 
-      })
-      .catch(error => {
 
-        console.error(
-          "Fehler beim Laden der Amazon-Einstellungen:",
-          error
+        await updateAuthArea();
+
+      }
+    );
+
+
+  supabaseClient.auth.onAuthStateChange(
+    () => {
+
+      updateAuthArea();
+
+    }
+  );
+
+
+  /* =========================================================
+     AMAZON BUTTON
+     ========================================================= */
+
+  async function loadAmazonButton() {
+
+    try {
+
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/site_settings?select=amazon_link,amazon_button_text,amazon_button_aktiv&limit=1",
+          {
+            headers: {
+              apikey: K
+            }
+          }
         );
 
-      });
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Amazon-Einstellungen konnten nicht geladen werden."
+        );
+
+      }
 
 
-    /* =========================================================
-       KATEGORIEN
-       ========================================================= */
+      const settings =
+        await response.json();
 
-    function loadCategories() {
 
-      return fetch(
-        U + "/rest/v1/categories?select=id,name,slug,icon,sort_order&active=eq.true&order=sort_order.asc",
-        {
-          headers: {
-            apikey: K
+      if (!settings.length) return;
+
+
+      const setting =
+        settings[0];
+
+
+      const button =
+        document.getElementById(
+          "amazon-top-button"
+        );
+
+
+      if (
+        setting.amazon_button_aktiv &&
+        setting.amazon_link
+      ) {
+
+        button.href =
+          setting.amazon_link;
+
+        button.textContent =
+          setting.amazon_button_text ||
+          "🛒 Alle Amazon-Angebote ansehen";
+
+      } else {
+
+        button.style.display =
+          "none";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Fehler beim Laden der Amazon-Einstellungen:",
+        error
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     ÖFFENTLICHE KATEGORIEN
+     ========================================================= */
+
+  async function loadCategories() {
+
+    const container =
+      document.getElementById(
+        "categories"
+      );
+
+
+    container.innerHTML =
+      '<div class="loading">Kategorien werden geladen...</div>';
+
+
+    try {
+
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/categories?select=id,name,slug,icon,sort_order&active=eq.true&order=sort_order.asc",
+          {
+            headers: {
+              apikey: K
+            }
           }
-        }
-      )
-        .then(response => {
+        );
 
-          if (!response.ok) {
-            throw new Error(
-              "Kategorien konnten nicht geladen werden."
-            );
-          }
 
-          return response.json();
+      if (!response.ok) {
 
-        })
-        .then(data => {
+        throw new Error(
+          "Kategorien konnten nicht geladen werden."
+        );
 
-          categories = data;
+      }
 
-          renderCategories();
 
-        });
+      categories =
+        await response.json();
+
+
+      renderCategories();
+
+    } catch (error) {
+
+      console.error(
+        "Kategorien Fehler:",
+        error
+      );
+
+
+      container.innerHTML =
+        '<div class="empty">Kategorien konnten nicht geladen werden.</div>';
+
+    }
+
+  }
+
+
+  function renderCategories() {
+
+    const container =
+      document.getElementById(
+        "categories"
+      );
+
+
+    container.innerHTML =
+      "";
+
+
+    if (!categories.length) {
+
+      container.innerHTML =
+        '<div class="empty">Noch keine Kategorien vorhanden.</div>';
+
+      return;
 
     }
 
 
-    function renderCategories() {
-
-      const container =
-        document.getElementById("categories");
-
-      container.innerHTML = "";
-
-      categories.forEach(category => {
+    categories.forEach(
+      category => {
 
         const element =
           document.createElement("div");
 
+
         element.textContent =
           (category.icon || "") +
           " " +
-          category.name;
+          (category.name || "");
+
 
         if (
           selectedCategoryId !== null &&
-          Number(selectedCategoryId) === Number(category.id)
+          Number(selectedCategoryId) ===
+          Number(category.id)
         ) {
 
-          element.classList.add("active");
+          element.classList.add(
+            "active"
+          );
 
         }
+
 
         element.addEventListener(
           "click",
-          () => selectCategory(category.id)
-        );
+          () => {
 
-        container.appendChild(element);
-
-      });
-
-    }
-
-
-    /* =========================================================
-       DEALS
-       ========================================================= */
-
-    function loadDeals() {
-
-      return fetch(
-        U + "/rest/v1/deals?select=*&order=id.asc",
-        {
-          headers: {
-            apikey: K
-          }
-        }
-      )
-        .then(response => response.json())
-        .then(data => {
-
-          deals = data;
-
-          renderDeals();
-
-        });
-
-    }
-
-
-    /* =========================================================
-       AFFILIATE ANGEBOTE
-       ========================================================= */
-
-    function loadAffiliateOffers() {
-
-      return fetch(
-        U + "/rest/v1/affiliate_offers?select=*&active=eq.true&order=sort_order.asc",
-        {
-          headers: {
-            apikey: K
-          }
-        }
-      )
-        .then(response => {
-
-          if (!response.ok) {
-            throw new Error(
-              "Affiliate-Angebote konnten nicht geladen werden."
+            selectCategory(
+              category.id
             );
+
           }
-
-          return response.json();
-
-        })
-        .then(data => {
-
-          affiliateOffers = data;
-
-          renderAffiliateOffers();
-
-        });
-
-    }
-
-
-    /* =========================================================
-       KATEGORIE AUSWÄHLEN
-       ========================================================= */
-
-    function selectCategory(categoryId) {
-
-      selectedCategoryId =
-        Number(categoryId);
-
-      const category =
-        categories.find(
-          item =>
-            Number(item.id) === selectedCategoryId
         );
 
-      if (!category) return;
 
-      document.getElementById("offers-title").textContent =
-        (category.icon || "") +
-        " " +
-        category.name;
+        container.appendChild(
+          element
+        );
 
-      document.getElementById("show-all-button")
-        .style.display = "block";
+      }
+    );
 
-      renderCategories();
-      renderDeals();
-      renderAffiliateOffers();
-
-      document.getElementById("offers-section")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-
-    }
+  }
 
 
-    /* =========================================================
-       ALLE
-       ========================================================= */
+  /* =========================================================
+     DEALS LADEN
+     ========================================================= */
 
-    function showAllDeals() {
+  async function loadDeals() {
 
-      selectedCategoryId = null;
-
-      document.getElementById("offers-title").textContent =
-        "🛍️ Unsere Angebote";
-
-      document.getElementById("show-all-button")
-        .style.display = "none";
-
-      renderCategories();
-      renderDeals();
-      renderAffiliateOffers();
-
-    }
+    const container =
+      document.getElementById(
+        "supabase-deals"
+      );
 
 
-    /* =========================================================
-       AMAZON DEALS ANZEIGEN
-       ========================================================= */
+    container.innerHTML =
+      '<div class="loading">Angebote werden geladen...</div>';
 
-    function renderDeals() {
 
-      const container =
-        document.getElementById("supabase-deals");
+    try {
 
-      container.innerHTML = "";
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/deals?select=*&order=id.asc",
+          {
+            headers: {
+              apikey: K
+            }
+          }
+        );
 
-      let visibleDeals = deals;
 
-      if (selectedCategoryId !== null) {
+      if (!response.ok) {
 
-        visibleDeals =
-          deals.filter(
-            deal =>
-              Number(deal.category_id) ===
-              Number(selectedCategoryId)
-          );
+        throw new Error(
+          "Angebote konnten nicht geladen werden."
+        );
 
       }
 
-      visibleDeals.forEach(deal => {
+
+      deals =
+        await response.json();
+
+
+      renderDeals();
+
+    } catch (error) {
+
+      console.error(
+        "Deals Fehler:",
+        error
+      );
+
+
+      container.innerHTML =
+        '<div class="empty">Angebote konnten nicht geladen werden.</div>';
+
+    }
+
+  }
+
+
+  /* =========================================================
+     AFFILIATE ANGEBOTE
+     ========================================================= */
+
+  async function loadAffiliateOffers() {
+
+    const container =
+      document.getElementById(
+        "affiliate-offers"
+      );
+
+
+    try {
+
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/affiliate_offers?select=*&active=eq.true&order=sort_order.asc",
+          {
+            headers: {
+              apikey: K
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Affiliate-Angebote konnten nicht geladen werden."
+        );
+
+      }
+
+
+      affiliateOffers =
+        await response.json();
+
+
+      renderAffiliateOffers();
+
+    } catch (error) {
+
+      console.error(
+        "Affiliate Fehler:",
+        error
+      );
+
+
+      container.innerHTML =
+        '<div class="empty">Affiliate-Angebote konnten nicht geladen werden.</div>';
+
+    }
+
+  }
+
+
+  /* =========================================================
+     KATEGORIE AUSWÄHLEN
+     ========================================================= */
+
+  function selectCategory(categoryId) {
+
+    selectedCategoryId =
+      Number(categoryId);
+
+
+    const category =
+      categories.find(
+        item =>
+          Number(item.id) ===
+          selectedCategoryId
+      );
+
+
+    if (!category) return;
+
+
+    document.getElementById(
+      "offers-title"
+    ).textContent =
+      (category.icon || "") +
+      " " +
+      (category.name || "Angebote");
+
+
+    document.getElementById(
+      "show-all-button"
+    ).style.display =
+      "block";
+
+
+    renderCategories();
+
+    renderDeals();
+
+    renderAffiliateOffers();
+
+
+    document.getElementById(
+      "offers-section"
+    ).scrollIntoView({
+      behavior: "smooth"
+    });
+
+  }
+
+
+  /* =========================================================
+     ALLE ANGEBOTE
+     ========================================================= */
+
+  function showAllDeals() {
+
+    selectedCategoryId =
+      null;
+
+
+    document.getElementById(
+      "offers-title"
+    ).textContent =
+      "🛍️ Unsere Angebote";
+
+
+    document.getElementById(
+      "show-all-button"
+    ).style.display =
+      "none";
+
+
+    renderCategories();
+
+    renderDeals();
+
+    renderAffiliateOffers();
+
+  }
+
+
+  /* =========================================================
+     DEALS ANZEIGEN
+     ========================================================= */
+
+  function renderDeals() {
+
+    const container =
+      document.getElementById(
+        "supabase-deals"
+      );
+
+
+    container.innerHTML =
+      "";
+
+
+    let visibleDeals =
+      deals;
+
+
+    if (
+      selectedCategoryId !== null
+    ) {
+
+      visibleDeals =
+        deals.filter(
+          deal =>
+            Number(deal.category_id) ===
+            Number(selectedCategoryId)
+        );
+
+    }
+
+
+    if (!visibleDeals.length) {
+
+      container.innerHTML =
+        '<div class="empty">Keine Angebote in dieser Kategorie gefunden.</div>';
+
+      return;
+
+    }
+
+
+    visibleDeals.forEach(
+      deal => {
 
         const card =
           document.createElement("div");
 
-        card.className = "card";
+
+        card.className =
+          "card";
+
 
         card.innerHTML = `
 
@@ -893,26 +1151,38 @@ function showCustomerProducts(categoryId) {
             deal.bild
               ? `
                 <img
-                  src="${deal.bild}"
-                  alt="${deal.titel || ""}"
+                  src="${escapeAttribute(deal.bild)}"
+                  alt="${escapeAttribute(deal.titel || "")}"
                 >
               `
               : ""
           }
 
-          <h3>${deal.titel || ""}</h3>
+          <h3>
+            ${escapeHtml(deal.titel || "")}
+          </h3>
 
           <div class="rating">
             ⭐⭐⭐⭐⭐
           </div>
 
-          <p>
-            ${deal.beschreibung || ""}
-          </p>
+          ${
+            deal.beschreibung
+              ? `
+                <p>
+                  ${escapeHtml(deal.beschreibung)}
+                </p>
+              `
+              : ""
+          }
 
           ${
             deal.preis_anzeigen
-              ? `<div class="price">${deal.preis || ""}</div>`
+              ? `
+                <div class="price">
+                  ${escapeHtml(deal.preis || "")}
+                </div>
+              `
               : ""
           }
 
@@ -920,10 +1190,10 @@ function showCustomerProducts(categoryId) {
             deal.link
               ? `
                 <a
-                  href="${deal.link}"
+                  href="${escapeAttribute(deal.link)}"
                   class="offer-button"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   🛒 Bei Amazon ansehen
                 </a>
@@ -933,276 +1203,829 @@ function showCustomerProducts(categoryId) {
 
         `;
 
-        container.appendChild(card);
 
-      });
+        container.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     AFFILIATE ANGEBOTE ANZEIGEN
+     ========================================================= */
+
+  function renderAffiliateOffers() {
+
+    const container =
+      document.getElementById(
+        "affiliate-offers"
+      );
+
+
+    container.innerHTML =
+      "";
+
+
+    let visibleOffers =
+      affiliateOffers;
+
+
+    if (
+      selectedCategoryId !== null
+    ) {
+
+      visibleOffers =
+        affiliateOffers.filter(
+          offer =>
+            Number(offer.category_id) ===
+            Number(selectedCategoryId)
+        );
 
     }
 
 
-    /* =========================================================
-       AFFILIATE ANGEBOTE ANZEIGEN
-       ========================================================= */
-function renderAffiliateOffers() {
+    const groups = [
 
-  const container =
-    document.getElementById("affiliate-offers");
+      {
+        name: "🛡️ Versicherungen",
+        key: "Versicherungen"
+      },
 
-  container.innerHTML = "";
+      {
+        name: "❤️ Vorsorge",
+        key: "Vorsorge"
+      },
 
-  let visibleOffers = affiliateOffers;
+      {
+        name: "💳 Finanzen",
+        key: "Finanzen"
+      },
 
-  if (selectedCategoryId !== null) {
+      {
+        name: "⚡ Energie",
+        key: "Energie"
+      },
 
-    visibleOffers =
-      affiliateOffers.filter(
-        offer =>
-          Number(offer.category_id) ===
-          Number(selectedCategoryId)
+      {
+        name: "🌐 Internet & Mobilfunk",
+        key: "Internet & Mobilfunk"
+      },
+
+      {
+        name: "✈️ Reisen",
+        key: "Reisen"
+      }
+
+    ];
+
+
+    groups.forEach(
+      group => {
+
+        const groupOffers =
+          visibleOffers.filter(
+            offer => {
+
+              const groupName =
+                String(
+                  offer.group_name || ""
+                )
+                  .trim()
+                  .toLowerCase();
+
+
+              return (
+                groupName ===
+                String(
+                  group.key || ""
+                )
+                  .trim()
+                  .toLowerCase()
+              );
+
+            }
+          );
+
+
+        if (!groupOffers.length) {
+          return;
+        }
+
+
+        const heading =
+          document.createElement("h2");
+
+
+        heading.textContent =
+          group.name;
+
+
+        heading.style.marginTop =
+          "30px";
+
+
+        heading.style.marginBottom =
+          "15px";
+
+
+        container.appendChild(
+          heading
+        );
+
+
+        groupOffers.forEach(
+          offer => {
+
+            if (
+              !offer.affiliate_url &&
+              !offer.widget_code
+            ) {
+
+              return;
+
+            }
+
+
+            const card =
+              document.createElement("div");
+
+
+            card.className =
+              "card affiliate-card";
+
+
+            card.innerHTML = `
+
+              <div>
+
+                <span class="badge">
+                  VERGLEICH
+                </span>
+
+                <span class="affiliate-badge">
+                  Werbung
+                </span>
+
+              </div>
+
+              <h3 style="margin-top:12px">
+
+                ${escapeHtml(
+                  offer.icon || ""
+                )}
+
+                ${escapeHtml(
+                  offer.title || ""
+                )}
+
+              </h3>
+
+              ${
+                offer.description
+                  ? `
+                    <p style="margin-top:10px">
+                      ${escapeHtml(
+                        offer.description
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
+
+              ${
+                offer.provider
+                  ? `
+                    <div class="provider">
+                      Anbieter:
+                      ${escapeHtml(
+                        offer.provider
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
+
+              ${
+                offer.widget_code
+                  ? `
+                    <div
+                      class="affiliate-widget"
+                      style="margin-top:15px; overflow:hidden;"
+                    >
+                      ${offer.widget_code}
+                    </div>
+                  `
+                  : `
+                    <a
+                      href="${escapeAttribute(
+                        offer.affiliate_url
+                      )}"
+                      class="offer-button"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      ${escapeHtml(
+                        offer.button_text ||
+                        "Jetzt vergleichen"
+                      )}
+                    </a>
+                  `
+              }
+
+            `;
+
+
+            container.appendChild(
+              card
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    loadAffiliateWidgetScripts();
+
+  }
+
+
+  function loadAffiliateWidgetScripts() {
+
+    document
+      .querySelectorAll(
+        "#affiliate-offers script"
+      )
+      .forEach(
+        oldScript => {
+
+          const newScript =
+            document.createElement(
+              "script"
+            );
+
+
+          Array.from(
+            oldScript.attributes
+          )
+            .forEach(
+              attribute => {
+
+                newScript.setAttribute(
+                  attribute.name,
+                  attribute.value
+                );
+
+              }
+            );
+
+
+          newScript.textContent =
+            oldScript.textContent;
+
+
+          oldScript.parentNode.replaceChild(
+            newScript,
+            oldScript
+          );
+
+        }
       );
 
   }
 
- const groups = [
-  {
-    name: "🛡️ Versicherungen",
-    key: "Versicherungen"
-  },
-  {
-    name: "❤️ Vorsorge",
-    key: "Vorsorge"
-  },
-  {
-    name: "💳 Finanzen",
-    key: "Finanzen"
-  },
-  {
-    name: "⚡ Energie",
-    key: "Energie"
-  },
-  {
-    name: "🌐 Internet & Mobilfunk",
-    key: "Internet & Mobilfunk"
-  },
-  {
-    name: "✈️ Reisen",
-    key: "Reisen"
+
+  /* =========================================================
+     KUNDEN-KATEGORIEN
+     ========================================================= */
+
+  async function loadCustomerCategories() {
+
+    const container =
+      document.getElementById(
+        "customer-categories"
+      );
+
+
+    container.innerHTML =
+      '<div class="loading">Kunden-Angebote werden geladen...</div>';
+
+
+    try {
+
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/customer_categories?select=id,name,slug,icon&active=eq.true&order=created_at.asc",
+          {
+            headers: {
+              apikey: K
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Kunden-Kategorien konnten nicht geladen werden."
+        );
+
+      }
+
+
+      customerCategories =
+        await response.json();
+
+
+      renderCustomerCategories();
+
+    } catch (error) {
+
+      console.error(
+        "Kunden-Kategorien Fehler:",
+        error
+      );
+
+
+      container.innerHTML =
+        '<div class="empty">Kunden-Kategorien konnten nicht geladen werden.</div>';
+
+    }
+
   }
-];
 
-  groups.forEach(group => {
 
-    const groupOffers =
-      visibleOffers.filter(offer => {
+  function renderCustomerCategories() {
 
-        const groupName =
-          String(offer.group_name || "")
+    const container =
+      document.getElementById(
+        "customer-categories"
+      );
+
+
+    container.innerHTML =
+      "";
+
+
+    if (!customerCategories.length) {
+
+      container.innerHTML =
+        '<div class="empty">Noch keine Kunden-Angebote vorhanden.</div>';
+
+      return;
+
+    }
+
+
+    customerCategories.forEach(
+      category => {
+
+        const element =
+          document.createElement("div");
+
+
+        element.textContent =
+          (category.icon || "📂") +
+          " " +
+          (category.name || "");
+
+
+        if (
+          selectedCustomerCategoryId !== null &&
+          String(
+            selectedCustomerCategoryId
+          ) ===
+          String(category.id)
+        ) {
+
+          element.classList.add(
+            "active"
+          );
+
+        }
+
+
+        element.addEventListener(
+          "click",
+          () => {
+
+            showCustomerProducts(
+              category.id
+            );
+
+          }
+        );
+
+
+        container.appendChild(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     KUNDEN-PRODUKTE
+     ========================================================= */
+
+  async function loadCustomerProducts() {
+
+    const container =
+      document.getElementById(
+        "customer-products"
+      );
+
+
+    container.innerHTML =
+      '<div class="loading">Kunden-Produkte werden geladen...</div>';
+
+
+    try {
+
+      const response =
+        await fetch(
+          U +
+          "/rest/v1/customer_products?select=*&active=eq.true&order=sort_order.asc,created_at.asc",
+          {
+            headers: {
+              apikey: K,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Kunden-Produkte konnten nicht geladen werden. HTTP " +
+          response.status
+        );
+
+      }
+
+
+      customerProducts =
+        await response.json();
+
+
+      container.innerHTML =
+        '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
+
+
+    } catch (error) {
+
+      console.error(
+        "Kunden-Produkte Fehler:",
+        error
+      );
+
+
+      container.innerHTML =
+        '<div class="empty">Kunden-Produkte konnten nicht geladen werden.</div>';
+
+    }
+
+  }
+
+
+  /* =========================================================
+     KUNDEN-KATEGORIE ÖFFNEN
+     ========================================================= */
+
+  function showCustomerProducts(
+    categoryId
+  ) {
+
+    selectedCustomerCategoryId =
+      categoryId;
+
+
+    renderCustomerCategories();
+
+
+    const container =
+      document.getElementById(
+        "customer-products"
+      );
+
+
+    const title =
+      document.getElementById(
+        "customer-products-title"
+      );
+
+
+    const category =
+      customerCategories.find(
+        item =>
+          String(item.id) ===
+          String(categoryId)
+      );
+
+
+    if (category) {
+
+      title.textContent =
+        (category.icon || "⭐") +
+        " " +
+        category.name;
+
+    } else {
+
+      title.textContent =
+        "🛍️ Kunden-Produkte";
+
+    }
+
+
+    const products =
+      customerProducts.filter(
+        product =>
+          String(
+            product.category_id
+          ) ===
+          String(categoryId)
+      );
+
+
+    container.innerHTML =
+      "";
+
+
+    if (!products.length) {
+
+      container.innerHTML =
+        '<div class="empty">Keine Produkte in dieser Kategorie.</div>';
+
+      document
+        .getElementById(
+          "customer-products-section"
+        )
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+      return;
+
+    }
+
+
+    products.forEach(
+      product => {
+
+        const card =
+          document.createElement("div");
+
+
+        card.className =
+          "card customer-product-card";
+
+
+        card.innerHTML = `
+
+          ${
+            product.image_url
+              ? `
+                <img
+                  class="customer-product-image"
+                  src="${escapeAttribute(
+                    product.image_url
+                  )}"
+                  alt="${escapeAttribute(
+                    product.title || ""
+                  )}"
+                >
+              `
+              : ""
+          }
+
+          <h3>
+            ${escapeHtml(
+              product.title || ""
+            )}
+          </h3>
+
+          ${
+            product.description
+              ? `
+                <p class="customer-product-description">
+                  ${escapeHtml(
+                    product.description
+                  )}
+                </p>
+              `
+              : ""
+          }
+
+          ${
+            product.price !== null &&
+            product.price !== undefined
+              ? `
+                <div class="price">
+                  ${escapeHtml(
+                    String(product.price)
+                  )} €
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            product.affiliate_url
+              ? `
+                <a
+                  href="${escapeAttribute(
+                    product.affiliate_url
+                  )}"
+                  class="offer-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🛒 Zum Angebot
+                </a>
+              `
+              : ""
+          }
+
+        `;
+
+
+        container.appendChild(
+          card
+        );
+
+      }
+    );
+
+
+    document
+      .getElementById(
+        "customer-products-section"
+      )
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  /* =========================================================
+     SUCHE
+     ========================================================= */
+
+  document
+    .getElementById("search-input")
+    .addEventListener(
+      "input",
+      function () {
+
+        const search =
+          this.value
             .trim()
             .toLowerCase();
 
-        return groupName === String(group.key || "").trim().toLowerCase();
-        
 
-      });
+        if (!search) {
 
-    if (groupOffers.length === 0) {
-      return;
-    }
+          renderDeals();
 
-    const heading =
-      document.createElement("h2");
+          renderAffiliateOffers();
 
-    heading.textContent =
-      group.title;
+          return;
 
-    heading.style.marginTop = "30px";
-    heading.style.marginBottom = "15px";
-
-    container.appendChild(heading);
-
-    groupOffers.forEach(offer => {
-
-      if (
-        !offer.affiliate_url &&
-        !offer.widget_code
-      ) {
-        return;
-      }
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "card affiliate-card";
-
-      card.innerHTML = `
-
-        <div>
-
-          <span class="badge">
-            VERGLEICH
-          </span>
-
-          <span class="affiliate-badge">
-            Werbung
-          </span>
-
-        </div>
-
-        <h3 style="margin-top:12px">
-          ${offer.icon || ""} ${offer.title || ""}
-        </h3>
-
-        <p style="margin-top:10px">
-          ${offer.description || ""}
-        </p>
-
-        <div class="provider">
-          Anbieter: ${offer.provider || ""}
-        </div>
-
-        ${
-          offer.widget_code
-            ? `
-              <div
-                class="affiliate-widget"
-                style="margin-top:15px; overflow:hidden;"
-              >
-                ${offer.widget_code}
-              </div>
-            `
-            : `
-              <a
-                href="${offer.affiliate_url}"
-                class="offer-button"
-                target="_blank"
-                rel="noopener"
-              >
-                ${offer.button_text || "Jetzt vergleichen"}
-              </a>
-            `
         }
 
-      `;
 
-      container.appendChild(card);
-
-    });
-
-  });
-
-  loadAffiliateWidgetScripts();
-
-}
-
-function loadAffiliateWidgetScripts() {
-
-  document
-    .querySelectorAll("#affiliate-offers script")
-    .forEach(oldScript => {
-
-      const newScript =
-        document.createElement("script");
-
-      Array.from(oldScript.attributes)
-        .forEach(attribute => {
-
-          newScript.setAttribute(
-            attribute.name,
-            attribute.value
+        const dealContainer =
+          document.getElementById(
+            "supabase-deals"
           );
 
-        });
 
-      newScript.textContent =
-        oldScript.textContent;
+        const affiliateContainer =
+          document.getElementById(
+            "affiliate-offers"
+          );
 
-      oldScript.parentNode.replaceChild(
-        newScript,
-        oldScript
-      );
 
-    });
+        dealContainer.innerHTML =
+          "";
 
-}
-    /* =========================================================
-       SUCHE
-       ========================================================= */
 
-    document
-      .getElementById("search-input")
-      .addEventListener(
-        "input",
-        function () {
+        affiliateContainer.innerHTML =
+          "";
 
-          const search =
-            this.value.trim().toLowerCase();
 
-          if (!search) {
-
-            renderDeals();
-            renderAffiliateOffers();
-
-            return;
-
-          }
-
-          const dealContainer =
-            document.getElementById(
-              "supabase-deals"
-            );
-
-          const affiliateContainer =
-            document.getElementById(
-              "affiliate-offers"
-            );
-
-          dealContainer.innerHTML = "";
-          affiliateContainer.innerHTML = "";
-
-          const dealResults =
-            deals.filter(deal => {
+        const dealResults =
+          deals.filter(
+            deal => {
 
               const title =
-                (deal.titel || "").toLowerCase();
+                String(
+                  deal.titel || ""
+                )
+                  .toLowerCase();
+
 
               const description =
-                (deal.beschreibung || "").toLowerCase();
+                String(
+                  deal.beschreibung || ""
+                )
+                  .toLowerCase();
+
 
               return (
                 title.includes(search) ||
                 description.includes(search)
               );
 
-            });
+            }
+          );
 
-          dealResults.forEach(deal => {
+
+        if (!dealResults.length) {
+
+          dealContainer.innerHTML =
+            '<div class="empty">Keine passenden Angebote gefunden.</div>';
+
+        }
+
+
+        dealResults.forEach(
+          deal => {
 
             const card =
-              document.createElement("div");
+              document.createElement(
+                "div"
+              );
 
-            card.className = "card";
+
+            card.className =
+              "card";
+
 
             card.innerHTML = `
-              <span class="badge">ANGEBOT</span>
+
+              <span class="badge">
+                ANGEBOT
+              </span>
 
               ${
                 deal.bild
-                  ? `<img src="${deal.bild}" alt="${deal.titel || ""}">`
+                  ? `
+                    <img
+                      src="${escapeAttribute(
+                        deal.bild
+                      )}"
+                      alt="${escapeAttribute(
+                        deal.titel || ""
+                      )}"
+                    >
+                  `
                   : ""
               }
 
-              <h3>${deal.titel || ""}</h3>
+              <h3>
+                ${escapeHtml(
+                  deal.titel || ""
+                )}
+              </h3>
 
               <div class="rating">
                 ⭐⭐⭐⭐⭐
               </div>
 
-              <p>${deal.beschreibung || ""}</p>
+              ${
+                deal.beschreibung
+                  ? `
+                    <p>
+                      ${escapeHtml(
+                        deal.beschreibung
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
 
               ${
                 deal.preis_anzeigen
-                  ? `<div class="price">${deal.preis || ""}</div>`
+                  ? `
+                    <div class="price">
+                      ${escapeHtml(
+                        deal.preis || ""
+                      )}
+                    </div>
+                  `
                   : ""
               }
 
@@ -1210,51 +2033,81 @@ function loadAffiliateWidgetScripts() {
                 deal.link
                   ? `
                     <a
-                      href="${deal.link}"
+                      href="${escapeAttribute(
+                        deal.link
+                      )}"
                       class="offer-button"
                       target="_blank"
-                      rel="noopener"
+                      rel="noopener noreferrer"
                     >
                       🛒 Bei Amazon ansehen
                     </a>
                   `
                   : ""
               }
+
             `;
 
-            dealContainer.appendChild(card);
 
-          });
+            dealContainer.appendChild(
+              card
+            );
+
+          }
+        );
 
 
-          const affiliateResults =
-            affiliateOffers.filter(offer => {
+        const affiliateResults =
+          affiliateOffers.filter(
+            offer => {
 
               const title =
-                (offer.title || "").toLowerCase();
+                String(
+                  offer.title || ""
+                )
+                  .toLowerCase();
+
 
               const description =
-                (offer.description || "").toLowerCase();
+                String(
+                  offer.description || ""
+                )
+                  .toLowerCase();
+
 
               return (
                 title.includes(search) ||
                 description.includes(search)
               );
 
-            });
+            }
+          );
 
 
-          affiliateResults.forEach(offer => {
+        affiliateResults.forEach(
+          offer => {
 
-            if (!offer.affiliate_url) return;
+            if (
+              !offer.affiliate_url
+            ) {
+
+              return;
+
+            }
+
 
             const card =
-              document.createElement("div");
+              document.createElement(
+                "div"
+              );
+
 
             card.className =
               "card affiliate-card";
 
+
             card.innerHTML = `
+
               <span class="badge">
                 VERGLEICH
               </span>
@@ -1264,123 +2117,196 @@ function loadAffiliateWidgetScripts() {
               </span>
 
               <h3 style="margin-top:12px">
-                ${offer.icon || ""} ${offer.title}
+
+                ${escapeHtml(
+                  offer.icon || ""
+                )}
+
+                ${escapeHtml(
+                  offer.title || ""
+                )}
+
               </h3>
 
-              <p style="margin-top:10px">
-                ${offer.description || ""}
-              </p>
+              ${
+                offer.description
+                  ? `
+                    <p style="margin-top:10px">
+                      ${escapeHtml(
+                        offer.description
+                      )}
+                    </p>
+                  `
+                  : ""
+              }
 
-              <div class="provider">
-                Anbieter: ${offer.provider || ""}
-              </div>
+              ${
+                offer.provider
+                  ? `
+                    <div class="provider">
+                      Anbieter:
+                      ${escapeHtml(
+                        offer.provider
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
 
               <a
-                href="${offer.affiliate_url}"
+                href="${escapeAttribute(
+                  offer.affiliate_url
+                )}"
                 class="offer-button"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
               >
-                ${offer.button_text || "Jetzt vergleichen"}
+                ${escapeHtml(
+                  offer.button_text ||
+                  "Jetzt vergleichen"
+                )}
               </a>
+
             `;
 
-            affiliateContainer.appendChild(card);
 
-          });
+            affiliateContainer.appendChild(
+              card
+            );
 
-        }
-      );
+          }
+        );
+
+      }
+    );
 
 
-    /* =========================================================
-       NAVIGATION
-       ========================================================= */
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
 
-    document
-      .getElementById("nav-home")
-      .addEventListener(
-        "click",
-        () => {
+  document
+    .getElementById("nav-home")
+    .addEventListener(
+      "click",
+      () => {
 
-          showAllDeals();
+        showAllDeals();
 
-          window.scrollTo({
-            top: 0,
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
+    );
+
+
+  document
+    .getElementById("nav-categories")
+    .addEventListener(
+      "click",
+      () => {
+
+        document
+          .getElementById(
+            "category-section"
+          )
+          .scrollIntoView({
             behavior: "smooth"
           });
 
-        }
-      );
+      }
+    );
 
 
-    document
-      .getElementById("nav-categories")
-      .addEventListener(
-        "click",
-        () => {
+  document
+    .getElementById("nav-search")
+    .addEventListener(
+      "click",
+      () => {
 
-          document
-            .getElementById("category-section")
-            .scrollIntoView({
-              behavior: "smooth"
-            });
-
-        }
-      );
+        const input =
+          document.getElementById(
+            "search-input"
+          );
 
 
-    document
-      .getElementById("nav-search")
-      .addEventListener(
-        "click",
-        () => {
-
-          const input =
-            document.getElementById(
-              "search-input"
-            );
-
-          input.focus();
-
-          input.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-
-        }
-      );
+        input.focus();
 
 
-    document
-      .getElementById("show-all-button")
-      .addEventListener(
-        "click",
-        showAllDeals
-      );
+        input.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      }
+    );
 
 
-    /* =========================================================
-       START
-       ========================================================= */
+  document
+    .getElementById("show-all-button")
+    .addEventListener(
+      "click",
+      showAllDeals
+    );
 
-    Promise.all([
-  loadCategories(),
-  loadDeals(),
-  loadAffiliateOffers(),
-  loadCustomerCategories(),
-  loadCustomerProducts()
-])
-      .catch(error => {
+
+  document
+    .getElementById("nav-favorites")
+    .addEventListener(
+      "click",
+      () => {
+
+        alert(
+          "Die Favoriten-Funktion kommt noch."
+        );
+
+      }
+    );
+
+
+  /* =========================================================
+     START
+     ========================================================= */
+
+  async function initializeApp() {
+
+    await updateAuthArea();
+
+    await Promise.all([
+
+      loadAmazonButton(),
+
+      loadCategories(),
+
+      loadDeals(),
+
+      loadAffiliateOffers(),
+
+      loadCustomerCategories(),
+
+      loadCustomerProducts()
+
+    ]);
+
+  }
+
+
+  initializeApp()
+    .catch(
+      error => {
 
         console.error(
           "Fehler beim Initialisieren:",
           error
         );
 
-      });
+      }
+    );
 
-  </script>
+</script>
 
 </body>
 </html>
