@@ -147,7 +147,6 @@
     .loading {
       color: #777;
       padding: 10px 0;
-      text-align: center;
     }
 
     .message {
@@ -194,8 +193,6 @@
       border-radius: 14px;
       padding: 18px;
       background: #fafafa;
-      display: flex;
-      flex-direction: column;
     }
 
     .package-card h3 {
@@ -224,14 +221,6 @@
 
     .package-button {
       width: 100%;
-      margin-top: auto;
-    }
-
-    .package-note {
-      font-size: 12px;
-      color: #777;
-      margin-top: 8px;
-      text-align: center;
     }
 
     .form-group {
@@ -294,10 +283,6 @@
       .form-actions button {
         width: 100%;
       }
-
-      .package-list {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 
@@ -338,20 +323,23 @@
     </div>
   </div>
 
+
   <!-- PAKETE -->
   <div class="card">
 
     <h2>💳 Meine Pakete & Tarife</h2>
 
-    <div id="seller-packages" class="package-list">
-
+    <div
+      id="seller-packages"
+      class="package-list"
+    >
       <div class="loading">
         Pakete werden geladen...
       </div>
-
     </div>
 
   </div>
+
 
   <!-- PRODUKTLIMIT -->
   <div class="card">
@@ -359,14 +347,13 @@
     <h2>📊 Mein kostenloses Produktlimit</h2>
 
     <div id="product-limit-info">
-
       <div class="loading">
         Produktlimit wird geladen...
       </div>
-
     </div>
 
   </div>
+
 
   <!-- KATEGORIEN -->
   <div class="card">
@@ -385,15 +372,17 @@
 
     </div>
 
-    <div id="categories" class="category-list">
-
+    <div
+      id="categories"
+      class="category-list"
+    >
       <div class="loading">
         Kategorien werden geladen...
       </div>
-
     </div>
 
   </div>
+
 
   <!-- PRODUKTE -->
   <div class="card">
@@ -412,13 +401,15 @@
 
     </div>
 
-    <div id="products" class="product-list">
-
+    <div
+      id="products"
+      class="product-list"
+    >
       <div class="loading">
         Produkte werden geladen...
       </div>
-
     </div>
+
 
     <!-- PRODUKT FORMULAR -->
     <div
@@ -442,6 +433,7 @@
 
       </div>
 
+
       <div class="form-group">
 
         <label for="product-image-input">
@@ -456,6 +448,7 @@
 
       </div>
 
+
       <div class="form-group">
 
         <label for="product-description-input">
@@ -468,6 +461,7 @@
         ></textarea>
 
       </div>
+
 
       <div class="form-group">
 
@@ -483,6 +477,7 @@
 
       </div>
 
+
       <div class="form-group">
 
         <label for="product-affiliate-input">
@@ -496,6 +491,7 @@
         >
 
       </div>
+
 
       <div class="form-group">
 
@@ -512,6 +508,7 @@
         </select>
 
       </div>
+
 
       <div class="form-actions">
 
@@ -539,1011 +536,1290 @@
 
 </div>
 
+
 <script>
 
-  /* =========================================================
-     SUPABASE
-     ========================================================= */
+/* =========================================================
+   SUPABASE
+   ========================================================= */
 
-  const SUPABASE_URL =
-    "https://cklnfznlzyushvlybzad.supabase.co";
+const SUPABASE_URL =
+  "https://cklnfznlzyushvlybzad.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
+const SUPABASE_KEY =
+  "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-
-  /* =========================================================
-     ELEMENTE
-     ========================================================= */
-
-  const message =
-    document.getElementById("message");
-
-  const accountInfo =
-    document.getElementById("account-info");
-
-  const sellerPackages =
-    document.getElementById("seller-packages");
-
-  const productLimitInfo =
-    document.getElementById("product-limit-info");
-
-  const categoriesContainer =
-    document.getElementById("categories");
-
-  const productsContainer =
-    document.getElementById("products");
-
-  const productForm =
-    document.getElementById("product-form");
-
-  const productTitleInput =
-    document.getElementById(
-      "product-title-input"
-    );
-
-  const productImageInput =
-    document.getElementById(
-      "product-image-input"
-    );
-
-  const productDescriptionInput =
-    document.getElementById(
-      "product-description-input"
-    );
-
-  const productPriceInput =
-    document.getElementById(
-      "product-price-input"
-    );
-
-  const productAffiliateInput =
-    document.getElementById(
-      "product-affiliate-input"
-    );
-
-  const productCategoryInput =
-    document.getElementById(
-      "product-category-input"
-    );
-
-  const saveProductButton =
-    document.getElementById(
-      "save-product-button"
-    );
-
-  const cancelProductButton =
-    document.getElementById(
-      "cancel-product-button"
-    );
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  let currentUser = null;
+/* =========================================================
+   ELEMENTE
+   ========================================================= */
 
-  let customerCategories = [];
+const message =
+  document.getElementById("message");
 
-  let customerProducts = [];
+const accountInfo =
+  document.getElementById("account-info");
+
+const sellerPackages =
+  document.getElementById("seller-packages");
+
+const productLimitInfo =
+  document.getElementById(
+    "product-limit-info"
+  );
+
+const categoriesContainer =
+  document.getElementById("categories");
+
+const productsContainer =
+  document.getElementById("products");
+
+const productForm =
+  document.getElementById("product-form");
+
+const productTitleInput =
+  document.getElementById(
+    "product-title-input"
+  );
+
+const productImageInput =
+  document.getElementById(
+    "product-image-input"
+  );
+
+const productDescriptionInput =
+  document.getElementById(
+    "product-description-input"
+  );
+
+const productPriceInput =
+  document.getElementById(
+    "product-price-input"
+  );
+
+const productAffiliateInput =
+  document.getElementById(
+    "product-affiliate-input"
+  );
+
+const productCategoryInput =
+  document.getElementById(
+    "product-category-input"
+  );
+
+const saveProductButton =
+  document.getElementById(
+    "save-product-button"
+  );
+
+const cancelProductButton =
+  document.getElementById(
+    "cancel-product-button"
+  );
 
 
-  /* =========================================================
-     NACHRICHTEN
-     ========================================================= */
-
-  function showMessage(text, type) {
-
-    message.textContent = text;
-
-    message.className =
-      "message " + type;
-
-    message.style.display =
-      "block";
-
-  }
+let currentUser = null;
+let customerCategories = [];
+let customerProducts = [];
 
 
-  function clearMessage() {
+/* =========================================================
+   NACHRICHTEN
+   ========================================================= */
 
-    message.textContent = "";
+function showMessage(text, type) {
 
-    message.style.display =
-      "none";
+  message.textContent = text;
 
-  }
+  message.className =
+    "message " + type;
 
-
-  /* =========================================================
-     HTML SICHER DARSTELLEN
-     ========================================================= */
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
+  message.style.display =
+    "block";
+}
 
 
-  /* =========================================================
-     URL SICHERHEIT
-     ========================================================= */
+function clearMessage() {
 
-  function safeUrl(value) {
+  message.textContent = "";
 
-    if (!value) return "";
+  message.style.display =
+    "none";
+}
 
-    try {
 
-      const url =
-        new URL(
-          value,
-          window.location.href
-        );
+/* =========================================================
+   HTML SICHER DARSTELLEN
+   ========================================================= */
 
-      if (
-        url.protocol === "http:" ||
-        url.protocol === "https:"
-      ) {
+function escapeHtml(value) {
 
-        return url.href;
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-      }
 
-    } catch (error) {
+/* =========================================================
+   URL SICHERHEIT
+   ========================================================= */
 
-      console.error(
-        "Ungültige URL:",
-        error
+function safeUrl(value) {
+
+  if (!value) return "";
+
+  try {
+
+    const url =
+      new URL(
+        value,
+        window.location.href
       );
 
+    if (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    ) {
+      return url.href;
     }
+
+  } catch (error) {
 
     return "";
 
   }
 
+  return "";
+}
 
-  /* =========================================================
-     PAKETE LADEN
-     ========================================================= */
 
-  async function loadSellerPackages() {
+/* =========================================================
+   PAKETE LADEN
+   ========================================================= */
 
-    sellerPackages.innerHTML =
-      '<div class="loading">Pakete werden geladen...</div>';
+async function loadSellerPackages() {
 
-    try {
+  sellerPackages.innerHTML =
+    '<div class="loading">Pakete werden geladen...</div>';
 
-      const {
-        data: packages,
-        error
-      } =
-        await supabaseClient
-          .from("seller_packages")
-          .select(
-            "id,name,description,product_limit,duration_days,price,is_subscription,active,sort_order,stripe_price_id"
-          )
-          .eq(
-            "active",
-            true
-          )
-          .order(
-            "sort_order",
-            {
-              ascending: true
-            }
-          );
-
-      if (error) {
-
-        console.error(
-          "Pakete Fehler:",
-          error
-        );
-
-        sellerPackages.innerHTML =
-          '<div class="empty">Pakete konnten momentan nicht geladen werden.</div>';
-
-        return;
-
-      }
-
-      if (
-        !packages ||
-        !packages.length
-      ) {
-
-        sellerPackages.innerHTML =
-          '<div class="empty">Aktuell sind keine Pakete verfügbar.</div>';
-
-        return;
-
-      }
-
-      sellerPackages.innerHTML = "";
-
-      packages.forEach(
-        function (packageItem) {
-
-          const card =
-            document.createElement(
-              "div"
-            );
-
-          card.className =
-            "package-card";
-
-          const numericPrice =
-            Number(
-              packageItem.price
-            );
-
-          const price =
-            Number.isFinite(
-              numericPrice
-            )
-              ? numericPrice
-                  .toFixed(2)
-                  .replace(
-                    ".",
-                    ","
-                  )
-              : "0,00";
-
-          const period =
-            packageItem.is_subscription
-              ? "pro Monat"
-              : `${packageItem.duration_days} Tage`;
-
-          const productLimit =
-            Number(
-              packageItem.product_limit
-            ) || 0;
-
-          card.innerHTML = `
-
-            <h3>
-              ${escapeHtml(
-                packageItem.name
-              )}
-            </h3>
-
-            <div class="package-price">
-
-              ${price} €
-
-              ${
-                packageItem.is_subscription
-                  ? "/ Monat"
-                  : ""
-              }
-
-            </div>
-
-            <div class="package-description">
-
-              ${escapeHtml(
-                packageItem.description ||
-                ""
-              )}
-
-            </div>
-
-            <div class="package-limit">
-
-              Bis zu
-              ${escapeHtml(
-                productLimit
-              )}
-              Produkte ·
-              ${escapeHtml(
-                period
-              )}
-
-            </div>
-
-            <button
-              type="button"
-              class="primary package-button"
-            >
-              💳 Paket kaufen
-            </button>
-
-            <div class="package-note">
-              Sichere Zahlung über Stripe
-            </div>
-
-          `;
-
-          const button =
-            card.querySelector(
-              "button"
-            );
-
-          button.addEventListener(
-            "click",
-            function () {
-
-              startCheckout(
-                packageItem.id,
-                button
-              );
-
-            }
-          );
-
-          sellerPackages.appendChild(
-            card
-          );
-
+  const {
+    data: packages,
+    error
+  } =
+    await supabaseClient
+      .from("seller_packages")
+      .select(
+        "id,name,description,product_limit,duration_days,price,is_subscription,active,sort_order,stripe_price_id"
+      )
+      .eq(
+        "active",
+        true
+      )
+      .order(
+        "sort_order",
+        {
+          ascending: true
         }
       );
 
-    } catch (error) {
 
-      console.error(
-        "Pakete laden:",
-        error
-      );
+  if (error) {
 
-      sellerPackages.innerHTML =
-        '<div class="empty">Pakete konnten momentan nicht geladen werden.</div>';
-
-    }
-
-  }
-
-
-  /* =========================================================
-     STRIPE CHECKOUT
-     ========================================================= */
-
-  async function startCheckout(
-    packageId,
-    button
-  ) {
-
-    clearMessage();
-
-    if (
-      !packageId
-    ) {
-
-      showMessage(
-        "Dieses Paket ist ungültig.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    if (button) {
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "⏳ Wird vorbereitet...";
-
-    }
-
-    showMessage(
-      "Stripe Checkout wird vorbereitet...",
-      "success"
+    console.error(
+      "Pakete:",
+      error
     );
 
-    try {
+    sellerPackages.innerHTML =
+      '<div class="empty">Pakete konnten momentan nicht geladen werden.</div>';
 
-      const {
-        data: {
-          session
-        }
-      } =
-        await supabaseClient.auth.getSession();
-
-      if (!session) {
-
-        window.location.href =
-          "login.html";
-
-        return;
-
-      }
-
-      const response =
-        await fetch(
-          SUPABASE_URL +
-          "/functions/v1/stripe-checkout",
-          {
-            method:
-              "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-
-              "Authorization":
-                "Bearer " +
-                session.access_token
-            },
-
-            body:
-              JSON.stringify({
-                package_id:
-                  packageId
-              })
-          }
-        );
-
-      let result = null;
-
-      try {
-
-        result =
-          await response.json();
-
-      } catch (jsonError) {
-
-        result = null;
-
-      }
-
-      if (!response.ok) {
-
-        console.error(
-          "Stripe Checkout:",
-          result
-        );
-
-        throw new Error(
-          result &&
-          result.error
-            ? result.error
-            : "Stripe Checkout konnte nicht gestartet werden."
-        );
-
-      }
-
-      if (
-        result &&
-        result.url
-      ) {
-
-        window.location.href =
-          result.url;
-
-        return;
-
-      }
-
-      throw new Error(
-        "Stripe Checkout-URL fehlt."
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Checkout Fehler:",
-        error
-      );
-
-      showMessage(
-        error.message ||
-        "Der Kauf konnte momentan nicht gestartet werden.",
-        "error"
-      );
-
-      if (button) {
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "💳 Paket kaufen";
-
-      }
-
-    }
-
+    return;
   }
 
 
-  /* =========================================================
-     PRODUKTLIMIT ANZEIGEN
-     ========================================================= */
+  if (
+    !packages ||
+    !packages.length
+  ) {
 
-  async function loadProductLimitInfo() {
+    sellerPackages.innerHTML =
+      '<div class="empty">Aktuell sind keine Pakete verfügbar.</div>';
 
-    productLimitInfo.innerHTML =
-      '<div class="loading">Produktlimit wird geladen...</div>';
+    return;
+  }
 
-    if (!currentUser) {
 
-      return;
+  sellerPackages.innerHTML =
+    "";
 
-    }
 
-    try {
+  packages.forEach(
+    function (packageItem) {
 
-      const {
-        data: account,
-        error: accountError
-      } =
-        await supabaseClient
-          .from("customer_accounts")
-          .select(
-            "created_at"
-          )
-          .eq(
-            "id",
-            currentUser.id
-          )
-          .maybeSingle();
-
-      if (
-        accountError ||
-        !account
-      ) {
-
-        console.error(
-          "Kundenkonto:",
-          accountError
+      const card =
+        document.createElement(
+          "div"
         );
 
-        productLimitInfo.innerHTML =
-          '<div class="empty">Produktlimit konnte momentan nicht geladen werden.</div>';
+      card.className =
+        "package-card";
 
-        return;
 
-      }
-
-      const accountCreated =
-        new Date(
-          account.created_at
+      const price =
+        Number(
+          packageItem.price
+        )
+        .toFixed(2)
+        .replace(
+          ".",
+          ","
         );
 
-      const trialEnd =
-        new Date(
-          accountCreated.getTime() +
-          30 *
-          24 *
-          60 *
-          60 *
-          1000
-        );
 
-      const now =
-        new Date();
+      const period =
+        packageItem.is_subscription
+          ? "pro Monat"
+          : `${packageItem.duration_days} Tage`;
 
-      const {
-        data: subscriptions,
-        error: subscriptionError
-      } =
-        await supabaseClient
-          .from("customer_subscriptions")
-          .select(
-            "package_id,expires_at,status"
-          )
-          .eq(
-            "customer_id",
-            currentUser.id
-          )
-          .eq(
-            "status",
-            "active"
-          )
-          .gt(
-            "expires_at",
-            new Date().toISOString()
-          );
 
-      if (
-        !subscriptionError &&
-        subscriptions &&
-        subscriptions.length
-      ) {
+      card.innerHTML = `
 
-        productLimitInfo.innerHTML = `
+        <h3>
+          ${escapeHtml(
+            packageItem.name
+          )}
+        </h3>
 
-          <div class="info-box">
+        <div class="package-price">
 
-            <strong>
-              💳 Aktives Paket
-            </strong>
-
-            <br><br>
-
-            Dein Konto verfügt über ein aktives
-            kostenpflichtiges Paket.
-
-            <br><br>
-
-            Das Produktlimit deines gebuchten Pakets
-            wird direkt von Supabase überwacht.
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-      const {
-        count,
-        error: countError
-      } =
-        await supabaseClient
-          .from("customer_products")
-          .select(
-            "id",
-            {
-              count:
-                "exact",
-              head:
-                true
-            }
-          )
-          .eq(
-            "customer_id",
-            currentUser.id
-          )
-          .eq(
-            "active",
-            true
-          );
-
-      if (countError) {
-
-        console.error(
-          "Produktanzahl:",
-          countError
-        );
-
-        productLimitInfo.innerHTML =
-          '<div class="empty">Produktanzahl konnte momentan nicht geladen werden.</div>';
-
-        return;
-
-      }
-
-      let limit;
-
-      let text;
-
-      let remaining;
-
-      if (
-        now < trialEnd
-      ) {
-
-        limit = 3;
-
-        remaining =
-          Math.max(
-            0,
-            limit -
-            (count || 0)
-          );
-
-        const dateText =
-          trialEnd.toLocaleDateString(
-            "de-DE"
-          );
-
-        text = `
-
-          <strong>
-            🎁 Kostenlose 30-Tage-Testphase
-          </strong>
-
-          <br><br>
-
-          In den ersten 30 Tagen kannst du bis zu
-          <strong>3 Produkte kostenlos</strong>
-          anlegen.
-
-          <br><br>
-
-          Deine Testphase endet am:
-          <strong>${dateText}</strong>
-
-        `;
-
-      } else {
-
-        limit = 1;
-
-        remaining =
-          Math.max(
-            0,
-            limit -
-            (count || 0)
-          );
-
-        text = `
-
-          <strong>
-            ♾️ Dauerhaft kostenlos
-          </strong>
-
-          <br><br>
-
-          Nach Ablauf der 30-Tage-Testphase bleibt
-          <strong>1 Produkt dauerhaft kostenlos</strong>.
-
-          <br><br>
-
-          Weitere Produkte können über ein
-          kostenpflichtiges Paket hinzugefügt werden.
-
-        `;
-
-      }
-
-      productLimitInfo.innerHTML = `
-
-        <div class="info-box">
-
-          ${text}
-
-          <br><br>
-
-          <div class="limit-number">
-
-            ${count || 0} / ${limit}
-
-          </div>
-
-          <div>
-            kostenlose Produkte aktuell genutzt
-          </div>
-
-          <br>
+          ${price} €
 
           ${
-            remaining > 0
-              ? `
-
-                <strong>
-
-                  Noch ${remaining}
-
-                  ${
-                    remaining === 1
-                      ? "Produkt"
-                      : "Produkte"
-                  }
-
-                  kostenlos möglich.
-
-                </strong>
-
-              `
-              : `
-
-                <strong>
-                  Das kostenlose Produktlimit ist erreicht.
-                </strong>
-
-              `
+            packageItem.is_subscription
+              ? "/ Monat"
+              : ""
           }
 
         </div>
 
+        <div class="package-description">
+
+          ${escapeHtml(
+            packageItem.description
+          )}
+
+        </div>
+
+        <div class="package-limit">
+
+          Bis zu
+          ${escapeHtml(
+            packageItem.product_limit
+          )}
+          Produkte ·
+          ${escapeHtml(
+            period
+          )}
+
+        </div>
+
+        <button
+          type="button"
+          class="primary package-button"
+        >
+          Paket kaufen
+        </button>
+
       `;
 
-    } catch (error) {
 
-      console.error(
-        "Produktlimit:",
-        error
+      const button =
+        card.querySelector(
+          "button"
+        );
+
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          startCheckout(
+            packageItem
+          );
+
+        }
       );
 
-      productLimitInfo.innerHTML =
-        '<div class="empty">Produktlimit konnte momentan nicht geladen werden.</div>';
+
+      sellerPackages.appendChild(
+        card
+      );
 
     }
+  );
 
+}
+
+
+/* =========================================================
+   STRIPE CHECKOUT
+   ========================================================= */
+
+async function startCheckout(
+  packageItem
+) {
+
+  clearMessage();
+
+
+  if (
+    !packageItem ||
+    !packageItem.stripe_price_id
+  ) {
+
+    showMessage(
+      "Für dieses Paket ist keine Stripe-Preis-ID hinterlegt.",
+      "error"
+    );
+
+    console.error(
+      "Stripe Price ID fehlt:",
+      packageItem
+    );
+
+    return;
   }
 
 
-  /* =========================================================
-     SESSION PRÜFEN
-     ========================================================= */
+  showMessage(
+    "Stripe Checkout wird vorbereitet...",
+    "success"
+  );
 
-  async function checkSession() {
+
+  try {
 
     const {
-      data,
-      error
+      data: {
+        session
+      }
     } =
       await supabaseClient.auth.getSession();
 
-    if (error) {
 
-      console.error(
-        "Session:",
-        error
-      );
-
-      showMessage(
-        "Die Sitzung konnte nicht geladen werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    if (
-      !data.session
-    ) {
+    if (!session) {
 
       window.location.href =
         "login.html";
 
       return;
-
     }
 
-    currentUser =
-      data.session.user;
 
-    accountInfo.innerHTML = `
+    /*
+      Die vorhandene Edge Function
+      "stripe-checkout" erwartet:
 
-      <strong>
-        E-Mail:
-      </strong>
+      price_id
+      success_url
+      cancel_url
 
-      ${escapeHtml(
-        currentUser.email || ""
-      )}
+      und liefert:
 
-      <br>
+      checkout_url
+    */
 
-      <strong>
-        User-ID:
-      </strong>
 
-      ${escapeHtml(
+    const successUrl =
+      window.location.origin +
+      window.location.pathname +
+      "?payment=success";
+
+
+    const cancelUrl =
+      window.location.origin +
+      window.location.pathname +
+      "?payment=cancelled";
+
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/functions/v1/stripe-checkout",
+        {
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " +
+              session.access_token
+
+          },
+
+          body:
+            JSON.stringify({
+
+              price_id:
+                packageItem.stripe_price_id,
+
+              success_url:
+                successUrl,
+
+              cancel_url:
+                cancelUrl
+
+            })
+
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      console.error(
+        "Stripe Checkout:",
+        result
+      );
+
+      throw new Error(
+        result.error ||
+        "Stripe Checkout konnte nicht gestartet werden."
+      );
+    }
+
+
+    /*
+      Die Edge Function liefert
+      checkout_url zurück.
+    */
+
+    if (
+      result.checkout_url
+    ) {
+
+      window.location.href =
+        result.checkout_url;
+
+      return;
+    }
+
+
+    throw new Error(
+      "Stripe Checkout-URL fehlt."
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Checkout Fehler:",
+      error
+    );
+
+
+    showMessage(
+      error.message ||
+      "Der Kauf konnte momentan nicht gestartet werden.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ZAHLUNGSERGEBNIS ANZEIGEN
+   ========================================================= */
+
+function checkPaymentResult() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const payment =
+    params.get(
+      "payment"
+    );
+
+
+  if (
+    payment === "success"
+  ) {
+
+    showMessage(
+      "Zahlung erfolgreich! Dein Paket wird jetzt freigeschaltet.",
+      "success"
+    );
+
+  }
+
+
+  if (
+    payment === "cancelled"
+  ) {
+
+    showMessage(
+      "Der Kauf wurde abgebrochen.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PRODUKTLIMIT ANZEIGEN
+   ========================================================= */
+
+async function loadProductLimitInfo() {
+
+  productLimitInfo.innerHTML =
+    '<div class="loading">Produktlimit wird geladen...</div>';
+
+
+  const {
+    data: account,
+    error: accountError
+  } =
+    await supabaseClient
+      .from("customer_accounts")
+      .select("created_at")
+      .eq(
+        "id",
         currentUser.id
-      )}
+      )
+      .maybeSingle();
+
+
+  if (
+    accountError ||
+    !account
+  ) {
+
+    console.error(
+      "Kundenkonto:",
+      accountError
+    );
+
+    productLimitInfo.innerHTML =
+      '<div class="empty">Produktlimit konnte momentan nicht geladen werden.</div>';
+
+    return;
+  }
+
+
+  const accountCreated =
+    new Date(
+      account.created_at
+    );
+
+
+  const trialEnd =
+    new Date(
+      accountCreated.getTime() +
+      30 *
+      24 *
+      60 *
+      60 *
+      1000
+    );
+
+
+  const now =
+    new Date();
+
+
+  const {
+    data: subscriptions,
+    error: subscriptionError
+  } =
+    await supabaseClient
+      .from("customer_subscriptions")
+      .select(
+        "package_id,expires_at,status"
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .gt(
+        "expires_at",
+        new Date().toISOString()
+      );
+
+
+  if (
+    !subscriptionError &&
+    subscriptions &&
+    subscriptions.length
+  ) {
+
+    productLimitInfo.innerHTML = `
+
+      <div class="info-box">
+
+        <strong>
+          💳 Aktives Paket
+        </strong>
+
+        <br><br>
+
+        Dein Konto verfügt über ein aktives
+        kostenpflichtiges Paket.
+
+        <br><br>
+
+        Das Produktlimit deines gebuchten Pakets
+        wird direkt von Supabase überwacht.
+
+      </div>
 
     `;
 
-    await loadSellerPackages();
+    return;
+  }
 
-    await loadProductLimitInfo();
 
-    await loadCategories();
+  const {
+    count,
+    error: countError
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .select(
+        "id",
+        {
+          count:
+            "exact",
+          head:
+            true
+        }
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .eq(
+        "active",
+        true
+      );
 
-    await loadProducts();
+
+  if (countError) {
+
+    console.error(
+      "Produktanzahl:",
+      countError
+    );
+
+    productLimitInfo.innerHTML =
+      '<div class="empty">Produktanzahl konnte momentan nicht geladen werden.</div>';
+
+    return;
+  }
+
+
+  let limit;
+  let text;
+  let remaining;
+
+
+  if (
+    now < trialEnd
+  ) {
+
+    limit = 3;
+
+    remaining =
+      Math.max(
+        0,
+        limit -
+        (count || 0)
+      );
+
+
+    const dateText =
+      trialEnd.toLocaleDateString(
+        "de-DE"
+      );
+
+
+    text = `
+
+      <strong>
+        🎁 Kostenlose 30-Tage-Testphase
+      </strong>
+
+      <br><br>
+
+      In den ersten 30 Tagen kannst du bis zu
+      <strong>3 Produkte kostenlos</strong>
+      anlegen.
+
+      <br><br>
+
+      Deine Testphase endet am:
+
+      <strong>
+        ${dateText}
+      </strong>
+
+    `;
+
+  } else {
+
+    limit = 1;
+
+    remaining =
+      Math.max(
+        0,
+        limit -
+        (count || 0)
+      );
+
+
+    text = `
+
+      <strong>
+        ♾️ Dauerhaft kostenlos
+      </strong>
+
+      <br><br>
+
+      Nach Ablauf der 30-Tage-Testphase bleibt
+      <strong>1 Produkt dauerhaft kostenlos</strong>.
+
+      <br><br>
+
+      Weitere Produkte können über ein
+      kostenpflichtiges Paket hinzugefügt werden.
+
+    `;
 
   }
 
 
-  /* =========================================================
-     KATEGORIEN LADEN
-     ========================================================= */
+  productLimitInfo.innerHTML = `
 
-  async function loadCategories() {
+    <div class="info-box">
+
+      ${text}
+
+      <br><br>
+
+      <div class="limit-number">
+        ${count || 0} / ${limit}
+      </div>
+
+      <div>
+        kostenlose Produkte aktuell genutzt
+      </div>
+
+      <br>
+
+      ${
+        remaining > 0
+
+          ? `
+
+            <strong>
+
+              Noch ${remaining}
+
+              ${
+                remaining === 1
+                  ? "Produkt"
+                  : "Produkte"
+              }
+
+              kostenlos möglich.
+
+            </strong>
+
+          `
+
+          : `
+
+            <strong>
+              Das kostenlose Produktlimit ist erreicht.
+            </strong>
+
+          `
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   SESSION PRÜFEN
+   ========================================================= */
+
+async function checkSession() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (error) {
+
+    console.error(
+      "Session:",
+      error
+    );
+
+    showMessage(
+      "Die Sitzung konnte nicht geladen werden.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    !data.session
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+  }
+
+
+  currentUser =
+    data.session.user;
+
+
+  accountInfo.innerHTML = `
+
+    <strong>
+      E-Mail:
+    </strong>
+
+    ${escapeHtml(
+      currentUser.email || ""
+    )}
+
+    <br>
+
+    <strong>
+      User-ID:
+    </strong>
+
+    ${escapeHtml(
+      currentUser.id
+    )}
+
+  `;
+
+
+  await loadSellerPackages();
+
+  await loadProductLimitInfo();
+
+  await loadCategories();
+
+  await loadProducts();
+
+}
+
+
+/* =========================================================
+   KATEGORIEN LADEN
+   ========================================================= */
+
+async function loadCategories() {
+
+  categoriesContainer.innerHTML =
+    '<div class="loading">Kategorien werden geladen...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("customer_categories")
+      .select("*")
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .eq(
+        "active",
+        true
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Kategorien:",
+      error
+    );
 
     categoriesContainer.innerHTML =
-      '<div class="loading">Kategorien werden geladen...</div>';
+      '<div class="empty">Kategorien konnten nicht geladen werden.</div>';
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customer_categories")
-        .select("*")
-        .eq(
-          "customer_id",
-          currentUser.id
+    return;
+  }
+
+
+  customerCategories =
+    data || [];
+
+
+  renderCategories();
+
+}
+
+
+function renderCategories() {
+
+  categoriesContainer.innerHTML =
+    "";
+
+
+  if (
+    !customerCategories.length
+  ) {
+
+    categoriesContainer.innerHTML =
+      '<div class="empty">Du hast noch keine eigenen Kategorien.</div>';
+
+    return;
+  }
+
+
+  customerCategories.forEach(
+    function (category) {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "item";
+
+
+      item.innerHTML = `
+
+        <div class="item-header">
+
+          <div>
+
+            <div class="item-title">
+
+              ${escapeHtml(
+                category.icon ||
+                "📂"
+              )}
+
+              ${escapeHtml(
+                category.name
+              )}
+
+            </div>
+
+            <div class="muted">
+
+              Slug:
+
+              ${escapeHtml(
+                category.slug
+              )}
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="danger"
+            type="button"
+          >
+            Löschen
+          </button>
+
+        </div>
+
+      `;
+
+
+      item
+        .querySelector(
+          "button"
         )
-        .eq(
-          "active",
-          true
-        )
-        .order(
-          "created_at",
-          {
-            ascending:
-              true
+        .addEventListener(
+          "click",
+          function () {
+
+            deleteCategory(
+              category.id
+            );
+
           }
         );
 
-    if (error) {
 
-      console.error(
-        "Kategorien:",
-        error
+      categoriesContainer.appendChild(
+        item
       );
 
-      categoriesContainer.innerHTML =
-        '<div class="empty">Kategorien konnten nicht geladen werden.</div>';
-
-      return;
-
     }
+  );
 
-    customerCategories =
-      data || [];
+}
 
-    renderCategories();
 
+/* =========================================================
+   PRODUKTE LADEN
+   ========================================================= */
+
+async function loadProducts() {
+
+  productsContainer.innerHTML =
+    '<div class="loading">Produkte werden geladen...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .select("*")
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .order(
+        "sort_order",
+        {
+          ascending: true
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Produkte:",
+      error
+    );
+
+    productsContainer.innerHTML =
+      '<div class="empty">Produkte konnten nicht geladen werden.</div>';
+
+    return;
   }
 
 
-  function renderCategories() {
+  customerProducts =
+    data || [];
 
-    categoriesContainer.innerHTML =
-      "";
 
-    if (
-      !customerCategories.length
-    ) {
+  renderProducts();
 
-      categoriesContainer.innerHTML =
-        '<div class="empty">Du hast noch keine eigenen Kategorien.</div>';
+  await loadProductLimitInfo();
 
-      return;
+}
 
-    }
 
-    customerCategories.forEach(
-      function (category) {
+/* =========================================================
+   PRODUKTE ANZEIGEN
+   ========================================================= */
 
-        const item =
-          document.createElement(
-            "div"
-          );
+function renderProducts() {
 
-        item.className =
-          "item";
+  productsContainer.innerHTML =
+    "";
 
-        item.innerHTML = `
 
-          <div class="item-header">
+  if (
+    !customerProducts.length
+  ) {
 
-            <div>
+    productsContainer.innerHTML =
+      '<div class="empty">Du hast noch keine eigenen Produkte.</div>';
 
-              <div class="item-title">
+    return;
+  }
 
-                ${escapeHtml(
-                  category.icon ||
-                  "📂"
-                )}
 
-                ${escapeHtml(
-                  category.name
-                )}
+  customerProducts.forEach(
+    function (product) {
 
-              </div>
+      const item =
+        document.createElement(
+          "div"
+        );
 
-              <div class="muted">
 
-                Slug:
-                ${escapeHtml(
-                  category.slug
-                )}
+      item.className =
+        "item";
 
-              </div>
+
+      const imageUrl =
+        safeUrl(
+          product.image_url
+        );
+
+
+      item.innerHTML = `
+
+        <div class="item-header">
+
+          <div>
+
+            ${
+              imageUrl
+                ? `
+
+                  <img
+                    class="product-image"
+                    src="${escapeHtml(
+                      imageUrl
+                    )}"
+                    alt="${escapeHtml(
+                      product.title
+                    )}"
+                  >
+
+                `
+                : ""
+            }
+
+
+            <div class="item-title">
+
+              ${escapeHtml(
+                product.title
+              )}
 
             </div>
+
+
+            ${
+              product.description
+
+                ? `
+
+                  <div class="muted">
+
+                    ${escapeHtml(
+                      product.description
+                    )}
+
+                  </div>
+
+                `
+
+                : ""
+            }
+
+
+            ${
+              product.price !== null &&
+              product.price !== undefined
+
+                ? `
+
+                  <div class="muted">
+
+                    Preis:
+
+                    ${escapeHtml(
+                      product.price
+                    )}
+
+                    €
+
+                  </div>
+
+                `
+
+                : ""
+            }
+
+
+            <div class="muted">
+
+              ${
+                product.active
+                  ? "🟢 Aktiv"
+                  : "⚪ Deaktiviert"
+              }
+
+            </div>
+
+          </div>
+
+
+          <div
+            style="
+              display:flex;
+              gap:8px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <button
+              class="edit"
+              type="button"
+            >
+              Bearbeiten
+            </button>
+
 
             <button
               class="danger"
@@ -1554,1314 +1830,1202 @@
 
           </div>
 
-        `;
+        </div>
 
+      `;
+
+
+      const buttons =
+        item.querySelectorAll(
+          "button"
+        );
+
+
+      buttons[0].addEventListener(
+        "click",
+        function () {
+
+          editProduct(
+            product.id
+          );
+
+        }
+      );
+
+
+      buttons[1].addEventListener(
+        "click",
+        function () {
+
+          deleteProduct(
+            product.id
+          );
+
+        }
+      );
+
+
+      productsContainer.appendChild(
         item
-          .querySelector(
-            "button"
-          )
-          .addEventListener(
-            "click",
-            function () {
+      );
 
-              deleteCategory(
-                category.id
-              );
+    }
+  );
 
-            }
-          );
+}
 
-        categoriesContainer.appendChild(
-          item
-        );
 
-      }
+/* =========================================================
+   KATEGORIE LÖSCHEN
+   ========================================================= */
+
+async function deleteCategory(
+  categoryId
+) {
+
+  const confirmed =
+    confirm(
+      "Möchtest du diese Kategorie wirklich löschen?"
     );
 
-  }
 
-
-  /* =========================================================
-     PRODUKTE LADEN
-     ========================================================= */
-
-  async function loadProducts() {
-
-    productsContainer.innerHTML =
-      '<div class="loading">Produkte werden geladen...</div>';
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .select("*")
-        .eq(
-          "customer_id",
-          currentUser.id
-        )
-        .order(
-          "sort_order",
-          {
-            ascending:
-              true
-          }
-        )
-        .order(
-          "created_at",
-          {
-            ascending:
-              true
-          }
-        );
-
-    if (error) {
-
-      console.error(
-        "Produkte:",
-        error
-      );
-
-      productsContainer.innerHTML =
-        '<div class="empty">Produkte konnten nicht geladen werden.</div>';
-
-      return;
-
-    }
-
-    customerProducts =
-      data || [];
-
-    renderProducts();
-
-    await loadProductLimitInfo();
-
-  }
-
-
-  function renderProducts() {
-
-    productsContainer.innerHTML =
-      "";
-
-    if (
-      !customerProducts.length
-    ) {
-
-      productsContainer.innerHTML =
-        '<div class="empty">Du hast noch keine eigenen Produkte.</div>';
-
-      return;
-
-    }
-
-    customerProducts.forEach(
-      function (product) {
-
-        const item =
-          document.createElement(
-            "div"
-          );
-
-        item.className =
-          "item";
-
-        const imageUrl =
-          safeUrl(
-            product.image_url
-          );
-
-        item.innerHTML = `
-
-          <div class="item-header">
-
-            <div>
-
-              ${
-                imageUrl
-                  ? `
-
-                    <img
-                      class="product-image"
-                      src="${escapeHtml(
-                        imageUrl
-                      )}"
-                      alt="${escapeHtml(
-                        product.title
-                      )}"
-                    >
-
-                  `
-                  : ""
-              }
-
-              <div class="item-title">
-
-                ${escapeHtml(
-                  product.title
-                )}
-
-              </div>
-
-              ${
-                product.description
-                  ? `
-
-                    <div class="muted">
-
-                      ${escapeHtml(
-                        product.description
-                      )}
-
-                    </div>
-
-                  `
-                  : ""
-              }
-
-              ${
-                product.price !== null &&
-                product.price !== undefined
-                  ? `
-
-                    <div class="muted">
-
-                      Preis:
-                      ${escapeHtml(
-                        product.price
-                      )} €
-
-                    </div>
-
-                  `
-                  : ""
-              }
-
-              <div class="muted">
-
-                ${
-                  product.active
-                    ? "🟢 Aktiv"
-                    : "⚪ Deaktiviert"
-                }
-
-              </div>
-
-            </div>
-
-            <div
-              style="
-                display:flex;
-                gap:8px;
-                flex-wrap:wrap;
-              "
-            >
-
-              <button
-                class="edit"
-                type="button"
-              >
-                Bearbeiten
-              </button>
-
-              <button
-                class="danger"
-                type="button"
-              >
-                Löschen
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
-        const buttons =
-          item.querySelectorAll(
-            "button"
-          );
-
-        buttons[0].addEventListener(
-          "click",
-          function () {
-
-            editProduct(
-              product.id
-            );
-
-          }
-        );
-
-        buttons[1].addEventListener(
-          "click",
-          function () {
-
-            deleteProduct(
-              product.id
-            );
-
-          }
-        );
-
-        productsContainer.appendChild(
-          item
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =========================================================
-     KATEGORIE LÖSCHEN
-     ========================================================= */
-
-  async function deleteCategory(
-    categoryId
-  ) {
-
-    const confirmed =
-      confirm(
-        "Möchtest du diese Kategorie wirklich löschen?"
-      );
-
-    if (
-      !confirmed
-    ) return;
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("customer_categories")
-        .delete()
-        .eq(
-          "id",
-          categoryId
-        )
-        .eq(
-          "customer_id",
-          currentUser.id
-        );
-
-    if (error) {
-
-      console.error(
-        "Kategorie löschen:",
-        error
-      );
-
-      showMessage(
-        "Kategorie konnte nicht gelöscht werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    showMessage(
-      "Kategorie wurde gelöscht.",
-      "success"
-    );
-
-    await loadCategories();
-
-  }
-
-
-  /* =========================================================
-     PRODUKT BEARBEITEN
-     ========================================================= */
-
-  async function editProduct(
-    productId
-  ) {
-
-    const {
-      data: product,
-      error: loadError
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .select("*")
-        .eq(
-          "id",
-          productId
-        )
-        .eq(
-          "customer_id",
-          currentUser.id
-        )
-        .single();
-
-    if (
-      loadError ||
-      !product
-    ) {
-
-      console.error(
-        loadError
-      );
-
-      showMessage(
-        "Produkt konnte nicht geladen werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    const title =
-      prompt(
-        "Produktname:",
-        product.title || ""
-      );
-
-    if (
-      title === null
-    ) return;
-
-    const description =
-      prompt(
-        "Beschreibung:",
-        product.description || ""
-      );
-
-    if (
-      description === null
-    ) return;
-
-    const price =
-      prompt(
-        "Preis:",
-        product.price !== null
-          ? product.price
-          : ""
-      );
-
-    if (
-      price === null
-    ) return;
-
-    const affiliateUrl =
-      prompt(
-        "Affiliate-URL:",
-        product.affiliate_url || ""
-      );
-
-    if (
-      affiliateUrl === null
-    ) return;
-
-    let newImageUrl =
-      product.image_url || null;
-
-    let oldImagePath =
-      null;
-
-    if (
-      product.image_url
-    ) {
-
-      const marker =
-        "/storage/v1/object/public/product-images/";
-
-      const markerIndex =
-        product.image_url.indexOf(
-          marker
-        );
-
-      if (
-        markerIndex !== -1
-      ) {
-
-        oldImagePath =
-          product.image_url.substring(
-            markerIndex +
-            marker.length
-          );
-
-      }
-
-    }
-
-    const replaceImage =
-      confirm(
-        "Möchtest du das Produktbild ändern?"
-      );
-
-    if (
-      replaceImage
-    ) {
-
-      const imageInput =
-        document.createElement(
-          "input"
-        );
-
-      imageInput.type =
-        "file";
-
-      imageInput.accept =
-        "image/jpeg,image/png,image/webp";
-
-      imageInput.click();
-
-      await new Promise(
-        function (resolve) {
-
-          imageInput.addEventListener(
-            "change",
-            resolve,
-            {
-              once:
-                true
-            }
-          );
-
-        }
-      );
-
-      const imageFile =
-        imageInput.files[0];
-
-      if (
-        imageFile
-      ) {
-
-        const fileExtension =
-          imageFile.name
-            .split(".")
-            .pop()
-            .toLowerCase();
-
-        const filePath =
-          currentUser.id +
-          "/" +
-          crypto.randomUUID() +
-          "." +
-          fileExtension;
-
-        const {
-          error: uploadError
-        } =
-          await supabaseClient
-            .storage
-            .from("product-images")
-            .upload(
-              filePath,
-              imageFile,
-              {
-                contentType:
-                  imageFile.type,
-                upsert:
-                  false
-              }
-            );
-
-        if (
-          uploadError
-        ) {
-
-          console.error(
-            "Bild Upload:",
-            uploadError
-          );
-
-          showMessage(
-            "Produktbild konnte nicht hochgeladen werden.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        const {
-          data: publicUrlData
-        } =
-          supabaseClient
-            .storage
-            .from("product-images")
-            .getPublicUrl(
-              filePath
-            );
-
-        newImageUrl =
-          publicUrlData.publicUrl;
-
-        if (
-          oldImagePath
-        ) {
-
-          const {
-            error: deleteError
-          } =
-            await supabaseClient
-              .storage
-              .from("product-images")
-              .remove([
-                oldImagePath
-              ]);
-
-          if (
-            deleteError
-          ) {
-
-            console.error(
-              "Altes Bild:",
-              deleteError
-            );
-
-          }
-
-        }
-
-      }
-
-    }
-
-    const parsedPrice =
-      price.trim()
-        ? Number(
-            price.replace(
-              ",",
-              "."
-            )
-          )
-        : null;
-
-    if (
-      price.trim() &&
-      Number.isNaN(
-        parsedPrice
+  if (!confirmed)
+    return;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_categories")
+      .delete()
+      .eq(
+        "id",
+        categoryId
       )
-    ) {
-
-      showMessage(
-        "Der Preis ist ungültig.",
-        "error"
+      .eq(
+        "customer_id",
+        currentUser.id
       );
 
-      return;
 
-    }
+  if (error) {
 
-    const {
+    console.error(
+      "Kategorie löschen:",
       error
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .update({
-          title:
-            title.trim(),
-
-          description:
-            description.trim()
-              ? description.trim()
-              : null,
-
-          price:
-            parsedPrice,
-
-          affiliate_url:
-            affiliateUrl.trim(),
-
-          image_url:
-            newImageUrl
-        })
-        .eq(
-          "id",
-          productId
-        )
-        .eq(
-          "customer_id",
-          currentUser.id
-        );
-
-    if (
-      error
-    ) {
-
-      console.error(
-        "Produkt bearbeiten:",
-        error
-      );
-
-      showMessage(
-        "Produkt konnte nicht bearbeitet werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    showMessage(
-      "Produkt wurde aktualisiert.",
-      "success"
     );
 
-    await loadProducts();
+    showMessage(
+      "Kategorie konnte nicht gelöscht werden.",
+      "error"
+    );
 
+    return;
   }
 
 
-  /* =========================================================
-     PRODUKT LÖSCHEN
-     ========================================================= */
+  showMessage(
+    "Kategorie wurde gelöscht.",
+    "success"
+  );
 
-  async function deleteProduct(
-    productId
+
+  await loadCategories();
+
+}
+
+
+/* =========================================================
+   PRODUKT BEARBEITEN
+   ========================================================= */
+
+async function editProduct(
+  productId
+) {
+
+  const {
+    data: product,
+    error: loadError
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .select("*")
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      )
+      .single();
+
+
+  if (
+    loadError ||
+    !product
   ) {
 
-    const confirmed =
-      confirm(
-        "Möchtest du dieses Produkt wirklich löschen?"
-      );
-
-    if (
-      !confirmed
-    ) return;
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("customer_products")
-        .delete()
-        .eq(
-          "id",
-          productId
-        )
-        .eq(
-          "customer_id",
-          currentUser.id
-        );
-
-    if (
-      error
-    ) {
-
-      console.error(
-        "Produkt löschen:",
-        error
-      );
-
-      showMessage(
-        "Produkt konnte nicht gelöscht werden.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    showMessage(
-      "Produkt wurde gelöscht.",
-      "success"
+    console.error(
+      loadError
     );
 
-    await loadProducts();
+    showMessage(
+      "Produkt konnte nicht geladen werden.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const title =
+    prompt(
+      "Produktname:",
+      product.title || ""
+    );
+
+
+  if (title === null)
+    return;
+
+
+  const description =
+    prompt(
+      "Beschreibung:",
+      product.description || ""
+    );
+
+
+  if (
+    description === null
+  )
+    return;
+
+
+  const price =
+    prompt(
+      "Preis:",
+      product.price !== null
+        ? product.price
+        : ""
+    );
+
+
+  if (
+    price === null
+  )
+    return;
+
+
+  const affiliateUrl =
+    prompt(
+      "Affiliate-URL:",
+      product.affiliate_url || ""
+    );
+
+
+  if (
+    affiliateUrl === null
+  )
+    return;
+
+
+  let newImageUrl =
+    product.image_url || null;
+
+
+  let oldImagePath =
+    null;
+
+
+  if (
+    product.image_url
+  ) {
+
+    const marker =
+      "/storage/v1/object/public/product-images/";
+
+
+    const markerIndex =
+      product.image_url.indexOf(
+        marker
+      );
+
+
+    if (
+      markerIndex !== -1
+    ) {
+
+      oldImagePath =
+        product.image_url.substring(
+          markerIndex +
+          marker.length
+        );
+
+    }
 
   }
 
 
-  /* =========================================================
-     PRODUKT HINZUFÜGEN
-     ========================================================= */
+  const replaceImage =
+    confirm(
+      "Möchtest du das Produktbild ändern?"
+    );
 
-  document
-    .getElementById(
-      "add-product-button"
-    )
-    .addEventListener(
-      "click",
-      async function () {
 
-        clearMessage();
+  if (
+    replaceImage
+  ) {
 
-        productForm.style.display =
-          "block";
+    const imageInput =
+      document.createElement(
+        "input"
+      );
 
-        productCategoryInput.innerHTML =
-          '<option value="">Kategorien werden geladen...</option>';
 
-        const {
-          data: categories,
-          error
-        } =
-          await supabaseClient
-            .from("customer_categories")
-            .select(
-              "id,name"
-            )
-            .eq(
-              "customer_id",
-              currentUser.id
-            )
-            .eq(
-              "active",
+    imageInput.type =
+      "file";
+
+
+    imageInput.accept =
+      "image/jpeg,image/png,image/webp";
+
+
+    imageInput.click();
+
+
+    await new Promise(
+      function (resolve) {
+
+        imageInput.addEventListener(
+          "change",
+          resolve,
+          {
+            once:
               true
-            )
-            .order(
-              "created_at",
-              {
-                ascending:
-                  true
-              }
-            );
-
-        if (
-          error
-        ) {
-
-          console.error(
-            "Kategorien:",
-            error
-          );
-
-          productCategoryInput.innerHTML =
-            '<option value="">Kategorien konnten nicht geladen werden</option>';
-
-          return;
-
-        }
-
-        if (
-          !categories.length
-        ) {
-
-          productCategoryInput.innerHTML =
-            '<option value="">Keine Kategorien vorhanden</option>';
-
-          showMessage(
-            "Bitte zuerst eine Kategorie erstellen.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        productCategoryInput.innerHTML =
-          '<option value="">Kategorie auswählen</option>';
-
-        categories.forEach(
-          function (category) {
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-            option.value =
-              category.id;
-
-            option.textContent =
-              category.name;
-
-            productCategoryInput.appendChild(
-              option
-            );
-
           }
         );
-
-        window.scrollTo({
-          top:
-            productForm.offsetTop,
-          behavior:
-            "smooth"
-        });
 
       }
     );
 
 
-  /* =========================================================
-     PRODUKT SPEICHERN
-     ========================================================= */
+    const imageFile =
+      imageInput.files[0];
 
-  saveProductButton
-    .addEventListener(
-      "click",
-      async function () {
 
-        clearMessage();
+    if (
+      imageFile
+    ) {
 
-        const title =
-          productTitleInput.value.trim();
+      const fileExtension =
+        imageFile.name
+          .split(".")
+          .pop()
+          .toLowerCase();
 
-        const description =
-          productDescriptionInput.value.trim();
 
-        const priceText =
-          productPriceInput.value.trim();
+      const filePath =
+        currentUser.id +
+        "/" +
+        crypto.randomUUID() +
+        "." +
+        fileExtension;
 
-        const affiliateUrl =
-          productAffiliateInput.value.trim();
 
-        const categoryId =
-          productCategoryInput.value;
-
-        const imageFile =
-          productImageInput.files[0];
-
-        if (
-          !title
-        ) {
-
-          showMessage(
-            "Bitte einen Produktnamen eingeben.",
-            "error"
+      const {
+        error: uploadError
+      } =
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .upload(
+            filePath,
+            imageFile,
+            {
+              contentType:
+                imageFile.type,
+              upsert:
+                false
+            }
           );
 
-          return;
 
-        }
+      if (
+        uploadError
+      ) {
 
-        if (
-          !affiliateUrl
-        ) {
-
-          showMessage(
-            "Eine Affiliate-URL ist erforderlich.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        if (
-          !categoryId
-        ) {
-
-          showMessage(
-            "Bitte eine Kategorie auswählen.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        if (
-          !imageFile
-        ) {
-
-          showMessage(
-            "Bitte ein Produktbild auswählen.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        const price =
-          priceText
-            ? Number(
-                priceText.replace(
-                  ",",
-                  "."
-                )
-              )
-            : null;
-
-        if (
-          priceText &&
-          Number.isNaN(
-            price
-          )
-        ) {
-
-          showMessage(
-            "Der Preis ist ungültig.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        const fileExtension =
-          imageFile.name
-            .split(".")
-            .pop()
-            .toLowerCase();
-
-        const filePath =
-          currentUser.id +
-          "/" +
-          crypto.randomUUID() +
-          "." +
-          fileExtension;
-
-        const {
-          error: uploadError
-        } =
-          await supabaseClient
-            .storage
-            .from("product-images")
-            .upload(
-              filePath,
-              imageFile,
-              {
-                contentType:
-                  imageFile.type,
-                upsert:
-                  false
-              }
-            );
-
-        if (
+        console.error(
+          "Bild Upload:",
           uploadError
-        ) {
-
-          console.error(
-            "Bild Upload:",
-            uploadError
-          );
-
-          showMessage(
-            "Produktbild konnte nicht hochgeladen werden.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        const {
-          data: publicUrlData
-        } =
-          supabaseClient
-            .storage
-            .from("product-images")
-            .getPublicUrl(
-              filePath
-            );
-
-        const imageUrl =
-          publicUrlData.publicUrl;
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from("customer_products")
-            .insert({
-              customer_id:
-                currentUser.id,
-
-              category_id:
-                categoryId,
-
-              title:
-                title,
-
-              description:
-                description
-                  ? description
-                  : null,
-
-              price:
-                price,
-
-              image_url:
-                imageUrl,
-
-              affiliate_url:
-                affiliateUrl,
-
-              sort_order:
-                0,
-
-              active:
-                true
-            })
-            .select()
-            .single();
-
-        console.log(
-          "Produkt INSERT:",
-          data
         );
 
-        console.log(
-          "Produkt INSERT FEHLER:",
-          error
+        showMessage(
+          "Produktbild konnte nicht hochgeladen werden.",
+          "error"
         );
 
-        if (
-          error
-        ) {
+        return;
+      }
 
-          console.error(
-            "Produkt INSERT:",
-            error
+
+      const {
+        data: publicUrlData
+      } =
+        supabaseClient
+          .storage
+          .from("product-images")
+          .getPublicUrl(
+            filePath
           );
 
+
+      newImageUrl =
+        publicUrlData.publicUrl;
+
+
+      if (
+        oldImagePath
+      ) {
+
+        const {
+          error: deleteError
+        } =
           await supabaseClient
             .storage
             .from("product-images")
             .remove([
-              filePath
+              oldImagePath
             ]);
 
-          let errorMessage =
-            "Produkt konnte nicht erstellt werden.";
 
-          if (
-            error.message &&
-            error.message.includes(
-              "Kostenloses Testlimit"
-            )
-          ) {
+        if (
+          deleteError
+        ) {
 
-            errorMessage =
-              "Dein kostenloses Limit von 3 Produkten für die ersten 30 Tage ist erreicht.";
-
-          } else if (
-            error.message &&
-            error.message.includes(
-              "Kostenloses Produktlimit"
-            )
-          ) {
-
-            errorMessage =
-              "Nach Ablauf der 30 Tage bleibt 1 Produkt dauerhaft kostenlos. Für weitere Produkte benötigst du ein Paket.";
-
-          } else if (
-            error.message &&
-            error.message.includes(
-              "Produktlimit des aktiven Pakets"
-            )
-          ) {
-
-            errorMessage =
-              "Das Produktlimit deines aktiven Pakets ist erreicht.";
-
-          } else {
-
-            errorMessage +=
-              " " +
-              error.message;
-
-          }
-
-          showMessage(
-            errorMessage,
-            "error"
+          console.error(
+            "Altes Bild:",
+            deleteError
           );
-
-          return;
 
         }
 
-        showMessage(
-          "Produkt wurde erfolgreich erstellt.",
-          "success"
-        );
-
-        productForm.style.display =
-          "none";
-
-        productTitleInput.value =
-          "";
-
-        productImageInput.value =
-          "";
-
-        productDescriptionInput.value =
-          "";
-
-        productPriceInput.value =
-          "";
-
-        productAffiliateInput.value =
-          "";
-
-        productCategoryInput.value =
-          "";
-
-        await loadProducts();
-
       }
-    );
+
+    }
+
+  }
 
 
-  /* =========================================================
-     PRODUKT FORMULAR ABBRECHEN
-     ========================================================= */
-
-  cancelProductButton
-    .addEventListener(
-      "click",
-      function () {
-
-        productForm.style.display =
-          "none";
-
-        clearMessage();
-
-      }
-    );
+  const parsedPrice =
+    price.trim()
+      ? Number(
+          price.replace(
+            ",",
+            "."
+          )
+        )
+      : null;
 
 
-  /* =========================================================
-     KATEGORIE HINZUFÜGEN
-     ========================================================= */
-
-  document
-    .getElementById(
-      "add-category-button"
+  if (
+    price.trim() &&
+    Number.isNaN(
+      parsedPrice
     )
-    .addEventListener(
-      "click",
-      async function () {
+  ) {
 
-        clearMessage();
+    showMessage(
+      "Der Preis ist ungültig.",
+      "error"
+    );
 
-        const name =
-          prompt(
-            "Name der neuen Kategorie:"
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .update({
+
+        title:
+          title.trim(),
+
+        description:
+          description.trim()
+            ? description.trim()
+            : null,
+
+        price:
+          parsedPrice,
+
+        affiliate_url:
+          affiliateUrl.trim(),
+
+        image_url:
+          newImageUrl
+
+      })
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      "Produkt bearbeiten:",
+      error
+    );
+
+    showMessage(
+      "Produkt konnte nicht bearbeitet werden.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "Produkt wurde aktualisiert.",
+    "success"
+  );
+
+
+  await loadProducts();
+
+}
+
+
+/* =========================================================
+   PRODUKT LÖSCHEN
+   ========================================================= */
+
+async function deleteProduct(
+  productId
+) {
+
+  const confirmed =
+    confirm(
+      "Möchtest du dieses Produkt wirklich löschen?"
+    );
+
+
+  if (
+    !confirmed
+  )
+    return;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("customer_products")
+      .delete()
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "customer_id",
+        currentUser.id
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      "Produkt löschen:",
+      error
+    );
+
+    showMessage(
+      "Produkt konnte nicht gelöscht werden.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "Produkt wurde gelöscht.",
+    "success"
+  );
+
+
+  await loadProducts();
+
+}
+
+
+/* =========================================================
+   PRODUKT HINZUFÜGEN
+   ========================================================= */
+
+document
+  .getElementById(
+    "add-product-button"
+  )
+  .addEventListener(
+    "click",
+    async function () {
+
+      clearMessage();
+
+
+      productForm.style.display =
+        "block";
+
+
+      productCategoryInput.innerHTML =
+        '<option value="">Kategorien werden geladen...</option>';
+
+
+      const {
+        data: categories,
+        error
+      } =
+        await supabaseClient
+          .from("customer_categories")
+          .select(
+            "id,name"
+          )
+          .eq(
+            "customer_id",
+            currentUser.id
+          )
+          .eq(
+            "active",
+            true
+          )
+          .order(
+            "created_at",
+            {
+              ascending:
+                true
+            }
           );
 
-        if (
-          !name
-        ) return;
 
-        const cleanName =
-          name.trim();
+      if (
+        error
+      ) {
 
-        if (
-          !cleanName
-        ) return;
+        console.error(
+          "Kategorien:",
+          error
+        );
 
-        const slug =
-          cleanName
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(
-              /[\u0300-\u036f]/g,
-              ""
-            )
-            .replace(
-              /[^a-z0-9]+/g,
-              "-"
-            )
-            .replace(
-              /^-+|-+$/g,
-              ""
+        productCategoryInput.innerHTML =
+          '<option value="">Kategorien konnten nicht geladen werden</option>';
+
+        return;
+      }
+
+
+      if (
+        !categories.length
+      ) {
+
+        productCategoryInput.innerHTML =
+          '<option value="">Keine Kategorien vorhanden</option>';
+
+
+        showMessage(
+          "Bitte zuerst eine Kategorie erstellen.",
+          "error"
+        );
+
+
+        return;
+      }
+
+
+      productCategoryInput.innerHTML =
+        '<option value="">Kategorie auswählen</option>';
+
+
+      categories.forEach(
+        function (category) {
+
+          const option =
+            document.createElement(
+              "option"
             );
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("customer_categories")
-            .insert({
-              customer_id:
-                currentUser.id,
 
-              name:
-                cleanName,
+          option.value =
+            category.id;
 
-              slug:
-                slug,
 
-              icon:
-                "📂",
+          option.textContent =
+            category.name;
 
-              active:
-                true
-            });
 
-        if (
-          error
-        ) {
-
-          console.error(
-            "Kategorie INSERT:",
-            error
+          productCategoryInput.appendChild(
+            option
           );
-
-          showMessage(
-            "Kategorie konnte nicht erstellt werden.",
-            "error"
-          );
-
-          return;
 
         }
+      );
+
+
+      window.scrollTo({
+
+        top:
+          productForm.offsetTop,
+
+        behavior:
+          "smooth"
+
+      });
+
+    }
+  );
+
+
+/* =========================================================
+   PRODUKT SPEICHERN
+   ========================================================= */
+
+saveProductButton
+  .addEventListener(
+    "click",
+    async function () {
+
+      clearMessage();
+
+
+      const title =
+        productTitleInput.value.trim();
+
+
+      const description =
+        productDescriptionInput.value.trim();
+
+
+      const priceText =
+        productPriceInput.value.trim();
+
+
+      const affiliateUrl =
+        productAffiliateInput.value.trim();
+
+
+      const categoryId =
+        productCategoryInput.value;
+
+
+      const imageFile =
+        productImageInput.files[0];
+
+
+      if (
+        !title
+      ) {
 
         showMessage(
-          "Kategorie wurde erstellt.",
-          "success"
+          "Bitte einen Produktnamen eingeben.",
+          "error"
         );
 
-        await loadCategories();
-
+        return;
       }
-    );
 
 
-  /* =========================================================
-     ABMELDEN
-     ========================================================= */
+      if (
+        !affiliateUrl
+      ) {
 
-  document
-    .getElementById(
-      "logout-button"
-    )
-    .addEventListener(
-      "click",
-      async function () {
+        showMessage(
+          "Eine Affiliate-URL ist erforderlich.",
+          "error"
+        );
 
-        const {
+        return;
+      }
+
+
+      if (
+        !categoryId
+      ) {
+
+        showMessage(
+          "Bitte eine Kategorie auswählen.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (
+        !imageFile
+      ) {
+
+        showMessage(
+          "Bitte ein Produktbild auswählen.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const price =
+        priceText
+          ? Number(
+              priceText.replace(
+                ",",
+                "."
+              )
+            )
+          : null;
+
+
+      if (
+        priceText &&
+        Number.isNaN(
+          price
+        )
+      ) {
+
+        showMessage(
+          "Der Preis ist ungültig.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const fileExtension =
+        imageFile.name
+          .split(".")
+          .pop()
+          .toLowerCase();
+
+
+      const filePath =
+        currentUser.id +
+        "/" +
+        crypto.randomUUID() +
+        "." +
+        fileExtension;
+
+
+      const {
+        error: uploadError
+      } =
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .upload(
+            filePath,
+            imageFile,
+            {
+              contentType:
+                imageFile.type,
+              upsert:
+                false
+            }
+          );
+
+
+      if (
+        uploadError
+      ) {
+
+        console.error(
+          "Bild Upload:",
+          uploadError
+        );
+
+        showMessage(
+          "Produktbild konnte nicht hochgeladen werden.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const {
+        data: publicUrlData
+      } =
+        supabaseClient
+          .storage
+          .from("product-images")
+          .getPublicUrl(
+            filePath
+          );
+
+
+      const imageUrl =
+        publicUrlData.publicUrl;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("customer_products")
+          .insert({
+
+            customer_id:
+              currentUser.id,
+
+            category_id:
+              categoryId,
+
+            title:
+              title,
+
+            description:
+              description
+                ? description
+                : null,
+
+            price:
+              price,
+
+            image_url:
+              imageUrl,
+
+            affiliate_url:
+              affiliateUrl,
+
+            sort_order:
+              0,
+
+            active:
+              true
+
+          })
+          .select()
+          .single();
+
+
+      console.log(
+        "Produkt INSERT:",
+        data
+      );
+
+
+      console.log(
+        "Produkt INSERT FEHLER:",
+        error
+      );
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          "Produkt INSERT:",
           error
-        } =
-          await supabaseClient.auth.signOut();
+        );
+
+
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .remove([
+            filePath
+          ]);
+
+
+        let errorMessage =
+          "Produkt konnte nicht erstellt werden.";
+
 
         if (
-          error
+          error.message &&
+          error.message.includes(
+            "Kostenloses Testlimit"
+          )
         ) {
 
-          console.error(
-            "Logout:",
-            error
-          );
+          errorMessage =
+            "Dein kostenloses Limit von 3 Produkten für die ersten 30 Tage ist erreicht.";
 
-          showMessage(
-            "Abmelden fehlgeschlagen.",
-            "error"
-          );
+        } else if (
+          error.message &&
+          error.message.includes(
+            "Kostenloses Produktlimit"
+          )
+        ) {
 
-          return;
+          errorMessage =
+            "Nach Ablauf der 30 Tage bleibt 1 Produkt dauerhaft kostenlos. Für weitere Produkte benötigst du ein Paket.";
+
+        } else if (
+          error.message &&
+          error.message.includes(
+            "Produktlimit des aktiven Pakets"
+          )
+        ) {
+
+          errorMessage =
+            "Das Produktlimit deines aktiven Pakets ist erreicht.";
+
+        } else {
+
+          errorMessage +=
+            " " +
+            error.message;
 
         }
 
-        window.location.href =
-          "login.html";
+
+        showMessage(
+          errorMessage,
+          "error"
+        );
+
+
+        return;
 
       }
-    );
 
 
-  /* =========================================================
-     START
-     ========================================================= */
+      showMessage(
+        "Produkt wurde erfolgreich erstellt.",
+        "success"
+      );
 
-  checkSession();
+
+      productForm.style.display =
+        "none";
+
+
+      productTitleInput.value =
+        "";
+
+
+      productImageInput.value =
+        "";
+
+
+      productDescriptionInput.value =
+        "";
+
+
+      productPriceInput.value =
+        "";
+
+
+      productAffiliateInput.value =
+        "";
+
+
+      productCategoryInput.value =
+        "";
+
+
+      await loadProducts();
+
+    }
+  );
+
+
+/* =========================================================
+   PRODUKT FORMULAR ABBRECHEN
+   ========================================================= */
+
+cancelProductButton
+  .addEventListener(
+    "click",
+    function () {
+
+      productForm.style.display =
+        "none";
+
+      clearMessage();
+
+    }
+  );
+
+
+/* =========================================================
+   KATEGORIE HINZUFÜGEN
+   ========================================================= */
+
+document
+  .getElementById(
+    "add-category-button"
+  )
+  .addEventListener(
+    "click",
+    async function () {
+
+      clearMessage();
+
+
+      const name =
+        prompt(
+          "Name der neuen Kategorie:"
+        );
+
+
+      if (
+        !name
+      )
+        return;
+
+
+      const cleanName =
+        name.trim();
+
+
+      if (
+        !cleanName
+      )
+        return;
+
+
+      const slug =
+        cleanName
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(
+            /[\u0300-\u036f]/g,
+            ""
+          )
+          .replace(
+            /[^a-z0-9]+/g,
+            "-"
+          )
+          .replace(
+            /^-+|-+$/g,
+            ""
+          );
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("customer_categories")
+          .insert({
+
+            customer_id:
+              currentUser.id,
+
+            name:
+              cleanName,
+
+            slug:
+              slug,
+
+            icon:
+              "📂",
+
+            active:
+              true
+
+          });
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          "Kategorie INSERT:",
+          error
+        );
+
+        showMessage(
+          "Kategorie konnte nicht erstellt werden.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      showMessage(
+        "Kategorie wurde erstellt.",
+        "success"
+      );
+
+
+      await loadCategories();
+
+    }
+  );
+
+
+/* =========================================================
+   ABMELDEN
+   ========================================================= */
+
+document
+  .getElementById(
+    "logout-button"
+  )
+  .addEventListener(
+    "click",
+    async function () {
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          "Logout:",
+          error
+        );
+
+        showMessage(
+          "Abmelden fehlgeschlagen.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      window.location.href =
+        "login.html";
+
+    }
+  );
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+checkSession();
+
+checkPaymentResult();
 
 </script>
 
