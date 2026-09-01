@@ -459,6 +459,23 @@
           id="product-price-input"
           placeholder="z. B. 19,99"
         >
+        <div
+  id="direct-sale-hint"
+  style="
+    display: none;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff8e1;
+    font-size: 14px;
+    line-height: 1.4;
+  "
+>
+  💡 <strong>Direktverkauf:</strong>
+  Wenn du einen Preis größer als 0 € eingibst,
+  wird dein Produkt als Direktverkauf angeboten.
+  Eine Affiliate-URL ist dafür nicht erforderlich.
+</div>
       </div>
 
       <div class="form-group">
@@ -579,6 +596,26 @@
     document.getElementById(
       "product-affiliate-input"
     );
+  const directSaleHint =
+  document.getElementById(
+    "direct-sale-hint"
+  );
+  productPriceInput.addEventListener(
+  "input",
+  function () {
+
+    const price =
+      Number(
+        productPriceInput.value
+          .replace(",", ".")
+      );
+
+    directSaleHint.style.display =
+      price > 0
+        ? "block"
+        : "none";
+  }
+);
 
   const productCategoryInput =
     document.getElementById(
