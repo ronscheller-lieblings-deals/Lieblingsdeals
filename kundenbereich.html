@@ -2297,16 +2297,17 @@
         }
 
         if (
-          !affiliateUrl
-        ) {
+  !affiliateUrl &&
+  !priceText
+) {
 
-          showMessage(
-            "Eine Affiliate-URL ist erforderlich.",
-            "error"
-          );
+  showMessage(
+    "Bitte entweder einen Preis größer als 0 € oder eine Affiliate-URL angeben.",
+    "error"
+  );
 
-          return;
-        }
+  return;
+}
 
         if (
           !categoryId
@@ -2341,7 +2342,9 @@
                 )
               )
             : null;
-
+const isDirectSale =
+  price !== null &&
+  price > 0;
         if (
           priceText &&
           Number.isNaN(
