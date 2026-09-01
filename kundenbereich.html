@@ -2333,9 +2333,13 @@
           return;
         }
 
-        if (
+      
+  if (
   !affiliateUrl &&
-  !priceText
+  (!priceText ||
+    Number(
+      priceText.replace(",", ".")
+    ) <= 0)
 ) {
 
   showMessage(
