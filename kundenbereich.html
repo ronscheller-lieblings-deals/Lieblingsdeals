@@ -1810,7 +1810,61 @@ let customerPurchaseRequests = [];
       }
     );
   }
+async function showPurchaseRequests(
+  productId
+) {
 
+  const requests =
+    customerPurchaseRequests.filter(
+      function (request) {
+        return (
+          request.product_id ===
+          productId
+        );
+      }
+    );
+
+  if (!requests.length) {
+    alert(
+      "Für dieses Produkt gibt es keine Kaufanfragen."
+    );
+    return;
+  }
+
+  let message =
+    "Kaufanfragen:\n\n";
+
+  requests.forEach(
+    function (request, index) {
+
+      message +=
+        "Anfrage " +
+        (index + 1) +
+        "\n" +
+        "Name: " +
+        request.buyer_name +
+        "\n" +
+        "E-Mail: " +
+        request.buyer_email +
+        "\n" +
+        "Telefon: " +
+        (
+          request.buyer_phone ||
+          "nicht angegeben"
+        ) +
+        "\n" +
+        "Nachricht: " +
+        (
+          request.buyer_message ||
+          "keine Nachricht"
+        ) +
+        "\n\n";
+
+    }
+  );
+
+  alert(message);
+}
 
   /* =========================================================
      KATEGORIE LÖSCHEN
