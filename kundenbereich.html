@@ -1664,7 +1664,23 @@
                   `
                   : ""
               }
-
+              ${
+                product.affiliate_url
+                  ? `
+                    <div class="muted">
+                      🔗 Affiliate-Angebot
+                    </div>
+                  `
+                  : product.price !== null &&
+                    product.price !== undefined &&
+                    Number(product.price) > 0
+                    ? `
+                      <div class="muted">
+                        🛍️ Direktverkauf
+                      </div>
+                    `
+                    : ""
+              }
               <div class="muted">
 
                 ${
