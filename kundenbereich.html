@@ -637,7 +637,7 @@
   let customerCategories = [];
 
   let customerProducts = [];
-
+let customerPurchaseRequests = [];
 
   /* =========================================================
      NACHRICHTEN
@@ -1573,7 +1573,38 @@
     renderProducts();
 
     await loadProductLimitInfo();
+    await loadPurchaseRequests();
+    async function loadPurchaseRequests() {
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("customer_purchase_requests")
+    .select("*")
+    .eq(
+      "seller_id",
+      currentUser.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+  if (error) {
+    console.error(
+      "Kaufanfragen:",
+      error
+    );
+    customerPurchaseRequests = [];
+    return;
   }
+
+  customerPurchaseRequests =
+    data || [];
+}
+  
 
 
   function renderProducts() {
@@ -1593,6 +1624,16 @@
 
     customerProducts.forEach(
       function (product) {
+        const requestCount =
+  customerPurchaseRequests.filter(
+    function (request) {
+      return (
+        request.product_id ===
+          product.id &&
+        request.status === "new"
+      );
+    }
+  ).length;
 
         const item =
           document.createElement(
@@ -1680,6 +1721,15 @@
                       </div>
                     `
                     : ""
+              }
+                            ${
+                requestCount > 0
+                  ? `
+                    <div class="muted">
+                      📩 ${requestCount} neue Kaufanfrage${requestCount === 1 ? "" : "n"}
+                    </div>
+                  `
+                  : ""
               }
               <div class="muted">
 
