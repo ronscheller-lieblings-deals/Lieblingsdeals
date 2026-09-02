@@ -1644,7 +1644,7 @@
 
           `;
 
-          const directSaleButton =
+                    const directSaleButton =
             card.querySelector(
               ".direct-sale-button"
             );
@@ -1655,10 +1655,94 @@
 
             directSaleButton.addEventListener(
               "click",
-              function () {
+              async function () {
+
+                const buyerName =
+                  prompt(
+                    "Dein Name:"
+                  );
+
+                if (
+                  !buyerName ||
+                  buyerName.trim().length < 2
+                ) {
+                  return;
+                }
+
+                const buyerEmail =
+                  prompt(
+                    "Deine E-Mail-Adresse:"
+                  );
+
+                if (
+                  !buyerEmail ||
+                  buyerEmail.trim().length < 5
+                ) {
+                  return;
+                }
+
+                const buyerPhone =
+                  prompt(
+                    "Deine Telefonnummer (optional):"
+                  );
+
+                const buyerMessage =
+                  prompt(
+                    "Nachricht an den Verkäufer (optional):"
+                  );
+
+                const productPrice =
+                  product.price !== null &&
+                  product.price !== undefined
+                    ? Number(product.price)
+                    : null;
+
+                const {
+                  error
+                } =
+                  await supabaseClient
+                    .from(
+                      "customer_purchase_requests"
+                    )
+                    .insert({
+                      product_id:
+                        product.id,
+                      seller_id:
+                        product.customer_id,
+                      buyer_name:
+                        buyerName.trim(),
+                      buyer_email:
+                        buyerEmail.trim(),
+                      buyer_phone:
+                        buyerPhone
+                          ? buyerPhone.trim()
+                          : null,
+                      buyer_message:
+                        buyerMessage
+                          ? buyerMessage.trim()
+                          : null,
+                      price:
+                        productPrice,
+                      status:
+                        "new"
+                    });
+
+                if (error) {
+
+                  console.error(
+                    "Kaufanfrage:",
+                    error
+                  );
+
+                  alert(
+                    "Die Kaufanfrage konnte leider nicht gesendet werden."
+                  );
+
+                  return;
+                }
 
                 alert(
-                  "Kaufanfrage für dieses Produkt"
+                  "Kaufanfrage wurde gesendet."
                 );
 
               }
