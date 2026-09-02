@@ -1726,14 +1726,18 @@ let customerPurchaseRequests = [];
                     : ""
               }
                             ${
-                requestCount > 0
-                  ? `
-                    <div class="muted">
-                      📩 ${requestCount} neue Kaufanfrage${requestCount === 1 ? "" : "n"}
-                    </div>
-                  `
-                  : ""
-              }
+  requestCount > 0
+    ? `
+      <div
+        class="muted"
+        style="cursor: pointer;"
+        onclick="showPurchaseRequests('${product.id}')"
+      >
+        📩 ${requestCount} neue Kaufanfrage${requestCount === 1 ? "" : "n"}
+      </div>
+    `
+    : ""
+}
               <div class="muted">
 
                 ${
