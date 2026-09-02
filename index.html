@@ -1663,7 +1663,29 @@
                 `
             }
 
-          `;
+          `          `;
+
+          const directSaleButton =
+            card.querySelector(
+              ".direct-sale-button"
+            );
+
+          if (
+            directSaleButton
+          ) {
+
+            directSaleButton.addEventListener(
+              "click",
+              function () {
+
+                alert(
+                  "Kaufanfrage für dieses Produkt"
+                );
+
+              }
+            );
+
+          }
 
           container.appendChild(
             card
