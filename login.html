@@ -70,6 +70,11 @@
       font-size: 16px;
     }
 
+    input:focus {
+      outline: none;
+      border-color: #ff6a00;
+    }
+
     button {
       width: 100%;
       border: 0;
@@ -83,13 +88,13 @@
       margin-top: 20px;
     }
 
-    button:active {
-      transform: scale(.98);
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
-    .secondary {
-      background: #eee;
-      color: #222;
+    button:active:not(:disabled) {
+      transform: scale(.98);
     }
 
     .message {
@@ -98,6 +103,7 @@
       border-radius: 10px;
       display: none;
       text-align: center;
+      line-height: 1.4;
     }
 
     .success {
@@ -156,6 +162,7 @@
       type="email"
       placeholder="deine@email.de"
       autocomplete="email"
+      required
     >
 
     <label for="password">Passwort</label>
@@ -165,16 +172,14 @@
       type="password"
       placeholder="Passwort"
       autocomplete="current-password"
+      required
     >
 
-    <button id="submit-button">
+    <button id="submit-button" type="button">
       Anmelden
     </button>
 
-    <div
-      id="message"
-      class="message"
-    ></div>
+    <div id="message" class="message"></div>
 
     <div class="switch">
 
@@ -216,7 +221,7 @@
     "sb_publishable_FQB7IjlWRpGhNf4r1pV5Vg_JHQgxkGg";
 
   const supabaseClient =
-    supabase.createClient(
+    window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
@@ -249,10 +254,24 @@
 
 
   let registerMode = false;
+  let isProcessing = false;
 
 
   /* =========================================================
-     NACHRICHT
+     ZIELSEITE
+     ========================================================= */
+
+  function goToCustomerArea() {
+
+    window.location.replace(
+      "kundenbereich.html"
+    );
+
+  }
+
+
+  /* =========================================================
+     NACHRICHTEN
      ========================================================= */
 
   function showMessage(text, type) {
@@ -271,23 +290,31 @@
 
     message.textContent = "";
 
+    message.className = "message";
+
     message.style.display = "none";
 
   }
 
 
   /* =========================================================
-     ZWISCHEN LOGIN / REGISTRIERUNG WECHSELN
+     LOGIN / REGISTRIERUNG WECHSELN
      ========================================================= */
 
   switchButton.addEventListener(
     "click",
     () => {
 
+      if (isProcessing) {
+        return;
+      }
+
       registerMode =
         !registerMode;
 
       clearMessage();
+
+      passwordInput.value = "";
 
       if (registerMode) {
 
@@ -333,152 +360,296 @@
      LOGIN / REGISTRIERUNG
      ========================================================= */
 
-  submitButton.addEventListener(
-    "click",
-    async () => {
+  async function handleSubmit() {
 
-      clearMessage();
+    if (isProcessing) {
+      return;
+    }
 
-      const email =
-        emailInput.value.trim();
-
-      const password =
-        passwordInput.value;
+    clearMessage();
 
 
-      if (!email || !password) {
+    const email =
+      emailInput.value
+        .trim()
+        .toLowerCase();
 
-        showMessage(
-          "Bitte E-Mail und Passwort eingeben.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      if (password.length < 6) {
-
-        showMessage(
-          "Das Passwort muss mindestens 6 Zeichen haben.",
-          "error"
-        );
-
-        return;
-
-      }
+    /*
+      WICHTIG:
+      Passwort NICHT trimmen oder verändern.
+    */
+    const password =
+      passwordInput.value;
 
 
-      submitButton.disabled = true;
+    /* =======================================================
+       EINGABEN PRÜFEN
+       ======================================================= */
+
+    if (!email || !password) {
+
+      showMessage(
+        "Bitte E-Mail und Passwort eingeben.",
+        "error"
+      );
+
+      return;
+
+    }
 
 
-      try {
+    if (password.length < 6) {
 
-        if (registerMode) {
+      showMessage(
+        "Das Passwort muss mindestens 6 Zeichen haben.",
+        "error"
+      );
 
-          /* =========================
-             REGISTRIERUNG
-             ========================= */
+      return;
 
-          const {
-            data,
-            error
-          } =
-            await supabaseClient.auth.signUp({
-              email: email,
-              password: password
-            });
+    }
 
 
-          if (error) {
-            throw error;
-          }
+    isProcessing = true;
+
+    submitButton.disabled = true;
 
 
-          if (data.session) {
+    try {
 
-            showMessage(
-              "Konto erfolgreich erstellt. Du wirst weitergeleitet...",
-              "success"
-            );
+      /* =====================================================
+         REGISTRIERUNG
+         ===================================================== */
 
-            setTimeout(
-              () => {
-                window.location.href =
-                  "kundenbereich.html";
-              },
-              1000
-            );
+      if (registerMode) {
 
-          } else {
-
-            showMessage(
-              "Konto erstellt. Bitte bestätige deine E-Mail-Adresse.",
-              "success"
-            );
-
-          }
+        const emailRedirectTo =
+          window.location.origin +
+          "/kundenbereich.html";
 
 
-        } else {
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signUp({
 
-          /* =========================
-             LOGIN
-             ========================= */
+            email: email,
 
-          const {
-            data,
-            error
-          } =
-            await supabaseClient.auth.signInWithPassword({
-              email: email,
-              password: password
-            });
+            password: password,
+
+            options: {
+              emailRedirectTo:
+                emailRedirectTo
+            }
+
+          });
 
 
-          if (error) {
-            throw error;
-          }
+        if (error) {
+          throw error;
+        }
 
+
+        /*
+          Falls Supabase direkt eine Session erstellt,
+          kann der Kunde sofort in den Kundenbereich.
+        */
+
+        if (data.session) {
 
           showMessage(
-            "Anmeldung erfolgreich. Du wirst weitergeleitet...",
+            "Konto erfolgreich erstellt. Du wirst weitergeleitet...",
             "success"
           );
 
-
           setTimeout(
-            () => {
-              window.location.href =
-                "kundenbereich.html";
-            },
-            800
+            goToCustomerArea,
+            300
           );
+
+          return;
 
         }
 
-      } catch (error) {
 
-        console.error(
-          "Auth-Fehler:",
-          error
-        );
-
+        /*
+          Falls E-Mail-Bestätigung aktiviert ist:
+        */
 
         showMessage(
-          error.message ||
-          "Es ist ein Fehler aufgetreten.",
-          "error"
+          "Konto erstellt. Bitte bestätige zuerst deine E-Mail-Adresse. Danach kannst du dich anmelden.",
+          "success"
         );
 
-      } finally {
 
-        submitButton.disabled = false;
+        passwordInput.value = "";
+
+        return;
 
       }
 
+
+      /* =====================================================
+         LOGIN
+         ===================================================== */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      /*
+        Sicherheitscheck:
+        Nur weiterleiten, wenn Supabase wirklich
+        eine Session geliefert hat.
+      */
+
+      if (!data.session) {
+
+        showMessage(
+          "Anmeldung konnte nicht abgeschlossen werden.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      showMessage(
+        "Anmeldung erfolgreich. Du wirst weitergeleitet...",
+        "success"
+      );
+
+
+      /*
+        Sehr kurze Verzögerung, damit die Erfolgsmeldung
+        sichtbar werden kann.
+      */
+
+      setTimeout(
+        goToCustomerArea,
+        300
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Supabase Auth-Fehler:",
+        error
+      );
+
+
+      let errorMessage =
+        "Anmeldung fehlgeschlagen.";
+
+
+      /*
+        E-Mail-Bestätigung noch nicht erfolgt
+      */
+
+      if (
+        error.message &&
+        error.message.toLowerCase().includes(
+          "email not confirmed"
+        )
+      ) {
+
+        errorMessage =
+          "Bitte bestätige zuerst deine E-Mail-Adresse.";
+
+      }
+
+
+      /*
+        Falsche Zugangsdaten
+      */
+
+      else if (
+        error.message &&
+        (
+          error.message.toLowerCase().includes(
+            "invalid login credentials"
+          ) ||
+          error.message.toLowerCase().includes(
+            "invalid credentials"
+          )
+        )
+      ) {
+
+        errorMessage =
+          "E-Mail-Adresse oder Passwort ist nicht korrekt.";
+
+      }
+
+
+      /*
+        Registrierung:
+        E-Mail bereits vorhanden
+      */
+
+      else if (
+        registerMode &&
+        error.message &&
+        (
+          error.message.toLowerCase().includes(
+            "already registered"
+          ) ||
+          error.message.toLowerCase().includes(
+            "user already registered"
+          )
+        )
+      ) {
+
+        errorMessage =
+          "Für diese E-Mail-Adresse existiert bereits ein Kundenkonto.";
+
+      }
+
+
+      else if (error.message) {
+
+        errorMessage =
+          error.message;
+
+      }
+
+
+      showMessage(
+        errorMessage,
+        "error"
+      );
+
+
+    } finally {
+
+      isProcessing = false;
+
+      submitButton.disabled = false;
+
     }
+
+  }
+
+
+  submitButton.addEventListener(
+    "click",
+    handleSubmit
   );
 
 
@@ -486,13 +657,31 @@
      ENTER-TASTE
      ========================================================= */
 
+  emailInput.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        handleSubmit();
+
+      }
+
+    }
+  );
+
+
   passwordInput.addEventListener(
     "keydown",
     event => {
 
       if (event.key === "Enter") {
 
-        submitButton.click();
+        event.preventDefault();
+
+        handleSubmit();
 
       }
 
@@ -506,21 +695,84 @@
 
   async function checkExistingSession() {
 
-    const {
-      data
-    } =
-      await supabaseClient.auth.getSession();
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getSession();
 
 
-    if (data.session) {
+      if (error) {
 
-      window.location.href =
-        "kundenbereich.html";
+        console.error(
+          "Session-Fehler:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      if (data.session) {
+
+        goToCustomerArea();
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Session-Prüfung fehlgeschlagen:",
+        error
+      );
 
     }
 
   }
 
+
+  /* =========================================================
+     AUTH-STATUS ÜBERWACHEN
+     ========================================================= */
+
+  supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+
+      if (
+        session &&
+        (
+          event === "SIGNED_IN" ||
+          event === "INITIAL_SESSION"
+        )
+      ) {
+
+        /*
+          Nur weiterleiten, wenn wir tatsächlich
+          auf der Login-Seite sind.
+        */
+
+        if (
+          window.location.pathname.endsWith(
+            "login.html"
+          )
+        ) {
+
+          goToCustomerArea();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     START
+     ========================================================= */
 
   checkExistingSession();
 
