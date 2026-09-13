@@ -2636,15 +2636,7 @@ if (!categoryId) {
   return;
 }
 
-        const price =
-          priceText
-            ? Number(
-                priceText.replace(
-                  ",",
-                  "."
-                )
-              )
-            : null;
+        
 const isDirectSale =
   price !== null &&
   price > 0;
