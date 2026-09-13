@@ -171,13 +171,15 @@
     }
 
     .card img {
-      width: 100%;
-      border-radius: 12px;
-      margin: 15px 0;
-      display: block;
-      max-height: 400px;
-      object-fit: cover;
-    }
+  width: 100%;
+  height: 210px;
+  border-radius: 10px;
+  margin: 0 0 10px 0;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  background: #fafafa;
+}
 
     .rating {
       margin: 10px 0;
@@ -214,12 +216,14 @@
     }
 
     .customer-product-image {
-      width: 100%;
-      max-height: 350px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
+  width: 100%;
+  height: 210px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #fafafa;
+}
 
     .customer-product-description {
       margin-top: 10px;
@@ -267,6 +271,171 @@
         margin: 15px;
       }
     }
+    /* =========================================
+   KOMPAKTE PRODUKT-GRID-ANSICHT
+   ========================================= */
+
+#supabase-deals,
+#affiliate-offers,
+#customer-products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+#supabase-deals .card,
+#affiliate-offers .card,
+#customer-products .card {
+  margin-top: 0;
+  padding: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+#supabase-deals .card img,
+#affiliate-offers .card img,
+#customer-products .customer-product-image,
+#customer-products .card img {
+  width: 100%;
+  height: 210px;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+  background: #fafafa;
+  border-radius: 10px;
+  margin: 0 0 10px 0;
+  display: block;
+}
+
+#supabase-deals .card h3,
+#affiliate-offers .card h3,
+#customer-products .card h3 {
+  font-size: 16px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#customer-products .customer-product-description {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 6px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#supabase-deals .price,
+#affiliate-offers .price,
+#customer-products .price {
+  font-size: 22px;
+  margin-top: 6px;
+}
+
+#supabase-deals .provider,
+#affiliate-offers .provider {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+#supabase-deals .badge,
+#affiliate-offers .badge,
+#customer-products .badge,
+#affiliate-offers .affiliate-badge {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+#supabase-deals .offer-button,
+#affiliate-offers .offer-button,
+#customer-products .offer-button {
+  padding: 10px 8px;
+  margin-top: 10px;
+  font-size: 14px;
+  border-radius: 9px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  #supabase-deals,
+  #affiliate-offers,
+  #customer-products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #supabase-deals .card img,
+  #affiliate-offers .card img,
+  #customer-products .customer-product-image,
+  #customer-products .card img {
+    height: 190px;
+  }
+}
+
+/* Handy */
+@media (max-width: 700px) {
+  #supabase-deals,
+  #affiliate-offers,
+  #customer-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #supabase-deals .card,
+  #affiliate-offers .card,
+  #customer-products .card {
+    padding: 9px;
+    border-radius: 12px;
+  }
+
+  #supabase-deals .card img,
+  #affiliate-offers .card img,
+  #customer-products .customer-product-image,
+  #customer-products .card img {
+    height: 150px;
+  }
+
+  #supabase-deals .card h3,
+  #affiliate-offers .card h3,
+  #customer-products .card h3 {
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  #supabase-deals .price,
+  #affiliate-offers .price,
+  #customer-products .price {
+    font-size: 18px;
+  }
+
+  #supabase-deals .offer-button,
+  #affiliate-offers .offer-button,
+  #customer-products .offer-button {
+    padding: 8px 5px;
+    font-size: 12px;
+  }
+}
+
+/* Sehr kleine Handys */
+@media (max-width: 380px) {
+  #supabase-deals,
+  #affiliate-offers,
+  #customer-products {
+    gap: 8px;
+  }
+
+  #supabase-deals .card img,
+  #affiliate-offers .card img,
+  #customer-products .customer-product-image,
+  #customer-products .card img {
+    height: 125px;
+  }
+}
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
