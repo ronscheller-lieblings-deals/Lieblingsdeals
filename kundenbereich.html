@@ -247,7 +247,18 @@
       min-height: 100px;
       resize: vertical;
     }
+.form-group.has-error input,
+.form-group.has-error textarea,
+.form-group.has-error select {
+  border-color: #d00000;
+  background: #fff8f8;
+}
 
+.form-field-error {
+  color: #a00000;
+  font-size: 13px;
+  margin-top: 5px;
+}
     .form-actions {
       display: flex;
       gap: 10px;
@@ -429,7 +440,7 @@
     >
 
       <h3>Produkt erstellen</h3>
-
+<div id="product-form-message" class="message"></div>
       <div class="form-group">
         <label for="product-title-input">
           Produktname:
@@ -637,7 +648,8 @@
     document.getElementById(
       "product-category-input"
     );
-
+const productFormMessage =
+  document.getElementById("product-form-message");
   const saveProductButton =
     document.getElementById(
       "save-product-button"
@@ -678,7 +690,93 @@ let customerPurchaseRequests = [];
     message.style.display =
       "none";
   }
+function clearProductFormErrors() {
 
+  productFormMessage.textContent = "";
+  productFormMessage.className = "message";
+  productFormMessage.style.display = "none";
+
+  [
+    productTitleInput,
+    productImageInput,
+    productDescriptionInput,
+    productPriceInput,
+    productAffiliateInput,
+    productCategoryInput
+  ].forEach(function (input) {
+
+    const group =
+      input.closest(".form-group");
+
+    if (group) {
+      group.classList.remove("has-error");
+    }
+
+    input.removeAttribute("aria-invalid");
+  });
+
+  document
+    .querySelectorAll(".form-field-error")
+    .forEach(function (element) {
+      element.remove();
+    });
+}
+
+
+function showProductFormError(
+  text,
+  input
+) {
+
+  productFormMessage.textContent = text;
+  productFormMessage.className =
+    "message error";
+  productFormMessage.style.display =
+    "block";
+
+  const group =
+    input
+      ? input.closest(".form-group")
+      : null;
+
+  if (group) {
+
+    group.classList.add("has-error");
+
+    const fieldError =
+      document.createElement("div");
+
+    fieldError.className =
+      "form-field-error";
+
+    fieldError.textContent =
+      text;
+
+    group.appendChild(
+      fieldError
+    );
+  }
+
+  if (input) {
+
+    input.setAttribute(
+      "aria-invalid",
+      "true"
+    );
+
+    input.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    setTimeout(
+      function () {
+        input.focus();
+      },
+      150
+    );
+  }
+}
 
   /* =========================================================
      HTML SICHER DARSTELLEN
@@ -2445,6 +2543,7 @@ async function showPurchaseRequests(
       async function () {
 
         clearMessage();
+clearProductFormErrors();
 
         const title =
           productTitleInput.value.trim();
@@ -2464,58 +2563,78 @@ async function showPurchaseRequests(
         const imageFile =
           productImageInput.files[0];
 
-        if (
-          !title
-        ) {
+        const price =
+  priceText
+    ? Number(
+        priceText.replace(",", ".")
+      )
+    : null;
 
-          showMessage(
-            "Bitte einen Produktnamen eingeben.",
-            "error"
-          );
 
-          return;
-        }
+/* PRODUKTNAME */
+if (!title) {
 
-      
-  if (
-  !affiliateUrl &&
-  (!priceText ||
-    Number(
-      priceText.replace(",", ".")
-    ) <= 0)
-) {
-
-  showMessage(
-    "Bitte entweder einen Preis größer als 0 € oder eine Affiliate-URL angeben.",
-    "error"
+  showProductFormError(
+    "Bitte einen Produktnamen eingeben.",
+    productTitleInput
   );
 
   return;
 }
 
-        if (
-          !categoryId
-        ) {
 
-          showMessage(
-            "Bitte eine Kategorie auswählen.",
-            "error"
-          );
+/* PRODUKTBILD */
+if (!imageFile) {
 
-          return;
-        }
+  showProductFormError(
+    "Bitte ein Produktbild auswählen.",
+    productImageInput
+  );
 
-        if (
-          !imageFile
-        ) {
+  return;
+}
 
-          showMessage(
-            "Bitte ein Produktbild auswählen.",
-            "error"
-          );
 
-          return;
-        }
+/* PREIS */
+if (
+  priceText &&
+  Number.isNaN(price)
+) {
+
+  showProductFormError(
+    "Der Preis ist ungültig. Bitte z. B. 19,99 eingeben.",
+    productPriceInput
+  );
+
+  return;
+}
+
+
+/* PREIS ODER AFFILIATE-URL */
+if (
+  !affiliateUrl &&
+  (!priceText || price <= 0)
+) {
+
+  showProductFormError(
+    "Bitte entweder einen Preis größer als 0 € oder eine Affiliate-URL angeben.",
+    productPriceInput
+  );
+
+  return;
+}
+
+
+/* KATEGORIE */
+if (!categoryId) {
+
+  showProductFormError(
+    "Bitte eine Kategorie auswählen.",
+    productCategoryInput
+  );
+
+  return;
+}
 
         const price =
           priceText
