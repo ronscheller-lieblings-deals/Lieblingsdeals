@@ -1628,8 +1628,9 @@
       await supabaseClient
         .from("customer_products")
         .select(
-          "id,customer_id,category_id,title,description,price,image_url,affiliate_url,sort_order,created_at"
-        )
+  "id,customer_id,category_id,title,description,price,image_url,affiliate_url,sort_order,created_at,hidden_at"
+)
+        
         .eq(
           "active",
           true
