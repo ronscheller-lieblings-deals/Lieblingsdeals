@@ -1663,7 +1663,13 @@
     }
 
     customerProducts =
-      data || [];
+  (data || []).filter(
+    function (product) {
+
+      return !product.hidden_at;
+
+    }
+  );
 
     container.innerHTML =
       '<div class="empty">Wähle eine Kunden-Kategorie aus.</div>';
