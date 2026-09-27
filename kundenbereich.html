@@ -1215,7 +1215,27 @@ function showProductFormError(
 
     const now =
       new Date();
+/*
+ * Prüfen, wie viel Zeit bis zum Ende
+ * der 30-Tage-Testphase verbleibt.
+ */
+const remainingTrialMs =
+  Math.max(
+    0,
+    trialEnd.getTime() -
+    now.getTime()
+  );
 
+const remainingTrialDays =
+  Math.ceil(
+    remainingTrialMs /
+    (
+      24 *
+      60 *
+      60 *
+      1000
+    )
+  );
     const {
       data: subscriptions,
       error: subscriptionError
@@ -1328,7 +1348,18 @@ function showProductFormError(
         trialEnd.toLocaleDateString(
           "de-DE"
         );
+const countdownText =
+  remainingTrialDays > 0
+    ? `
+      <br><br>
 
+      ⏳ Noch
+      <strong>
+        ${remainingTrialDays} Tage
+      </strong>
+      deiner kostenlosen Testphase.
+    `
+    : "";
       text = `
 
         <strong>
@@ -1344,7 +1375,9 @@ function showProductFormError(
         <br><br>
 
         Deine Testphase endet am:
-        <strong>${dateText}</strong>
+<strong>${dateText}</strong>
+
+${countdownText}
       `;
 
     } else {
